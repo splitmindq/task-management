@@ -1,4 +1,4 @@
 "D:\CLion 2023.2.1\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=D:/CLion 2023.2.1/bin/ninja/win/x64/ninja.exe" -DCMAKE_TOOLCHAIN_FILE=C:\Users\mzitr\vcpkg\scripts\buildsystems\vcpkg.cmake -G Ninja -S "C:\Users\mzitr\OneDrive\Рабочий стол\labs" -B "C:\Users\mzitr\OneDrive\Рабочий стол\labs\cmake-build-debug"
--- Configuring done (0.1s)
+-- Configuring done (0.2s)
 -- Generating done (0.0s)
 -- Build files have been written to: C:/Users/mzitr/OneDrive/Рабочий стол/labs/cmake-build-debug

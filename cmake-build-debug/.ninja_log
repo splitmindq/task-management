@@ -1,15 +1,7 @@
 # ninja log v5
-3	1685	7475205226131648	CMakeFiles/labs.dir/main.cpp.obj	e4ae517bf4821554
-5130	6688	7475205262172717	labs.exe	14c300d3c700fc93
-0	80	7475227247875245	build.ninja	102e718a8150a693
-6	8868	7475146093455667	CMakeFiles/labs.dir/sqlite3.c.obj	5bea73f92d479413
-5	5130	7475205260502848	CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj	43b634b8fe742ad2
-1	259	7475227247875245	build.ninja	102e718a8150a693
-7	3071	7475227279041115	CMakeFiles/labs.dir/sendingEmail.cpp.obj	ea43af245ed8f3c9
-10	3389	7475227282185225	CMakeFiles/labs.dir/main.cpp.obj	e4ae517bf4821554
-13	7337	7475227321612341	CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj	43b634b8fe742ad2
-7338	9216	7475227323684071	labs.exe	e4473c510208f902
 5	2622	7475234172437811	CMakeFiles/labs.dir/main.cpp.obj	e4ae517bf4821554
-8	2788	7475234174094403	CMakeFiles/labs.dir/sendingEmail.cpp.obj	ea43af245ed8f3c9
-10	8294	7475234229021378	CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj	43b634b8fe742ad2
 8294	10180	7475234231441997	labs.exe	e4473c510208f902
+8	2788	7475234174094403	CMakeFiles/labs.dir/sendingEmail.cpp.obj	ea43af245ed8f3c9
+1	259	7475239467278778	build.ninja	102e718a8150a693
+6	8868	7475146093455667	CMakeFiles/labs.dir/sqlite3.c.obj	5bea73f92d479413
+10	8294	7475234229021378	CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj	43b634b8fe742ad2
