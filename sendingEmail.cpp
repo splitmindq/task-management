@@ -197,7 +197,8 @@ void handle_menu_choice(int choice, UserManager& userManager, EmailSender& email
             std::cin >> user_id;
 
             User* user = userManager.find_user_by_id(user_id);
-            if (user != nullptr) {
+            if (User* user = userManager.find_user_by_id(user_id); user != nullptr) {
+
                 emailSender.send_email(*(user->email), "Subject: Test Email", "This is a test email.");
                 std::cout << "Email sent to " << *(user->email) << std::endl;
             } else {
