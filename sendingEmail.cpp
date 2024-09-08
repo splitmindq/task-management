@@ -1,8 +1,6 @@
 #include "sendingEmail.h"
 
-User::User(int id, const std::string& email) : id(id) {
-    this->email = new std::string(email);
-}
+User::User(int id, const std::string& email) : id(id), email(new std::string(email)) {}
 
 User::~User() {
     delete email;

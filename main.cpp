@@ -13,5 +13,5 @@ int main(){
        handle_menu_choice(choice, userManager, emailSender);
    }
 
-    return 0;
+
 }
