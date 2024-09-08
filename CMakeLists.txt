@@ -3,19 +3,19 @@ project(labs)
 
 set(CMAKE_CXX_STANDARD 23)
 
-# Ищем библиотеку CURL
 find_package(CURL REQUIRED)
 
-# Указываем исходные файлы проекта
 set(SOURCES
         main.cpp
-        sqlite-amalgamation-3460100/sqlite3.c  # Убедитесь, что путь правильный
+        sqlite-amalgamation-3460100/sqlite3.c
+        sendingEmail.cpp
+        sendingEmail.h
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/sqlite-amalgamation-3460100)
 
-# Добавляем исполняемый файл
-add_executable(labs ${SOURCES})
+add_executable(labs ${SOURCES}
+        sendingEmail.cpp
+        sendingEmail.h)
 
-# Линкуем с библиотекой CURL
 target_link_libraries(labs CURL::libcurl)

@@ -63,6 +63,13 @@ build CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj: C_COMPILER_
   OBJECT_DIR = CMakeFiles\labs.dir
   OBJECT_FILE_DIR = CMakeFiles\labs.dir\sqlite-amalgamation-3460100
 
+build CMakeFiles/labs.dir/sendingEmail.cpp.obj: CXX_COMPILER__labs_unscanned_Debug C$:/Users/mzitr/OneDrive/Рабочий$ стол/labs/sendingEmail.cpp || cmake_object_order_depends_target_labs
+  DEP_FILE = CMakeFiles\labs.dir\sendingEmail.cpp.obj.d
+  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/mzitr/OneDrive/Рабочий стол/labs/sqlite-amalgamation-3460100" -isystem C:/Users/mzitr/vcpkg/installed/x64-windows/include
+  OBJECT_DIR = CMakeFiles\labs.dir
+  OBJECT_FILE_DIR = CMakeFiles\labs.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target labs
@@ -71,7 +78,7 @@ build CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj: C_COMPILER_
 #############################################
 # Link the executable labs.exe
 
-build labs.exe: CXX_EXECUTABLE_LINKER__labs_Debug CMakeFiles/labs.dir/main.cpp.obj CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj | C$:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib/libcurl-d.lib
+build labs.exe: CXX_EXECUTABLE_LINKER__labs_Debug CMakeFiles/labs.dir/main.cpp.obj CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj CMakeFiles/labs.dir/sendingEmail.cpp.obj | C$:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib/libcurl-d.lib
   FLAGS = -g
   LINK_LIBRARIES = C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib/libcurl-d.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\labs.dir
