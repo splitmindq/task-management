@@ -1,0 +1,3 @@
+C:/Users/mzitr/OneDrive/Рабочий стол/labs/cmake-build-debug/CMakeFiles/labs.dir
+C:/Users/mzitr/OneDrive/Рабочий стол/labs/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mzitr/OneDrive/Рабочий стол/labs/cmake-build-debug/CMakeFiles/rebuild_cache.dir
