@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 cmake-build-debug
+/cmake-build-debug
 
 # Ignore dependency directories
 /vcpkg/
