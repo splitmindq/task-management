@@ -9,7 +9,8 @@ void UserManager::delete_all_users() {
     users.clear();
 }
 
-UserManager::UserManager() {}
+UserManager::UserManager() = default;
+
 
 
 
