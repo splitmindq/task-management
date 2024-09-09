@@ -1,25 +1,17 @@
 #include "sendingEmail.h"
 
-User::User(int id, const std::string& email) : id(id) {
-    this->email = new std::string(email);
+User::User(int id, const std::string& email) : id(id), email(std::make_unique<std::string>(email)) {
+
 }
 
-User::~User() {
-    delete email;
-}
 
 void UserManager::delete_all_users() {
-    for (auto user : users) {
-        delete user;
-    }
     users.clear();
 }
 
 UserManager::UserManager() : next_id(1) {}
 
-UserManager::~UserManager() {
-    delete_all_users();
-}
+
 
 void UserManager::create_user() {
     std::string email_input;
@@ -27,7 +19,7 @@ void UserManager::create_user() {
     std::cin >> email_input;
 
     User* new_user = new User(next_id++, email_input);
-    users.push_back(new_user);
+    users.push_back(std::make_unique<User>(next_id++, email_input));
     std::cout << "User created with ID: " << new_user->id << std::endl;
 }
 
@@ -53,8 +45,8 @@ void UserManager::update_user() {
         std::string new_email;
         std::cout << "Enter new email: ";
         std::cin >> new_email;
-        delete user->email;
-        user->email = new std::string(new_email);
+
+        user->email = std::make_unique<std::string>(new_email);
         std::cout << "User with ID " << id << " updated." << std::endl;
     } else {
         std::cout << "User with ID " << id << " not found." << std::endl;
@@ -69,7 +61,6 @@ void UserManager::delete_user() {
     for (auto it = users.begin(); it != users.end(); ++it) {
         if ((*it)->id == id) {
             std::cout << "User with ID " << id << " and email " << *((*it)->email) << " has been deleted." << std::endl;
-            delete *it;
             users.erase(it);
             return;
         }
@@ -80,7 +71,7 @@ void UserManager::delete_user() {
 User* UserManager::find_user_by_id(int id) {
     for (auto& user : users) {
         if (user->id == id) {
-            return user;
+            return user.get();
         }
     }
     return nullptr;

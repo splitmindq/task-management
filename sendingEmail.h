@@ -8,27 +8,27 @@
 #include <vector>
 #include <string>
 #include "curl/curl.h"
-
+#include <memory>
 class User {
 public:
     int id;
-    std::string* email;
+    std::unique_ptr<std::string>email;
 
     User(int id, const std::string& email);
-    ~User();
+    ~User() = default;
 };
 
 
 class UserManager {
 private:
-    std::vector<User*> users;
+    std::vector<std::unique_ptr<User>> users;
     int next_id;
 
     void delete_all_users();
 
 public:
     UserManager();
-    ~UserManager();
+    ~UserManager() = default;
 
     void create_user();
     void read_users() const;
