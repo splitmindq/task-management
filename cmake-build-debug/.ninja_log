@@ -5,3 +5,5 @@
 1	259	7475239467278778	build.ninja	102e718a8150a693
 6	8868	7475146093455667	CMakeFiles/labs.dir/sqlite3.c.obj	5bea73f92d479413
 10	8294	7475234229021378	CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj	43b634b8fe742ad2
+1	3647	7475570079532939	CMakeFiles/labs.dir/main.cpp.obj	e4ae517bf4821554
+44	7882	7475570121730963	CMakeFiles/labs.dir/sqlite-amalgamation-3460100/sqlite3.c.obj	43b634b8fe742ad2

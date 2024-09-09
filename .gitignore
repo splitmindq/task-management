@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+cmake-build-debug
 
 # Ignore dependency directories
 /vcpkg/
