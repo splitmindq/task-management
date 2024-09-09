@@ -10,6 +10,8 @@
 #include "curl/curl.h"
 #include <memory>
 #include <array>
+#include <cstring>
+
 class User {
 public:
     int id;
@@ -23,7 +25,7 @@ public:
 class UserManager {
 private:
     std::vector<std::unique_ptr<User>> users;
-    int next_id;
+    int next_id = 0;
 
     void delete_all_users();
 

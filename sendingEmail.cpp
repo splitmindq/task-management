@@ -9,7 +9,7 @@ void UserManager::delete_all_users() {
     users.clear();
 }
 
-UserManager::UserManager() : next_id(0) {}
+UserManager::UserManager() {}
 
 
 
@@ -17,11 +17,12 @@ void UserManager::create_user() {
     std::string email_input;
     std::cout << "Enter user email: ";
     std::cin >> email_input;
-
-    // Создайте пользователя и увеличьте next_id только один раз
-    users.push_back(std::make_unique<User>(next_id++, email_input));
-    std::cout << "User created with ID: " << next_id - 1 << std::endl;
+    auto new_user = std::make_unique<User>(next_id, email_input);
+    ++next_id;
+    users.push_back(std::move(new_user));
+    std::cout << "User created with ID: " << users.back()->id << std::endl;
 }
+
 
 void UserManager::read_users() const {
     if (users.empty()) {
@@ -86,11 +87,13 @@ size_t EmailSender::payload_source(char *ptr, size_t size, size_t nmemb, upload_
 
     data = upload_ctx->payload_text[upload_ctx->lines_read];
 
-    if (data) {
+    if (data != nullptr) {
         size_t len = strlen(data);
-        memcpy(ptr, data, len);
-        upload_ctx->lines_read++;
-        return len;
+        if (len > 0) {
+            memcpy(ptr, data, len);
+            upload_ctx->lines_read++;
+            return len;
+        }
     }
 
     return 0;
@@ -179,8 +182,8 @@ void handle_menu_choice(int choice, UserManager& userManager, EmailSender& email
             std::cin >> user_id;
 
             User* user = userManager.find_user_by_id(user_id);
-            if (user != nullptr) {
-                emailSender.send_email(*(user->email), "Subject: Test Email", "This is a test email.");
+            if (const User* user = userManager.find_user_by_id(user_id)) {
+                emailSender.send_email(*(user->email), "Тема : лабароторная 1", "я обожаю sonar!!");
                 std::cout << "Email sent to " << *(user->email) << std::endl;
             } else {
                 std::cout << "User not found." << std::endl;
