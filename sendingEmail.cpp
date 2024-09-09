@@ -9,7 +9,7 @@ void UserManager::delete_all_users() {
     users.clear();
 }
 
-UserManager::UserManager() : next_id(1) {}
+UserManager::UserManager() : next_id(0) {}
 
 
 
@@ -18,9 +18,9 @@ void UserManager::create_user() {
     std::cout << "Enter user email: ";
     std::cin >> email_input;
 
-    User* new_user = new User(next_id++, email_input);
+    // Создайте пользователя и увеличьте next_id только один раз
     users.push_back(std::make_unique<User>(next_id++, email_input));
-    std::cout << "User created with ID: " << new_user->id << std::endl;
+    std::cout << "User created with ID: " << next_id - 1 << std::endl;
 }
 
 void UserManager::read_users() const {
@@ -77,8 +77,7 @@ User* UserManager::find_user_by_id(int id) {
     return nullptr;
 }
 
-size_t EmailSender::payload_source(void *ptr, size_t size, size_t nmemb, void *userp) {
-    upload_status *upload_ctx = static_cast<upload_status *>(userp);
+size_t EmailSender::payload_source(char *ptr, size_t size, size_t nmemb, upload_status *upload_ctx) {
     const char *data;
 
     if ((size == 0) || (nmemb == 0) || ((size * nmemb) < 1)) {
@@ -110,33 +109,26 @@ EmailSender::~EmailSender() {
 }
 
 void EmailSender::send_email(const std::string &to, const std::string &subject, const std::string &message) {
-    if (!curl) {
-        std::cerr << "Failed to initialize CURL" << std::endl;
-        return;
-    }
-
-    struct curl_slist *recipients = nullptr;
     upload_status upload_ctx = {0};
 
-    const char *payload_text[5];
+    // Формирование заголовков и тела сообщения
     std::string to_header = "To: " + to + "\r\n";
+    std::string from_header = "From: " + from + "\r\n";
     std::string subject_header = "Subject: " + subject + "\r\n";
     std::string message_body = message + "\r\n";
 
-    payload_text[0] = to_header.c_str();
-    payload_text[1] = ("From: " + from + "\r\n").c_str();
-    payload_text[2] = subject_header.c_str();
-    payload_text[3] = "\r\n";
-    payload_text[4] = message_body.c_str();
+    // Инициализация std::array через список инициализации
+    upload_ctx.payload_text = {to_header.c_str(), from_header.c_str(), subject_header.c_str(), "\r\n", message_body.c_str()};
 
-    upload_ctx.payload_text = payload_text;
-
+    // Настройка CURL
     curl_easy_setopt(curl, CURLOPT_USERNAME, username.c_str());
     curl_easy_setopt(curl, CURLOPT_PASSWORD, password.c_str());
     curl_easy_setopt(curl, CURLOPT_URL, smtp_url.c_str());
     curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
     curl_easy_setopt(curl, CURLOPT_MAIL_FROM, from.c_str());
 
+    // Отправка письма
+    struct curl_slist *recipients = nullptr;
     recipients = curl_slist_append(recipients, to.c_str());
     curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
     curl_easy_setopt(curl, CURLOPT_READFUNCTION, payload_source);
@@ -144,14 +136,10 @@ void EmailSender::send_email(const std::string &to, const std::string &subject, 
     curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
     CURLcode res = curl_easy_perform(curl);
-
     if (res != CURLE_OK) {
         std::cerr << "First try failed: " << curl_easy_strerror(res) << std::endl;
         curl_easy_setopt(curl, CURLOPT_PASSWORD, second_password.c_str());
-        std::cout << "Retrying with second password..." << std::endl;
-
         res = curl_easy_perform(curl);
-
         if (res != CURLE_OK) {
             std::cerr << "Second try failed: " << curl_easy_strerror(res) << std::endl;
         }
@@ -159,6 +147,7 @@ void EmailSender::send_email(const std::string &to, const std::string &subject, 
 
     curl_slist_free_all(recipients);
 }
+
 
 void display_menu() {
     std::cout << "\nMenu:\n";

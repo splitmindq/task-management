@@ -9,6 +9,7 @@
 #include <string>
 #include "curl/curl.h"
 #include <memory>
+#include <array>
 class User {
 public:
     int id;
@@ -48,10 +49,10 @@ private:
 
     struct upload_status {
         int lines_read;
-        const char **payload_text;
+        std::array<const char*, 5> payload_text;
     };
 
-    static size_t payload_source(void *ptr, size_t size, size_t nmemb, void *userp);
+    static size_t payload_source(char *ptr, size_t size, size_t nmemb, upload_status *userp);
 
 public:
     EmailSender(const std::string &from, const std::string &smtp_url,
