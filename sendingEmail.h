@@ -11,6 +11,7 @@
 #include <memory>
 #include <array>
 #include <cstring>
+#include "windows.h"
 
 class User {
 public:
