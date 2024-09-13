@@ -129,13 +129,14 @@ void EmailSender::send_email(const std::string &to, const std::string &subject, 
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
-        std::cerr << "First try failed: " << curl_easy_strerror(res) << std::endl;
+        std::cerr << "\nFirst try failed: " << curl_easy_strerror(res) << std::endl;
         curl_easy_setopt(curl, CURLOPT_PASSWORD, second_password.c_str());
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            std::cerr << "Second try failed: " << curl_easy_strerror(res) << std::endl;
+            std::cerr << "\nSecond try failed: " << curl_easy_strerror(res) << std::endl;
         }
     }
+    Sleep(1000);
 
     curl_slist_free_all(recipients);
 }
@@ -153,6 +154,7 @@ void display_menu() {
 
 void handle_menu_choice(int choice, UserManager& userManager, EmailSender& emailSender) {
     switch (choice) {
+        setlocale(LC_ALL,"RUS");
         case 1:
             userManager.create_user();
             break;

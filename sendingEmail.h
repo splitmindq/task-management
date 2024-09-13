@@ -11,7 +11,7 @@
 #include <memory>
 #include <array>
 #include <cstring>
-#include "windows.h"
+#include "locale.h"
 
 class User {
 public:
@@ -26,7 +26,7 @@ public:
 class UserManager {
 private:
     std::vector<std::unique_ptr<User>> users;
-    int next_id = 0;
+    int next_id = 1;
 
     void delete_all_users();
 
