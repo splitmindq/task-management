@@ -1,5 +1,5 @@
 # task-management
-course work |FCSaN|
+`course work |FCSaN|`
 
 
 
@@ -18,14 +18,29 @@ course work |FCSaN|
 
 - Cистему авторизации/регистриации с использованием протокола smtp
 
-## Структура проекта
+## Структура проекта :
 
-Проект разделен на следующие файлы:
+###  *src /* 
 
-- `sendingEmail.h` и `sendingEmail.cpp`
-- `main.cpp`
+    main.cpp
+        user.h
+             user_manager.h 
+                email_sender.h 
+                     sending_email.cpp 
+                         sending_email.h
+ ### *include /* 
+    
+     sqlite 
 
-## Ссылка на Sonar
+### *lab /*
+ 
+    CMakeLists.txt 
+    LICENSE
+    .gitignore 
+     README.md
 
--https://sonarcloud.io/project/overview?id=splitmindq_task-management
+
+
+
+# [SonarCloud]( https://sonarcloud.io/project/overview?id=splitmindq_task-management )
 
