@@ -12,7 +12,6 @@
 
 # Ignore cmake build directory
 /cmake-build-debug/
-/vs/
 /sqlite-amalgamation-3460100/
 # Ignore dependency directories
 /vcpkg/

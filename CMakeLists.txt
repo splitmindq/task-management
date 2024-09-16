@@ -6,16 +6,17 @@ set(CMAKE_CXX_STANDARD 23)
 find_package(CURL REQUIRED)
 
 set(SOURCES
-        main.cpp
-        sqlite-amalgamation-3460100/sqlite3.c
-        sendingEmail.cpp
-        sendingEmail.h
+        src/main.cpp
+        src/sendingEmail.cpp
+        src/sendingEmail.h
+        src/user.h
+        src/user_manager.h
+        src/email_sender.h
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/sqlite-amalgamation-3460100)
+include_directories(include)
 
-add_executable(labs ${SOURCES}
-        sendingEmail.cpp
-        sendingEmail.h)
+add_executable(labs ${SOURCES})
 
 target_link_libraries(labs CURL::libcurl)
+target_include_directories(labs PRIVATE include)
