@@ -13,6 +13,5 @@ int main(){
        std::cin>>choice;
        handle_menu_choice(choice, userManager, emailSender);
    }
-
    
 }

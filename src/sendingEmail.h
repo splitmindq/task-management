@@ -19,9 +19,9 @@
 #include <array>
 #include <cstring>
 #include "locale.h"
-#include "user.h"
-#include "user_manager.h"
-#include "email_sender.h"
+#include "User.h"
+#include "userManager.h"
+#include "emailSender.h"
 
 //-------------------------------------------------------------------------------------
 
