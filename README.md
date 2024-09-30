@@ -43,5 +43,4 @@
 
 
 # [SonarCloud]( https://sonarcloud.io/project/overview?id=splitmindq_task-management )
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=splitmindq_task-management)](https://sonarcloud.io/summary/new_code?id=splitmindq_task-management)
 
