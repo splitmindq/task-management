@@ -9,12 +9,12 @@
 
 
 //dependencies
+#include "curl/curl.h"
 //-------------------------------------------------------------------------------------
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include "curl/curl.h"
 #include <memory>
 #include <array>
 #include <cstring>

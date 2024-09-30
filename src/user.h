@@ -4,12 +4,10 @@
 
 #ifndef LABS_USER_H
 #define LABS_USER_H
-
 class User {
 public:
     int id;
     std::unique_ptr<std::string>email;
-
     User(int id, const std::string& email);
     ~User() = default;
 };

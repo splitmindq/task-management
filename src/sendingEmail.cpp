@@ -64,7 +64,7 @@ void UserManager::delete_user() {
 }
 
 User* UserManager::find_user_by_id(int id) {
-    for (auto& user : users) {
+    for (const auto& user : users) {
         if (user->id == id) {
             return user.get();
         }

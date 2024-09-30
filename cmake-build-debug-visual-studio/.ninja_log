@@ -1,0 +1,5 @@
+# ninja log v5
+12	1599	7485367468979181	CMakeFiles/labs.dir/include/sqlite/sqlite3.c.obj	2a65da4db7d7753e
+1	2404	7485367477124409	CMakeFiles/labs.dir/src/main.cpp.obj	c7af26fdcd4e9115
+7	2415	7485367477235641	CMakeFiles/labs.dir/src/sendingEmail.cpp.obj	faa04df67f9a6ef2
+2416	3904	7485367482525653	labs.exe	1bb90dd53a9da458
