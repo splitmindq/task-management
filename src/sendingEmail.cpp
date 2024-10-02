@@ -1,24 +1,24 @@
-#include "sendingEmail.h"
+#include "headers/sendingEmail.h"
 
 User::User(int id, const std::string& email) : id(id), email(std::make_unique<std::string>(email)) { }
 
-void UserManager::delete_all_users() {
+void UserManager::deleteAllUsers() {
     users.clear();
 }
 
 UserManager::UserManager() = default;
 
-void UserManager::create_user() {
-    std::string email_input;
+void UserManager::createUser() {
+    std::string emailInput;
     std::cout << "Введите вашу почту: ";
-    std::cin >> email_input;
-    auto new_user = std::make_unique<User>(next_id, email_input);
-    ++next_id;
-    users.push_back(std::move(new_user));
+    std::cin >> emailInput;
+    auto newUser = std::make_unique<User>(nextId, emailInput);
+    ++nextId;
+    users.push_back(std::move(newUser));
     std::cout << "Создан пользователь с ID: " << users.back()->id << std::endl;
 }
 
-void UserManager::read_users() const {
+void UserManager::readUsers() const {
     if (users.empty()) {
         std::cout << "Нету такого студента" << std::endl;
         return;
@@ -30,40 +30,40 @@ void UserManager::read_users() const {
     }
 }
 
-void UserManager::update_user() {
+void UserManager::updateUser() {
     int id;
     std::cout << "Введите ID пользователя ";
     std::cin >> id;
 
-    User* user = find_user_by_id(id);
+    User* user = findUserById(id);
     if (user) {
-        std::string new_email;
+        std::string newEmail;
         std::cout << "Enter new email: ";
-        std::cin >> new_email;
+        std::cin >> newEmail;
 
-        user->email = std::make_unique<std::string>(new_email);
+        user->email = std::make_unique<std::string>(newEmail);
         std::cout << "Пользователь с ID: " << id << " обновлен." << std::endl;
     } else {
         std::cout << "Пользователь с ID: " << id << " не найден." << std::endl;
     }
 }
 
-void UserManager::delete_user() {
+void UserManager::deleteUser() {
     int id;
     std::cout << "Введите ID пользователя для удаления: ";
     std::cin >> id;
 
     for (auto it = users.begin(); it != users.end(); ++it) {
         if ((*it)->id == id) {
-            std::cout << "Пользователь с ID " << id << "с почтой " << *((*it)->email) << " удалён." << std::endl;
+            std::cout << "Пользователь с ID " << id << " с почтой " << *((*it)->email) << " удалён." << std::endl;
             users.erase(it);
             return;
         }
     }
-    std::cout << "Пользователь с ID" << id << " не найден." << std::endl;
+    std::cout << "Пользователь с ID " << id << " не найден." << std::endl;
 }
 
-User* UserManager::find_user_by_id(int id) {
+User* UserManager::findUserById(int id) {
     for (const auto& user : users) {
         if (user->id == id) {
             return user.get();
@@ -72,31 +72,31 @@ User* UserManager::find_user_by_id(int id) {
     return nullptr;
 }
 
-size_t EmailSender::payload_source(char *ptr, size_t size, size_t nmemb, upload_status *upload_ctx) {
+size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *uploadCtx) {
     const char *data;
 
     if ((size == 0) || (nmemb == 0) || ((size * nmemb) < 1)) {
         return 0;
     }
 
-    data = upload_ctx->payload_text[upload_ctx->lines_read];
+    data = uploadCtx->payloadText[uploadCtx->linesRead];
 
     if (data != nullptr) {
         size_t len = strlen(data);
         if (len > 0) {
             memcpy(ptr, data, len);
-            upload_ctx->lines_read++;
+            uploadCtx->linesRead++;
             return len;
         }
     }
     return 0;
 }
 
-EmailSender::EmailSender(const std::string &from, const std::string &smtp_url,
+EmailSender::EmailSender(const std::string &from, const std::string &smtpUrl,
                          const std::string &username, const std::string &password,
-                         const std::string &second_password)
-        : from(from), smtp_url(smtp_url), username(username),
-          password(password), second_password(second_password), curl(curl_easy_init()) {}
+                         const std::string &secondPassword)
+        : from(from), smtpUrl(smtpUrl), username(username),
+          password(password), secondPassword(secondPassword), curl(curl_easy_init()) {}
 
 EmailSender::~EmailSender() {
     if (curl) {
@@ -104,33 +104,33 @@ EmailSender::~EmailSender() {
     }
 }
 
-void EmailSender::send_email(const std::string &to, const std::string &subject, const std::string &message) {
-    upload_status upload_ctx = {0};
+void EmailSender::sendEmail(const std::string &to, const std::string &subject, const std::string &message) {
+    UploadStatus uploadCtx = {0};
 
-    std::string to_header = "To: " + to + "\r\n";
-    std::string from_header = "From: " + from + "\r\n";
-    std::string subject_header = "Subject: " + subject + "\r\n";
-    std::string message_body = message + "\r\n";
+    std::string toHeader = "To: " + to + "\r\n";
+    std::string fromHeader = "From: " + from + "\r\n";
+    std::string subjectHeader = "Subject: " + subject + "\r\n";
+    std::string messageBody = message + "\r\n";
 
-    upload_ctx.payload_text = {to_header.c_str(), from_header.c_str(), subject_header.c_str(), "\r\n", message_body.c_str()};
+    uploadCtx.payloadText = {toHeader.c_str(), fromHeader.c_str(), subjectHeader.c_str(), "\r\n", messageBody.c_str()};
 
     curl_easy_setopt(curl, CURLOPT_USERNAME, username.c_str());
     curl_easy_setopt(curl, CURLOPT_PASSWORD, password.c_str());
-    curl_easy_setopt(curl, CURLOPT_URL, smtp_url.c_str());
+    curl_easy_setopt(curl, CURLOPT_URL, smtpUrl.c_str());
     curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
     curl_easy_setopt(curl, CURLOPT_MAIL_FROM, from.c_str());
 
     struct curl_slist *recipients = nullptr;
     recipients = curl_slist_append(recipients, to.c_str());
     curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
-    curl_easy_setopt(curl, CURLOPT_READFUNCTION, payload_source);
-    curl_easy_setopt(curl, CURLOPT_READDATA, &upload_ctx);
+    curl_easy_setopt(curl, CURLOPT_READFUNCTION, payloadSource);
+    curl_easy_setopt(curl, CURLOPT_READDATA, &uploadCtx);
     curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
         std::cerr << "\nFirst try failed: " << curl_easy_strerror(res) << std::endl;
-        curl_easy_setopt(curl, CURLOPT_PASSWORD, second_password.c_str());
+        curl_easy_setopt(curl, CURLOPT_PASSWORD, secondPassword.c_str());
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             std::cerr << "\nSecond try failed: " << curl_easy_strerror(res) << std::endl;
@@ -141,8 +141,7 @@ void EmailSender::send_email(const std::string &to, const std::string &subject, 
     curl_slist_free_all(recipients);
 }
 
-
-void display_menu() {
+void displayMenu() {
     std::cout << "\nMenu:\n";
     std::cout << "1. Создать пользователя\n";
     std::cout << "2. Считать пользователей\n";
@@ -152,28 +151,28 @@ void display_menu() {
     std::cout << "6. Выход\n";
 }
 
-void handle_menu_choice(int choice, UserManager& userManager, EmailSender& emailSender) {
+void handleMenuChoice(int choice, UserManager& userManager, EmailSender& emailSender) {
     switch (choice) {
         setlocale(LC_ALL,"RUS");
         case 1:
-            userManager.create_user();
+            userManager.createUser();
             break;
         case 2:
-            userManager.read_users();
+            userManager.readUsers();
             break;
         case 3:
-            userManager.update_user();
+            userManager.updateUser();
             break;
         case 4:
-            userManager.delete_user();
+            userManager.deleteUser();
             break;
         case 5: {
-            int user_id;
+            int userId;
             std::cout << "Введите ID пользователя: ";
-            std::cin >> user_id;
-            if (const User* user = userManager.find_user_by_id(user_id)) {
-                emailSender.send_email(*(user->email), "Тема : лабароторная 1", "я обожаю sonar!!");
-                std::cout << "Письмо отправлено : " << *(user->email) << std::endl;
+            std::cin >> userId;
+            if (const User* user = userManager.findUserById(userId)) {
+                emailSender.sendEmail(*(user->email), "Тема: лабораторная 1", "Я обожаю sonar!!");
+                std::cout << "Письмо отправлено: " << *(user->email) << std::endl;
             } else {
                 std::cout << "Пользователь не найден." << std::endl;
             }

@@ -8,10 +8,11 @@ find_package(CURL REQUIRED)
 set(SOURCES
         src/main.cpp
         src/sendingEmail.cpp
-        src/sendingEmail.h
-        src/user.h
-        src/user_manager.h
-        src/email_sender.h
+        src/headers/sendingEmail.h
+        src/headers/User.h
+        src/headers/userManager.h
+        src/headers/emailSender.h
+
 )
 
 include_directories(include)
