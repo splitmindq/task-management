@@ -17,9 +17,9 @@
 #include <cstring>
 #include "locale.h"
 #include "User.h"
-#include "UserManager.h"
+#include "userManager.h"
 #include "sendingEmail.h"
-#include "EmailSender.h"
+#include "emailSender.h"
 
 //-------------------------------------------------------------------------------------
 
