@@ -1,8 +1,18 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+# Ignore build directories
+/build/
+/bin/
+/obj/
+
+# Ignore IDE specific files
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore cmake build directory
+/cmake-build-debug/
+/include/
+/sqlite-amalgamation-3460100/
+# Ignore dependency directories
+/vcpkg/
