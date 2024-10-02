@@ -10,8 +10,8 @@ set(SOURCES
         src/sendingEmail.cpp
         src/headers/sendingEmail.h
         src/headers/User.h
-        src/headers/userManager.h
-        src/headers/emailSender.h
+        src/headers/UserManager.h
+        src/headers/EmailSender.h
 
 )
 

@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <memory>
-#include "User.h" // Предполагается, что файл User.h существует
+#include "User.h"
 
 class UserManager {
 private:
