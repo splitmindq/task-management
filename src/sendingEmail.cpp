@@ -25,7 +25,7 @@ void UserManager::loadUsers() {
         }
 
         W.commit();
-    } catch (const std::exception &e) {
+    } catch (const std::system_error &e) {
         std::cerr << e.what() << std::endl;
     }
 }
@@ -36,7 +36,7 @@ void UserManager::saveUser(const User& user) {
         pqxx::work W(C);
         W.exec("INSERT INTO users (email) VALUES (" + W.quote(*(user.email)) + ")");
         W.commit();
-    } catch (const std::exception &e) {
+    } catch (const std::system_error &e) {
         std::cerr << e.what() << std::endl;
     }
 }
@@ -79,7 +79,7 @@ void UserManager::updateUser() {
             pqxx::work W(C);
             W.exec("UPDATE users SET email = " + W.quote(newEmail) + " WHERE id = " + std::to_string(id));
             W.commit();
-        } catch (const std::exception &e) {
+        } catch (const std::system_error &e) {
             std::cerr << e.what() << std::endl;
         }
 
@@ -101,9 +101,9 @@ void UserManager::deleteUser() {
             try {
                 pqxx::connection C(connectionString);
                 pqxx::work W(C);
-                W.exec("DELETE FROM users WHERE id = " + std::to_string(id));
+                W.exec(std::format("DELETE FROM users WHERE id = ", std::to_string(id)));
                 W.commit();
-            } catch (const std::exception &e) {
+            } catch (const std::system_error &e) {
                 std::cerr << e.what() << std::endl;
             }
 

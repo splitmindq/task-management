@@ -21,7 +21,7 @@ private:
 
 public:
 
-    UserManager(const std::string& connStr);
+    explicit UserManager(const std::string& connStr);
     ~UserManager() = default;
 
     void createUser();
