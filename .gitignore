@@ -16,3 +16,5 @@
 /sqlite-amalgamation-3460100/
 # Ignore dependency directories
 /vcpkg/
+/db/
+/.idea/

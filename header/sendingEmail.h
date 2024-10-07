@@ -22,7 +22,7 @@
 #include "User.h"
 #include "UserManager.h"
 #include "EmailSender.h"
-#include "sqlite/sqlite3.h"
+#include "pqxx/pqxx"
 
 //-------------------------------------------------------------------------------------
 

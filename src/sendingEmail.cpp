@@ -2,25 +2,53 @@
 
 User::User(int id, const std::string& email) : id(id), email(std::make_unique<std::string>(email)) { }
 
-void UserManager::deleteAllUsers() {
-    users.clear();
+
+
+UserManager::UserManager(const std::string& connStr) : connectionString(connStr) {
+    loadUsers();
+}
+void UserManager::loadUsers() {
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        pqxx::result R = W.exec("SELECT id, email FROM users");
+
+        for (const auto& row : R) {
+            int id = row[0].as<int>();
+            std::string email = row[1].as<std::string>();
+            auto user = std::make_unique<User>(id, email);
+            users.push_back(std::move(user));
+            nextId = max(nextId, id + 1);
+        }
+
+        W.commit();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
-UserManager::UserManager() = default;
-
-
+void UserManager::saveUser(const User& user) {
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        W.exec("INSERT INTO users (email) VALUES (" + W.quote(*(user.email)) + ")");
+        W.commit();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
 
 void UserManager::createUser() {
-   
-
-   std::string emailInput;
-   std::cout << "Введите вашу почту: ";
-   std::cin >> emailInput;
-   auto newUser = std::make_unique<User>(nextId, emailInput);
-   ++nextId;
-   users.push_back(std::move(newUser));
-   std::cout << "Создан пользователь с ID: " << users.back()->id << std::endl;
+    std::string emailInput;
+    std::cout << "Введите вашу почту: ";
+    std::cin >> emailInput;
+    auto newUser = std::make_unique<User>(nextId, emailInput);
+    saveUser(*newUser);
+    ++nextId;
+    users.push_back(std::move(newUser));
+    std::cout << "Создан пользователь с ID: " << users.back()->id << std::endl;
 }
+
 
 
 void UserManager::readUsers() const {
@@ -36,37 +64,59 @@ void UserManager::readUsers() const {
 }
 
 void UserManager::updateUser() {
-   int id;
-   std::cout << "Введите ID пользователя ";
-   std::cin >> id;
+    int id;
+    std::cout << "Введите ID пользователя ";
+    std::cin >> id;
 
-   User* user = findUserById(id);
-   if (user) {
-       std::string newEmail;
-       std::cout << "Enter new email: ";
-       std::cin >> newEmail;
+    User* user = findUserById(id);
+    if (user) {
+        std::string newEmail;
+        std::cout << "Введите новый email: ";
+        std::cin >> newEmail;
 
-       user->email = std::make_unique<std::string>(newEmail);
-       std::cout << "Пользователь с ID: " << id << " обновлен." << std::endl;
-   } else {
-       std::cout << "Пользователь с ID: " << id << " не найден." << std::endl;
-   }
+        user->email = std::make_unique<std::string>(newEmail);
+
+        try {
+            pqxx::connection C(connectionString);
+            pqxx::work W(C);
+            W.exec("UPDATE users SET email = " + W.quote(newEmail) + " WHERE id = " + std::to_string(id));
+            W.commit();
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
+        }
+
+        std::cout << "Пользователь с ID: " << id << " обновлен." << std::endl;
+    } else {
+        std::cout << "Пользователь с ID: " << id << " не найден." << std::endl;
+    }
 }
+
 
 void UserManager::deleteUser() {
-   int id;
-   std::cout << "Введите ID пользователя для удаления: ";
-   std::cin >> id;
+    int id;
+    std::cout << "Введите ID пользователя для удаления: ";
+    std::cin >> id;
 
-   for (auto it = users.begin(); it != users.end(); ++it) {
-       if ((*it)->id == id) {
-           std::cout << "Пользователь с ID " << id << " с почтой " << *((*it)->email) << " удалён." << std::endl;
-           users.erase(it);
-           return;
-       }
-   }
-   std::cout << "Пользователь с ID " << id << " не найден." << std::endl;
+    for (auto it = users.begin(); it != users.end(); ++it) {
+        if ((*it)->id == id) {
+            std::cout << "Пользователь с ID " << id << " с почтой " << *((*it)->email) << " удалён." << std::endl;
+
+            try {
+                pqxx::connection C(connectionString);
+                pqxx::work W(C);
+                W.exec("DELETE FROM users WHERE id = " + std::to_string(id));
+                W.commit();
+            } catch (const std::exception &e) {
+                std::cerr << e.what() << std::endl;
+            }
+
+            users.erase(it);
+            return;
+        }
+    }
+    std::cout << "Пользователь с ID " << id << " не найден." << std::endl;
 }
+
 
 User* UserManager::findUserById(int id) {
    for (const auto& user : users) {

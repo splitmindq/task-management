@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.26)
 project(task_management)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_TOOLCHAIN_FILE "C:/Users/mzitr/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 find_package(CURL REQUIRED)
+find_package(libpqxx CONFIG REQUIRED)
+
+link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
 
 # Явно указываем исходные файлы
 set(SOURCES
@@ -18,8 +23,6 @@ set(SOURCES
 
         #--------------------
 
-        include/sqlite/sqlite3.c
-        include/sqlite/sqlite3.h
 
 )
 
@@ -27,7 +30,8 @@ set(SOURCES
 add_executable(task_management ${SOURCES})
 
 # Подключаем библиотеку CURL
-target_link_libraries(task_management CURL::libcurl)
+target_link_libraries(task_management CURL::libcurl pqxx)
+
 
 # Указываем директории
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/header")
