@@ -13,14 +13,15 @@ class UserManager {
 private:
     std::vector<std::unique_ptr<User>> users;
     int nextId = 1;
-    std::string connectionString; // Строка подключения к базе данных
+    std::string connectionString;
 
-    void loadUsers(); // Загружает пользователей из базы данных
-    void saveUser(const User& user); // Сохраняет пользователя в базе данных
+    void loadUsers();
+    void saveUser(const User& user);
 
 
 public:
-    UserManager(const std::string& connStr); // Конструктор с параметром
+
+    UserManager(const std::string& connStr);
     ~UserManager() = default;
 
     void createUser();

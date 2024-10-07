@@ -14,6 +14,11 @@ public:
     std::unique_ptr<std::string> email;
 
     User(int id, const std::string& email);
+
+    bool operator==(int otherId) const {
+        return this->id == otherId;
+    }
+
     ~User() = default;
 };
 

@@ -120,7 +120,7 @@ void UserManager::deleteUser() {
 
 User* UserManager::findUserById(int id) {
    for (const auto& user : users) {
-       if (user->id == id) {
+       if (*user == id) {
            return user.get();
        }
    }
