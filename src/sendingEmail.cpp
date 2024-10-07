@@ -101,7 +101,7 @@ void UserManager::deleteUser() {
             try {
                 pqxx::connection C(connectionString);
                 pqxx::work W(C);
-                W.exec(std::format("DELETE FROM users WHERE id = ", std::to_string(id)));
+                W.exec(std::format("DELETE FROM users WHERE id = {}", std::to_string(id)));
                 W.commit();
             } catch (const std::system_error &e) {
                 std::cerr << e.what() << std::endl;
@@ -123,30 +123,6 @@ User *UserManager::findUserById(int id) {
     }
     return nullptr;
 }
-
-//size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *uploadCtx) {
-//   const char *data;
-//
-//   if ((size == 0) || (nmemb == 0) || ((size * nmemb) < 1)) {
-//       return 0;
-//   }
-//
-//   data = uploadCtx->payloadText[uploadCtx->linesRead];
-//
-//   if (data != nullptr) {
-//       size_t len = strlen(data);
-//       if (len > 0) {
-//           memcpy(ptr, data, len);
-//           uploadCtx->linesRead++;
-//           return len;
-//       }
-//   }
-//   return 0;
-//}
-//
-/**
-Doesn't work with msvs but work with MINGW
- */
 
 size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *userp) {
     const char *data;
