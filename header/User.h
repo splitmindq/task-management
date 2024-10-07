@@ -19,6 +19,21 @@ public:
         return this->id == otherId;
     }
 
+    friend std::ostream& operator<<(std::ostream& os, const User& user){
+        os << "ID: "<<user.id<<", Email:"<<*(user.email);
+        return os;
+    }
+
+    friend std::istream& operator>>(std::istream& is, User& user){
+
+        std::cout<<"Введите email: ";
+        std::string emailInput;
+        is>> emailInput;
+        user.email = std::make_unique<std::string>(emailInput);
+        return is;
+
+    }
+
     ~User() = default;
 };
 
