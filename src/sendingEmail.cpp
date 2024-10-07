@@ -13,12 +13,16 @@ void UserManager::loadUsers() {
         pqxx::work W(C);
         pqxx::result R = W.exec("SELECT id, email FROM users");
 
-        for (const auto& row : R) {
-            int id = row[0].as<int>();
-            std::string email = row[1].as<std::string>();
-            auto user = std::make_unique<User>(id, email);
-            users.push_back(std::move(user));
-            nextId = max(nextId, id + 1);
+        if (R.empty()) {
+            nextId = 1;
+        } else {
+            for (const auto& row : R) {
+                int id = row[0].as<int>();
+                std::string email = row[1].as<std::string>();
+                auto user = std::make_unique<User>(id, email);
+                users.push_back(std::move(user));
+                nextId = max(nextId, id + 1);
+            }
         }
 
         W.commit();
@@ -115,6 +119,7 @@ void UserManager::deleteUser() {
         }
     }
     std::cout << "Пользователь с ID " << id << " не найден." << std::endl;
+
 }
 
 
@@ -127,24 +132,40 @@ User* UserManager::findUserById(int id) {
    return nullptr;
 }
 
-size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *uploadCtx) {
-   const char *data;
+//size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *uploadCtx) {
+//   const char *data;
+//
+//   if ((size == 0) || (nmemb == 0) || ((size * nmemb) < 1)) {
+//       return 0;
+//   }
+//
+//   data = uploadCtx->payloadText[uploadCtx->linesRead];
+//
+//   if (data != nullptr) {
+//       size_t len = strlen(data);
+//       if (len > 0) {
+//           memcpy(ptr, data, len);
+//           uploadCtx->linesRead++;
+//           return len;
+//       }
+//   }
+//   return 0;
+//}
+// exception in msvs
 
-   if ((size == 0) || (nmemb == 0) || ((size * nmemb) < 1)) {
-       return 0;
-   }
-
-   data = uploadCtx->payloadText[uploadCtx->linesRead];
-
-   if (data != nullptr) {
-       size_t len = strlen(data);
-       if (len > 0) {
-           memcpy(ptr, data, len);
-           uploadCtx->linesRead++;
-           return len;
-       }
-   }
-   return 0;
+size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *userp) {
+    const char *data;
+    if (userp->linesRead >= userp->payloadText.size()) {
+        return 0;
+    }
+    data = userp->payloadText[userp->linesRead];
+    if (data) {
+        size_t len = strlen(data);
+        memcpy(ptr, data, len);
+        userp->linesRead++;
+        return len;
+    }
+    return 0;
 }
 
 EmailSender::EmailSender(const std::string &from, const std::string &smtpUrl,
@@ -162,12 +183,13 @@ EmailSender::~EmailSender() {
 void EmailSender::sendEmail(const std::string &to, const std::string &subject, const std::string &message) {
    UploadStatus uploadCtx = {0};
 
-   std::string toHeader = "To: " + to + "\r\n";
-   std::string fromHeader = "From: " + from + "\r\n";
-   std::string subjectHeader = "Subject: " + subject + "\r\n";
-   std::string messageBody = message + "\r\n";
+    std::string toHeader = "To: " + to + "\r\n";
+    std::string fromHeader = "From: " + from + "\r\n";
+    std::string subjectHeader = "Subject: " + subject + "\r\n";
+    std::string messageBody = message + "\r\n";
 
-   uploadCtx.payloadText = {toHeader.c_str(), fromHeader.c_str(), subjectHeader.c_str(), "\r\n", messageBody.c_str()};
+    uploadCtx.payloadText = {toHeader.c_str(), fromHeader.c_str(), subjectHeader.c_str(), "\r\n", messageBody.c_str()};
+
 
    curl_easy_setopt(curl, CURLOPT_USERNAME, username.c_str());
    curl_easy_setopt(curl, CURLOPT_PASSWORD, password.c_str());
