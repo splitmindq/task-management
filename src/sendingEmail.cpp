@@ -125,6 +125,9 @@ User *UserManager::findUserById(int id) {
 }
 
 size_t safe_strlen(const char* str) {
+    char dest[256];
+    strncpy_s(dest, str, sizeof dest);
+    dest[sizeof dest - 1] = 0;
     return str ? strlen(str) : 0;
 }
 
