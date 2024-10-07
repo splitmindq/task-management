@@ -125,12 +125,16 @@ User *UserManager::findUserById(int id) {
 }
 
 size_t safe_strlen(const char* str) {
-    char dest[256];
-    strncpy_s(dest, str, sizeof dest);
-    dest[sizeof dest - 1] = 0;
-    return str ? strlen(str) : 0;
-}
+    if (str == nullptr) {
+        return 0;
+    }
 
+    char dest[256];
+    std::strncpy(dest, str, sizeof(dest) - 1);
+    dest[sizeof(dest) - 1] = '\0';
+
+    return std::strlen(dest);
+}
 size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *userp) {
     const char *data;
     if (userp->linesRead >= userp->payloadText.size()) {
