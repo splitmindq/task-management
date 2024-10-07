@@ -6,7 +6,8 @@ int main() {
     std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
     UserManager userManager(connectionString);
 
-    EmailSender emailSender("<emailsender11@mail.ru>", "smtp://smtp.mail.ru:587",
+
+    EmailSender emailSender("<emailsender11@mail.ru>", "smtps://smtp.mail.ru:465",
                             "emailsender11@mail.ru", "2bcQFBxtjmwUWdP7jxpT", "Kge6zBXU5SFsMnNsSkfk");
 
 

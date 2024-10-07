@@ -124,6 +124,10 @@ User *UserManager::findUserById(int id) {
     return nullptr;
 }
 
+size_t safe_strlen(const char* str) {
+    return str ? strlen(str) : 0;
+}
+
 size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *userp) {
     const char *data;
     if (userp->linesRead >= userp->payloadText.size()) {
@@ -131,7 +135,7 @@ size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadSt
     }
     data = userp->payloadText[userp->linesRead];
     if (data) {
-        size_t len = strlen(data);
+        size_t len = safe_strlen(data);
         memcpy(ptr, data, len);
         userp->linesRead++;
         return len;
