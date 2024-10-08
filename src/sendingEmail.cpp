@@ -134,7 +134,7 @@ size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadSt
     }
     data = userp->payloadText[userp->linesRead];
     if (data) {
-        size_t len = strlen(data);
+        size_t len = safe_strlen(data);
         memcpy(ptr, data, len);
         userp->linesRead++;
         return len;
