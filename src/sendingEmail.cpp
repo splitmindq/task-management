@@ -1,6 +1,6 @@
 #include "sendingEmail.h"
 
-User::User(int id, const std::string& email) : id(id), email(std::make_unique<std::string>(email)) { }
+User::User(int id, const std::string& email) : id(id), email(email) { }
 
 UserManager::UserManager(const std::string& connStr) : connectionString(connStr) {
     loadUsers();
@@ -34,7 +34,7 @@ void UserManager::saveUser(const User& user) {
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
-        W.exec("INSERT INTO users (email) VALUES (" + W.quote(*(user.email)) + ")");
+        W.exec("INSERT INTO users (email) VALUES (" + W.quote(user.email) + ")");
         W.commit();
     } catch (const std::system_error &e) {
         std::cerr << e.what() << std::endl;
@@ -45,7 +45,7 @@ void UserManager::createUser() {
     User newUser(nextId,"");
     std::cin>>newUser;
     saveUser(newUser);
-    users.push_back(std::make_unique<User>(newUser.id,*newUser.email));
+    users.push_back(std::make_unique<User>(newUser.id,newUser.email));
     std::cout << "Создан пользователь: " << newUser << std::endl;
 }
 
@@ -72,7 +72,7 @@ void UserManager::updateUser() {
         std::cout << "Введите новый email: ";
         std::cin >> newEmail;
 
-        user->email = std::make_unique<std::string>(newEmail);
+       user->email = newEmail;
 
         try {
             pqxx::connection C(connectionString);
@@ -96,7 +96,7 @@ void UserManager::deleteUser() {
 
     for (auto it = users.begin(); it != users.end(); ++it) {
         if ((*it)->id == id) {
-            std::cout << "Пользователь с ID " << id << " с почтой " << *((*it)->email) << " удалён." << std::endl;
+            std::cout << "Пользователь с ID " << id << " с почтой " <<(*it)->email << " удалён." << std::endl;
 
             try {
                 pqxx::connection C(connectionString);
@@ -219,8 +219,8 @@ void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSe
             std::cout << "Введите ID пользователя: ";
             std::cin >> userId;
             if (const User *user = userManager.findUserById(userId)) {
-                emailSender.sendEmail(*(user->email), "Тема: лабораторная 1", "Я обожаю sonar!!");
-                std::cout << "Письмо отправлено: " << *(user->email) << std::endl;
+                emailSender.sendEmail(user->email, "Тема: лабораторная 1", "Я обожаю sonar!!");
+                std::cout << "Письмо отправлено: " << user->email << std::endl;
             } else {
                 std::cout << "Пользователь не найден." << std::endl;
             }

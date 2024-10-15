@@ -11,7 +11,7 @@
 class User {
 public:
     int id;
-    std::unique_ptr<std::string> email;
+    std::string email;
 
     User(int id, const std::string& email);
 
@@ -20,7 +20,7 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const User& user){
-        os << "ID: "<<user.id<<", Email:"<<*(user.email);
+        os << "ID: "<<user.id<<", Email:"<<user.email;
         return os;
     }
 
@@ -29,7 +29,7 @@ public:
         std::cout<<"Введите email: ";
         std::string emailInput;
         is>> emailInput;
-        user.email = std::make_unique<std::string>(emailInput);
+        user.email = emailInput;
         return is;
 
     }
