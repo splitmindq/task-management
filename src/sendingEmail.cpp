@@ -1,7 +1,7 @@
 #include "sendingEmail.h"
 
 User::User(int id, const std::string& email, const std::string& username, const std::string& password, const std::string& name, const std::string& surname)
-        : id(id), email(email), username(username), password(password), name(name), surname(surname), role("user"), companyId(-1) { }
+        : id(id), email(email), username(username), password(password), name(name), surname(surname){ }
 
 UserManager::UserManager(const std::string& connStr) : connectionString(connStr) {
     loadUsers();
@@ -13,7 +13,6 @@ void UserManager::loadUsers() {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
 
-        // Обновлённый SQL-запрос для выборки всех необходимых полей
         pqxx::result R = W.exec("SELECT id, email, username, password, name, surname, role, companyId FROM users");
 
         if (R.empty()) {
@@ -29,10 +28,9 @@ void UserManager::loadUsers() {
                 std::string role = row[6].as<std::string>();
                 int companyId = row[7].as<int>();
 
-                // Создаём объект User с полным набором данных
                 auto user = std::make_unique<User>(id, email, username, password, name, surname);
-                user->role = role; // Устанавливаем роль
-                user->companyId = companyId; // Устанавливаем companyId
+                user->role = role;
+                user->companyId = companyId;
 
                 users.push_back(std::move(user));
                 nextId = max(nextId, id + 1);
@@ -50,16 +48,9 @@ void UserManager::saveUser(const User& user) {
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
-        W.exec("INSERT INTO users (id, email, username, password, name, surname, role, companyId) VALUES (" +
-               std::to_string(user.id) + ", " +
-               W.quote(user.email) + ", " +
-               W.quote(user.username) + ", " +
-               W.quote(user.password) + ", " +
-               W.quote(user.name) + ", " +
-               W.quote(user.surname) + ", " +
-               W.quote(user.role) + ", " +
-               std::to_string(user.companyId) +
-               ")");
+        W.exec(std::format("INSERT INTO users (id, email, username, password, name, surname, role, companyId) VALUES ({}, '{}', '{}', '{}', '{}', '{}', '{}', {})",
+        user.id,user.email,user.username,user.password,user.name,user.surname,user.role,user.companyId
+        ));
 
         W.commit();
     } catch (const std::system_error &e) {

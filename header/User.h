@@ -16,10 +16,13 @@ public:
     std::string password;
     std::string name;
     std::string surname;
-    std::string role; // Например, "user", "admin"
-    int companyId; // -1 если не принадлежит компании
+    std::string role = "user"; // Например, "user", "admin"
+    int companyId = -1; // -1 если не принадлежит компании
 
-    User(int id, const std::string& email, const std::string& username, const std::string& password, const std::string& name, const std::string& surname);
+    User(int id, const std::string& email, const std::string& username,
+         const std::string& password, const std::string& name,
+         const std::string& surname);
+
 
     bool operator==(int otherId) const {
         return this->id == otherId;
