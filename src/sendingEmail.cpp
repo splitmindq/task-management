@@ -1,16 +1,20 @@
 #include "sendingEmail.h"
 
-User::User(int id, const std::string& email) : id(id), email(email) { }
+User::User(int id, const std::string& email, const std::string& username, const std::string& password, const std::string& name, const std::string& surname)
+        : id(id), email(email), username(username), password(password), name(name), surname(surname), role("user"), companyId(-1) { }
 
 UserManager::UserManager(const std::string& connStr) : connectionString(connStr) {
     loadUsers();
 }
 
 void UserManager::loadUsers() {
+
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
-        pqxx::result R = W.exec("SELECT id, email FROM users");
+
+        // Обновлённый SQL-запрос для выборки всех необходимых полей
+        pqxx::result R = W.exec("SELECT id, email, username, password, name, surname, role, companyId FROM users");
 
         if (R.empty()) {
             nextId = 1;
@@ -18,7 +22,18 @@ void UserManager::loadUsers() {
             for (const auto& row: R) {
                 int id = row[0].as<int>();
                 std::string email = row[1].as<std::string>();
-                auto user = std::make_unique<User>(id, email);
+                std::string username = row[2].as<std::string>();
+                std::string password = row[3].as<std::string>();
+                std::string name = row[4].as<std::string>();
+                std::string surname = row[5].as<std::string>();
+                std::string role = row[6].as<std::string>();
+                int companyId = row[7].as<int>();
+
+                // Создаём объект User с полным набором данных
+                auto user = std::make_unique<User>(id, email, username, password, name, surname);
+                user->role = role; // Устанавливаем роль
+                user->companyId = companyId; // Устанавливаем companyId
+
                 users.push_back(std::move(user));
                 nextId = max(nextId, id + 1);
             }
@@ -31,21 +46,38 @@ void UserManager::loadUsers() {
 }
 
 void UserManager::saveUser(const User& user) {
+
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
-        W.exec("INSERT INTO users (email) VALUES (" + W.quote(user.email) + ")");
+        W.exec("INSERT INTO users (id, email, username, password, name, surname, role, companyId) VALUES (" +
+               std::to_string(user.id) + ", " +
+               W.quote(user.email) + ", " +
+               W.quote(user.username) + ", " +
+               W.quote(user.password) + ", " +
+               W.quote(user.name) + ", " +
+               W.quote(user.surname) + ", " +
+               W.quote(user.role) + ", " +
+               std::to_string(user.companyId) +
+               ")");
+
         W.commit();
     } catch (const std::system_error &e) {
         std::cerr << e.what() << std::endl;
     }
 }
-
 void UserManager::createUser() {
-    User newUser(nextId,"");
+    User newUser(nextId, "", "", "", "", "");
     std::cin>>newUser;
     saveUser(newUser);
-    users.push_back(std::make_unique<User>(newUser.id,newUser.email));
+    users.push_back(std::make_unique<User>(
+            newUser.id,
+            newUser.email,
+            newUser.username,
+            newUser.password,
+            newUser.name,
+            newUser.surname
+    ));
     std::cout << "Создан пользователь: " << newUser << std::endl;
 }
 
@@ -201,7 +233,7 @@ void displayMenu() {
 
 void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSender) {
     switch (choice) {
-        setlocale(LC_ALL, "RUS");
+        setlocale(LC_ALL, "Rus");
         case 1:
             userManager.createUser();
             break;
