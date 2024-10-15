@@ -106,7 +106,6 @@ void UserManager::deleteUser() {
             } catch (const std::system_error &e) {
                 std::cerr << e.what() << std::endl;
             }
-
             users.erase(it);
             return;
         }
@@ -114,7 +113,6 @@ void UserManager::deleteUser() {
     std::cout << "Пользователь с ID " << id << " не найден." << std::endl;
 
 }
-
 User *UserManager::findUserById(int id) {
     for (const auto &user: users) {
         if (*user == id) {
@@ -127,6 +125,7 @@ User *UserManager::findUserById(int id) {
 size_t safe_strlen(const char* str) {
     return str ? strlen(str) : 0;
 }
+
 size_t EmailSender::payloadSource(char *ptr, size_t size, size_t nmemb, UploadStatus *userp) {
     const char *data;
     if (userp->linesRead >= userp->payloadText.size()) {

@@ -29,6 +29,8 @@ public:
     void updateUser();
     void deleteUser();
     User* findUserById(int id);
+
+    UserManager();
 };
 
 #endif // LABS_USER_MANAGER_H
