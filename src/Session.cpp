@@ -42,7 +42,6 @@ void Session::sessionMenu() const {
             case 6:
                 std::cout << "Завершение работы...\n";
                 exit(0); // Завершение программы
-            case 7:
 
             default:
                 std::cout << "Неверный ввод. Попробуйте снова.\n";

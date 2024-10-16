@@ -10,7 +10,7 @@ private:
     User user;
 
 public:
-    Session(const User &user) : user(user) {}
+    explicit Session(const User &user) : user(user) {}
     void sessionMenu() const;
 };
 
