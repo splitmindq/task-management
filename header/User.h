@@ -34,20 +34,6 @@ public:
         return os;
     }
 
-    friend std::istream& operator>>(std::istream& is, User& user) {
-        std::cout << "Введите email: ";
-        is >> user.email;
-        std::cout << "Введите имя: ";
-        is >> user.name;
-        std::cout << "Введите фамилию: ";
-        is >> user.surname;
-        std::cout << "Введите логин: ";
-        is >> user.username;
-        std::cout << "Введите пароль: ";
-        is >> user.password;
-        return is;
-    }
-
 
     ~User() = default;
 };

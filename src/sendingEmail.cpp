@@ -7,6 +7,24 @@ UserManager::UserManager(const std::string& connStr) : connectionString(connStr)
     loadUsers();
 }
 
+bool UserManager::isUsernameTaken(const std::string& username){
+
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        pqxx::result R = W.exec("SELECT COUNT(*) FROM users WHERE username = " + W.quote(username));
+        return R[0][0].as<int>() > 0;
+    }
+    catch (const std::system_error &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+}
+
+
+
+
+
 void UserManager::loadUsers() {
 
     try {
@@ -58,8 +76,31 @@ void UserManager::saveUser(const User& user) {
     }
 }
 void UserManager::createUser() {
-    User newUser(nextId, "", "", "", "", "");
-    std::cin>>newUser;
+    std::string username;
+
+    do{
+
+        std::cout<<"Введите логин: ";
+        std::cin>>username;
+
+        if(isUsernameTaken(username)){
+            std::cout << "Этот логин уже занят. Пожалуйста, выберите другой." << std::endl;
+        }
+
+
+    } while (isUsernameTaken(username));
+
+    std::string email, password, name, surname;
+    std::cout << "Введите email: ";
+    std::cin >> email;
+    std::cout << "Введите пароль: ";
+    std::cin >> password;
+    std::cout << "Введите имя: ";
+    std::cin >> name;
+    std::cout << "Введите фамилию: ";
+    std::cin >> surname;
+
+    User newUser(nextId, email, username, password, name, surname);
     saveUser(newUser);
     users.push_back(std::make_unique<User>(
             newUser.id,
@@ -70,7 +111,11 @@ void UserManager::createUser() {
             newUser.surname
     ));
     std::cout << "Создан пользователь: " << newUser << std::endl;
+
 }
+
+
+
 
 void UserManager::readUsers() const {
     if (users.empty()) {

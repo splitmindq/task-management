@@ -17,6 +17,7 @@ private:
 
     void loadUsers();
     void saveUser(const User& user);
+    bool isUsernameTaken(const std::string& username);
 
 
 public:
