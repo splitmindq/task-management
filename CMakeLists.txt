@@ -6,6 +6,7 @@ set(CMAKE_TOOLCHAIN_FILE "C:/Users/mzitr/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
+#find_package(curlcpp CONFIG REQUIRED)
 
 link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
 
@@ -32,6 +33,7 @@ add_executable(task_management ${SOURCES})
 
 # Подключаем библиотеку CURL
 target_link_libraries(task_management CURL::libcurl pqxx)
+#target_link_libraries(task_management PRIVATE curlcpp::curlcpp)
 
 
 # Указываем директории

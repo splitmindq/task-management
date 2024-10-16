@@ -379,7 +379,7 @@ void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSe
             std::cout << "Введите ID пользователя: ";
             std::cin >> userId;
             if (const User *user = userManager.findUserById(userId)) {
-                emailSender.sendEmail(user->email, "Тема: лабораторная 1", "Я обожаю sonar!!");
+                emailSender.sendEmail(user->email, "Тема: лабораторная 1", "Я ненавижу sonar!!");
                 std::cout << "Письмо отправлено: " << user->email << std::endl;
             } else {
                 std::cout << "Пользователь не найден." << std::endl;
