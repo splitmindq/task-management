@@ -34,6 +34,8 @@ public:
         return os;
     }
 
+    int getId() const { return id; }
+    std::string getRole() const { return role; }
 
     ~User() = default;
 };

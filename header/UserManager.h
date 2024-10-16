@@ -8,17 +8,22 @@
 #include <vector>
 #include <memory>
 #include "User.h"
+#include "Session.h"
 
 class UserManager {
 private:
     std::vector<std::unique_ptr<User>> users;
     int nextId = 1;
     std::string connectionString;
+    std::unique_ptr<Session> currentSession;
+
+
 
     void loadUsers();
     void saveUser(const User& user);
     bool isUsernameTaken(const std::string& username);
-
+    std::string getRole(const std::string& username);
+    int getId(const std::string& username);
 
 public:
 

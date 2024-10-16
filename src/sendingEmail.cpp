@@ -22,9 +22,6 @@ bool UserManager::isUsernameTaken(const std::string& username){
 }
 
 
-
-
-
 void UserManager::loadUsers() {
 
     try {
@@ -136,6 +133,53 @@ bool UserManager::login(const std::string &username, const std::string& password
 
     }
 
+int UserManager::getId(const std::string& username){
+
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        pqxx::result R = W.exec("SELECT id FROM users WHERE username = " + W.quote(username));
+
+        if (R.size() == 1) {
+            return R[0][0].as<int>();
+        } else {
+            return -1;
+        }
+    }
+    catch(const std::system_error& e){
+        std::cerr<<e.what()<<std::endl;
+        return -1;
+
+    }
+
+}
+
+std::string UserManager::getRole(const std::string& username) {
+
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        pqxx::result R = W.exec("SELECT role FROM users WHERE username = " + W.quote(username));
+
+        if (!R.empty()) {
+            return R[0][0].as<std::string>();
+        } else {
+            return "";
+        }
+    }
+    catch(const std::system_error& e){
+        std::cerr<<e.what()<<std::endl;
+        return "";
+
+    }
+
+
+    }
+
+
+
 void UserManager::authenticate() {
     std::string username;
     std::cout<<"Введите логин: ";
@@ -146,6 +190,16 @@ void UserManager::authenticate() {
 
     if (login(username, password)) {
         std::cout << "Авторизация прошла успешно!" << std::endl;
+        int userId = getId(username);
+        std::string role = getRole(username);
+        bool isAdmin;
+        if(role == "user"){
+            isAdmin = true;
+        }
+
+        currentSession = std::make_unique<Session>(userId,username,isAdmin);
+        currentSession->displayInfo();
+
     } else {
         std::cout << "Неверный логин или пароль." << std::endl;
     }

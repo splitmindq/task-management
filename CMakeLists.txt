@@ -13,13 +13,14 @@ link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
 set(SOURCES
         src/main.cpp
         src/sendingEmail.cpp
-
+        src/Session.cpp
         #-------------------
 
         header/User.h
         header/UserManager.h
         header/EmailSender.h
         header/sendingEmail.h
+        header/Session.h
 
         #--------------------
 

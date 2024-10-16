@@ -1,6 +1,7 @@
 #include "sendingEmail.h"
-
+#include "Session.h"
 int main() {
+
     SetConsoleOutputCP(CP_UTF8);
 
     std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";

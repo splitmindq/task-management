@@ -9,6 +9,7 @@
 #include <array>
 #include <curl/curl.h>
 #include "sendingEmail.h"
+#include "Session.h"
 class EmailSender {
 private:
     std::string from;
