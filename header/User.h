@@ -1,10 +1,7 @@
-//
-// Created by mzitr on 16.09.2024.
-//
-
 #ifndef LABS_USER_H
 #define LABS_USER_H
 
+#include <iostream>
 #include <memory>
 #include <string>
 
@@ -22,7 +19,6 @@ public:
     User(int id, const std::string& email, const std::string& username,
          const std::string& password, const std::string& name,
          const std::string& surname);
-
 
     bool operator==(int otherId) const {
         return this->id == otherId;

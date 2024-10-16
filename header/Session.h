@@ -1,25 +1,17 @@
-//
-// Created by mzitr on 16.10.2024.
-//
-
+// Session.h
 #ifndef TASK_MANAGEMENT_SESSION_H
 #define TASK_MANAGEMENT_SESSION_H
-#include <iostream>
 
-class Session{
+#include <iostream>
+#include "User.h"
+
+class Session {
+private:
+    User user;
 
 public:
-    int userId;
-    std::string username;
-    bool isAdmin;
-
-
-    Session(int id, const std::string& user, bool admin)
-            : userId(id), username(user), isAdmin(admin) {}
-
-    void displayInfo() const;
+    Session(const User &user) : user(user) {}
+    void sessionMenu() const;
 };
-
-
 
 #endif //TASK_MANAGEMENT_SESSION_H

@@ -17,9 +17,8 @@ private:
     std::string connectionString;
     std::unique_ptr<Session> currentSession;
 
-
-
     void loadUsers();
+    void loadUser(const std::string& username);
     void saveUser(const User& user);
     bool isUsernameTaken(const std::string& username);
     std::string getRole(const std::string& username);

@@ -12,9 +12,13 @@ link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
 
 # Явно указываем исходные файлы
 set(SOURCES
+
         src/main.cpp
         src/sendingEmail.cpp
         src/Session.cpp
+        src/UserManager.cpp
+        src/User.cpp
+
         #-------------------
 
         header/User.h
