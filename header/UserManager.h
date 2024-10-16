@@ -30,7 +30,8 @@ public:
     void updateUser();
     void deleteUser();
     User* findUserById(int id);
-
+    bool login(const std::string& username, const std::string& password);
+    void authenticate();
     UserManager();
 };
 

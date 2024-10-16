@@ -90,13 +90,16 @@ void UserManager::createUser() {
 
     } while (isUsernameTaken(username));
 
-    std::string email, password, name, surname;
+    std::string email;
     std::cout << "Введите email: ";
     std::cin >> email;
+    std::string password;
     std::cout << "Введите пароль: ";
     std::cin >> password;
+    std::string name;
     std::cout << "Введите имя: ";
     std::cin >> name;
+    std::string surname;
     std::cout << "Введите фамилию: ";
     std::cin >> surname;
 
@@ -114,7 +117,41 @@ void UserManager::createUser() {
 
 }
 
+bool UserManager::login(const std::string &username, const std::string& password) {
 
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        pqxx::result R = W.exec(
+                "SELECT COUNT(*) FROM users WHERE username = " + W.quote(username) + " AND password = " +
+                W.quote(password));
+
+        return R[0][0].as<int>() > 0;
+    }
+    catch (const std::system_error &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+
+    }
+
+void UserManager::authenticate() {
+    std::string username;
+    std::cout<<"Введите логин: ";
+    std::cin>>username;
+    std::string password;
+    std::cout<<"Введите пароль: ";
+    std::cin>>password;
+
+    if (login(username, password)) {
+        std::cout << "Авторизация прошла успешно!" << std::endl;
+    } else {
+        std::cout << "Неверный логин или пароль." << std::endl;
+    }
+
+
+}
 
 
 void UserManager::readUsers() const {
@@ -264,7 +301,8 @@ void displayMenu() {
     std::cout << "3. Обновить пользователей\n";
     std::cout << "4. Удалить пользователя\n";
     std::cout << "5. Отправить письмо на почту\n";
-    std::cout << "6. Выход\n";
+    std::cout << "6. Авторизация\n";
+    std::cout<<"7. Выход\n";
 }
 
 void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSender) {
@@ -293,8 +331,14 @@ void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSe
                 std::cout << "Пользователь не найден." << std::endl;
             }
             break;
+
         case 6:
+            userManager.authenticate();
+            break;
+
+        case 7:
             exit(0);
+
         default:
             std::cout << "Неверный выбор." << std::endl;
     }
