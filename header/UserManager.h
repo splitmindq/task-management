@@ -30,7 +30,7 @@ public:
     ~UserManager() = default;
 
     void createUser();
-    void readUsers() const;
+    void readUsers();
     void updateUser();
     void deleteUser();
     User* findUserById(int id);

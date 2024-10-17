@@ -3,14 +3,12 @@
 //
 #include <iostream>
 #include "UserManager.h"
-#include <vector>
 #include <string>
 #include <memory>
 #include <array>
-#include <cstring>
 #include <locale>
 #include "pqxx/pqxx"
-#include "algorithm"
+
 
 UserManager::UserManager(const std::string &connStr) : connectionString(connStr) {
 //    loadUsers();
@@ -275,7 +273,8 @@ void UserManager::authenticate() {
 
 }
 
-void UserManager::readUsers() const {
+void UserManager::readUsers()  {
+    loadUsers();
     if (users.empty()) {
         std::cout << "Нету такого студента" << std::endl;
         return;

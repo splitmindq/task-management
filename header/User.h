@@ -4,8 +4,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
-
-class User {
+#include "Person.h"
+class User: public Person{
 public:
     int id;
     std::string email;
@@ -15,6 +15,10 @@ public:
     std::string surname;
     std::string role = "user"; // Например, "user", "admin"
     int companyId = -1; // -1 если не принадлежит компании
+
+    void displayInfo() const override {
+        std::cout << "Пользователь: " << username << ", Email: " << email << std::endl;
+    }
 
     User(int id, const std::string& email, const std::string& username,
          const std::string& password, const std::string& name,

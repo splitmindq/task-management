@@ -6,7 +6,7 @@ set(CMAKE_TOOLCHAIN_FILE "C:/Users/mzitr/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
-#find_package(curlcpp CONFIG REQUIRED)
+
 
 link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
 
@@ -18,7 +18,6 @@ set(SOURCES
         src/Session.cpp
         src/UserManager.cpp
         src/User.cpp
-
         #-------------------
 
         header/User.h
@@ -26,6 +25,7 @@ set(SOURCES
         header/EmailSender.h
         header/sendingEmail.h
         header/Session.h
+        header/Person.h
 
         #--------------------
 
