@@ -1,8 +1,0 @@
-//
-// Created by mzitr on 17.10.2024.
-//
-
-#ifndef TASK_MANAGEMENT_ACCOUNTABLE_H
-#define TASK_MANAGEMENT_ACCOUNTABLE_H
-
-#endif //TASK_MANAGEMENT_ACCOUNTABLE_H

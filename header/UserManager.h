@@ -9,7 +9,7 @@
 #include <memory>
 #include "User.h"
 #include "Session.h"
-
+#include <pqxx/pqxx>
 class UserManager {
 private:
     std::vector<std::unique_ptr<User>> users;
@@ -25,8 +25,8 @@ private:
     int getId(const std::string& username);
 
 public:
-
     explicit UserManager(const std::string& connStr);
+    UserManager() = default;
     ~UserManager() = default;
 
     void createUser();
@@ -34,9 +34,27 @@ public:
     void updateUser();
     void deleteUser();
     User* findUserById(int id);
-    bool login(const std::string& username, const std::string& password);
     void authenticate();
-    UserManager();
+
+    bool login(const std::string& username, const std::string& password)  {
+        try {
+            pqxx::connection C(connectionString);
+            pqxx::work W(C);
+
+            pqxx::result R = W.exec(
+                    "SELECT COUNT(*) FROM users WHERE username = " + W.quote(username) +
+                    " AND password = " + W.quote(password));
+
+            return R[0][0].as<int>() > 0;
+        }
+        catch (const std::system_error& e) {
+            std::cerr << e.what() << std::endl;
+            return false;
+        }
+    }
+
+
+
 };
 
 #endif // LABS_USER_MANAGER_H

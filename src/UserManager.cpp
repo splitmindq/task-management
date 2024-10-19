@@ -184,24 +184,6 @@ void UserManager::createUser() {
 
 }
 
-bool UserManager::login(const std::string &username, const std::string &password) {
-
-    try {
-        pqxx::connection C(connectionString);
-        pqxx::work W(C);
-
-        pqxx::result R = W.exec(
-                "SELECT COUNT(*) FROM users WHERE username = " + W.quote(username) + " AND password = " +
-                W.quote(password));
-
-        return R[0][0].as<int>() > 0;
-    }
-    catch (const std::system_error &e) {
-        std::cerr << e.what() << std::endl;
-        return false;
-    }
-}
-
 int UserManager::getId(const std::string &username) {
 
     try {

@@ -18,8 +18,6 @@ void Session::sessionMenu() const {
         switch (choice) {
             case 1:
                 std::cout << "Информация о пользователе: ";
-                user.displayInfo();
-
 
                 break;
 

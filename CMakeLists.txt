@@ -18,6 +18,7 @@ set(SOURCES
         src/Session.cpp
         src/UserManager.cpp
         src/User.cpp
+
         #-------------------
 
         header/User.h
@@ -25,7 +26,6 @@ set(SOURCES
         header/EmailSender.h
         header/sendingEmail.h
         header/Session.h
-        header/Person.h
 
         #--------------------
 
