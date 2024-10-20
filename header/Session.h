@@ -11,7 +11,7 @@ private:
 
 public:
     explicit Session(const User &user) : user(user) {}
-    void sessionMenu() const;
+    static void sessionMenu() ;
 };
 
 #endif //TASK_MANAGEMENT_SESSION_H

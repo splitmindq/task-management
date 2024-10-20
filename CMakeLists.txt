@@ -2,48 +2,82 @@ cmake_minimum_required(VERSION 3.26)
 project(task_management)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 set(CMAKE_TOOLCHAIN_FILE "C:/Users/mzitr/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
 
+find_package(Qt6 COMPONENTS
+        Core
+        Gui
+        Widgets
+        REQUIRED)
 
 link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
 
-# Явно указываем исходные файлы
 set(SOURCES
-
         src/main.cpp
         src/sendingEmail.cpp
         src/Session.cpp
         src/UserManager.cpp
         src/User.cpp
-
-        #-------------------
-
         header/User.h
         header/UserManager.h
         header/EmailSender.h
         header/sendingEmail.h
-        header/Session.h
-
-        #--------------------
-
-
+         header/Session.h
 )
 
-# Создаем исполняемый файл
+# Сначала создаем исполняемый файл
 add_executable(task_management ${SOURCES})
 
-# Подключаем библиотеку CURL
-target_link_libraries(task_management CURL::libcurl pqxx)
-#target_link_libraries(task_management PRIVATE curlcpp::curlcpp)
+# Подключаем библиотеки Qt
 
 
-# Указываем директории
+# Подключаем библиотеки CURL и libpqxx
+target_link_libraries(task_management CURL::libcurl libpqxx::pqxx)
+
+target_link_libraries(task_management
+        Qt::Core
+        Qt::Gui
+        Qt::Widgets
+)
+# Указываем директории для заголовочных файлов
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/header")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 
 
+if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(DEBUG_SUFFIX)
+    if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")
+        set(DEBUG_SUFFIX "d")
+    endif ()
+    set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
+    if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+        set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
+            set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
+        endif ()
+    endif ()
+    if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory
+                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
+    endif ()
+    foreach (QT_LIB Core Gui Widgets)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                "${QT_INSTALL_PATH}/bin/Qt6${QT_LIB}${DEBUG_SUFFIX}.dll"
+                "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+    endforeach (QT_LIB)
+endif ()

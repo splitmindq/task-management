@@ -10,9 +10,7 @@
 #include "pqxx/pqxx"
 
 
-UserManager::UserManager(const std::string &connStr) : connectionString(connStr) {
-//    loadUsers();
-}
+UserManager::UserManager(const std::string &connStr) : connectionString(connStr) {}
 
 
 bool UserManager::isUsernameTaken(const std::string &username) {
@@ -239,7 +237,6 @@ void UserManager::authenticate() {
     if (login(username, password)) {
         std::cout << "Авторизация прошла успешно!" << std::endl;
         int userId = getId(username);
-        std::string role = getRole(username);
         loadUser(username);
         User *currentUser = findUserById(userId);
 

@@ -1,15 +1,15 @@
 // Session.cpp
 #include "Session.h"
 
-void Session::sessionMenu() const {
+void Session::sessionMenu() {
     int choice;
 
     while (true) {
         std::cout << "\n--- Меню сессии ---\n";
         std::cout << "1. Просмотр информации о пользователе\n";
         std::cout << "2. Сохранить сессию\n";
-        std::cout << "3. Изменить информацию о пользователе\n";
-        std::cout << "4. Создать компанию (стать администратором)\n";
+        std::cout << "3. Изменить информацию о пользователе\n   ";
+        std::cout << "4. Создать компанию\n";
         std::cout << "5. Выход из системы\n";
         std::cout << "6. Завершить работу\n";
         std::cout << "Выберите действие: ";
@@ -27,17 +27,15 @@ void Session::sessionMenu() const {
 
             case 3:
                 std::cout << "Изменение информации о пользователе...\n";
-                // Добавьте логику изменения информации о пользователе
                 break;
 
             case 4:
                 std::cout << "Создание компании...\n";
-                // Логика создания компании
+
                 break;
 
             case 5:
                 std::cout << "Выход из системы...\n";
-
                 return; // Завершение сессии
 
             case 6:
