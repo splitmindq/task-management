@@ -19,16 +19,18 @@ private:
 
     void loadUsers();
     void loadUser(const std::string& username);
+
     void saveUser(const User& user);
     bool isUsernameTaken(const std::string& username);
-    std::string getRole(const std::string& username);
+
     int getId(const std::string& username);
 
 public:
     explicit UserManager(const std::string& connStr);
     UserManager() = default;
     ~UserManager() = default;
-
+    std::string getRole(const std::string& username);
+    int getCompanyId(const std::string &username);
     void createUser();
     void readUsers();
     void updateUser();

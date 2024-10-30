@@ -15,7 +15,7 @@ public:
     std::string name;
     std::string surname;
     std::string role = "user"; // Например, "user", "admin"
-    int companyId = -1; // -1 если не принадлежит компании
+    int companyId = 0; // 0 если не принадлежит компании
 
 
     User(int id, const std::string& email, const std::string& username,

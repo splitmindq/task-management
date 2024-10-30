@@ -25,20 +25,27 @@ set(SOURCES
         src/Session.cpp
         src/UserManager.cpp
         src/User.cpp
+        menu/src/mainwindow.cpp
+        UsersWindows/src/userwindow.cpp
+        #---------------------
+
         header/User.h
         header/UserManager.h
         header/EmailSender.h
         header/sendingEmail.h
-         header/Session.h
-)
+        header/Session.h
+        UsersWindows/headers/userwindow.h
 
-# Сначала создаем исполняемый файл
+        #---------------------
+
+        UsersWindows/ui/userwindow.ui
+        menu/ui/mainwindow.ui
+
+)
+qt6_add_resources(RESOURCE_TARGET "${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc")
+
 add_executable(task_management ${SOURCES})
 
-# Подключаем библиотеки Qt
-
-
-# Подключаем библиотеки CURL и libpqxx
 target_link_libraries(task_management CURL::libcurl libpqxx::pqxx)
 
 target_link_libraries(task_management
@@ -46,12 +53,12 @@ target_link_libraries(task_management
         Qt::Gui
         Qt::Widgets
 )
-# Указываем директории для заголовочных файлов
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/header")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-
+target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/UsersWindows")
+target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/recources")
+target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/menu")
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(DEBUG_SUFFIX)
