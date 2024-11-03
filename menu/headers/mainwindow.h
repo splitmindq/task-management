@@ -16,7 +16,7 @@ Q_OBJECT
 
 public:
     explicit MainWindow(UserManager* userManager, QWidget *parent = nullptr);
-    ~MainWindow() override;
+    ~MainWindow() ;
 
 private slots:
     void on_loginButton_clicked();
@@ -24,7 +24,7 @@ private slots:
 
 
 private:
-    Ui::MainWindow *ui;
+    std::unique_ptr<Ui::MainWindow> ui;
     UserManager *userManager;
 };
 
