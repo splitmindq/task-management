@@ -1,23 +1,23 @@
-#include "../headers/userwindow.h"
-#include "ui_userwindow.h"
-#include "UserManager.h"
-#include "../../menu/headers/mainwindow.h"
-#include <QString>
-#include <pqxx/pqxx>
+//
+// Created by mzitr on 04.11.2024.
+//
 
-UserWindow::UserWindow(UserManager* userManager, QWidget *parent, const std::string& username)
-        : QMainWindow(parent), ui(new Ui::UserWindow), userManager(userManager), username(username) {
-    ui->setupUi(this);
+// You may need to build the project (run Qt uic code generator) to get "ui_BasicClass.h" resolved
 
-    QString emailText = QString("Email: %1").arg(getEmail(username).c_str());
-    ui->emailLineEdit->setText(emailText);
-    QString nameText = QString("Name: %1").arg(getName(username).c_str());
-    ui->nameLineEdit->setText(nameText);
-    QString surnameText = QString("surname: %1").arg(getName(username).c_str());
-    ui->surnameLineEdit->setText(surnameText);
+#include "basicclass.h"
+#include "ui_BasicClass.h"
+
+
+BasicClass::BasicClass(UserManager* userManager, QWidget *parent, const std::string& username)
+        : QMainWindow(parent), userManager(userManager), username(username) {
+
 }
 
-std::string UserWindow::getEmail(const std::string &username) {
+BasicClass::~BasicClass() {
+
+}
+
+std::string BasicClass::getEmail(const std::string &username) {
     try {
         pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
         pqxx::work W(C);
@@ -34,7 +34,7 @@ std::string UserWindow::getEmail(const std::string &username) {
     }
 }
 
-std::string UserWindow::getName(const std::string &username) {
+std::string BasicClass::getName(const std::string &username) {
     try {
         pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
         pqxx::work W(C);
@@ -51,7 +51,7 @@ std::string UserWindow::getName(const std::string &username) {
     }
 }
 
-std::string UserWindow::getSurname(const std::string &username) {
+std::string BasicClass::getSurname(const std::string &username) {
     try {
         pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
         pqxx::work W(C);
@@ -66,15 +66,4 @@ std::string UserWindow::getSurname(const std::string &username) {
         std::cerr << e.what() << std::endl;
         return "";
     }
-}
-
-UserWindow::~UserWindow() {
-    delete ui;
-}
-
-void UserWindow::on_LogOutButton_clicked() {
-    this->close();
-
-    MainWindow *mainWindow = new MainWindow(userManager, nullptr);
-    mainWindow->show();
 }

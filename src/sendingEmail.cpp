@@ -78,41 +78,41 @@ void displayMenu() {
     std::cout << "7. Выход\n";
 }
 
-void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSender) {
-    switch (choice) {
-        setlocale(LC_ALL, "Rus");
-        case 1:
-            userManager.createUser();
-            break;
-        case 2:
-            userManager.readUsers();
-            break;
-        case 3:
-            userManager.updateUser();
-            break;
-        case 4:
-            userManager.deleteUser();
-            break;
-        case 5:
-            int userId;
-            std::cout << "Введите ID пользователя: ";
-            std::cin >> userId;
-            if (const User *user = userManager.findUserById(userId)) {
-                emailSender.sendEmail(user->email, "Тема: лабораторная 1", "Я ненавижу sonar!!");
-                std::cout << "Письмо отправлено: " << user->email << std::endl;
-            } else {
-                std::cout << "Пользователь не найден." << std::endl;
-            }
-            break;
-
-        case 6:
-            userManager.authenticate();
-            break;
-
-        case 7:
-            exit(0);
-
-        default:
-            std::cout << "Неверный выбор." << std::endl;
-    }
-}
+//void handleMenuChoice(int choice, UserManager &userManager, EmailSender &emailSender) {
+//    switch (choice) {
+//        setlocale(LC_ALL, "Rus");
+//        case 1:
+//            userManager.createUser();
+//            break;
+//        case 2:
+//            userManager.readUsers();
+//            break;
+//        case 3:
+//            userManager.updateUser();
+//            break;
+//        case 4:
+//            userManager.deleteUser();
+//            break;
+//        case 5:
+//            int userId;
+//            std::cout << "Введите ID пользователя: ";
+//            std::cin >> userId;
+//            if (const User *user = userManager.findUserById(userId)) {
+//                emailSender.sendEmail(user->email, "Тема: лабораторная 1", "Я ненавижу sonar!!");
+//                std::cout << "Письмо отправлено: " << user->email << std::endl;
+//            } else {
+//                std::cout << "Пользователь не найден." << std::endl;
+//            }
+//            break;
+//
+//        case 6:
+//            userManager.authenticate();
+//            break;
+//
+//        case 7:
+//            exit(0);
+//
+//        default:
+//            std::cout << "Неверный выбор." << std::endl;
+//    }
+//}

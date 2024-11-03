@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.26)
 project(task_management)
 
 set(CMAKE_CXX_STANDARD 23)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -18,28 +19,32 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
-
 set(SOURCES
         src/main.cpp
         src/sendingEmail.cpp
-        src/Session.cpp
         src/UserManager.cpp
         src/User.cpp
-        menu/src/mainwindow.cpp
-        UsersWindows/src/userwindow.cpp
+
         #---------------------
 
         header/User.h
         header/UserManager.h
         header/EmailSender.h
         header/sendingEmail.h
-        header/Session.h
-        UsersWindows/headers/userwindow.h
+        menu/headers/mainwindow.h
+        menu/src/mainwindow.cpp
+        UsersWindows/userWindowCore/userwindow.cpp
+        UsersWindows/userWindowCore/userwindow.h
+        UsersWindows/userWindowCore/userwindow.ui
+        menu/src/registrationwindow.cpp
+        menu/headers/registrationwindow.h
+        menu/src/registrationwindow.ui
+        UsersWindows/BasicClassCore/basicclass.cpp
+        UsersWindows/BasicClassCore/basicclass.h
+        UsersWindows/BasicClassCore/basicclass.ui
+        #        UsersWindows/headers/userwindow.h
 
         #---------------------
-
-        UsersWindows/ui/userwindow.ui
-        menu/ui/mainwindow.ui
 
 )
 qt6_add_resources(RESOURCE_TARGET "${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc")
@@ -59,6 +64,7 @@ target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/UsersWindows")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/recources")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/menu")
+
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(DEBUG_SUFFIX)

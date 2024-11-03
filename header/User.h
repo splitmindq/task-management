@@ -14,8 +14,8 @@ public:
     std::string password;
     std::string name;
     std::string surname;
-    std::string role = "user"; // Например, "user", "admin"
-    int companyId = 0; // 0 если не принадлежит компании
+    std::string role = "user";
+    int companyId = 0;
 
 
     User(int id, const std::string& email, const std::string& username,
