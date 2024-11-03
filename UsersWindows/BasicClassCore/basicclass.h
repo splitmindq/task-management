@@ -19,7 +19,7 @@ Q_OBJECT
 
 public:
     explicit BasicClass(UserManager *userManager, QWidget *parent = nullptr,const std::string& username ="");
-    virtual ~BasicClass() override;
+    ~BasicClass() override;
     virtual void displayUserInfo() = 0;
 
 protected:

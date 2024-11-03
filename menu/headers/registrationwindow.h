@@ -26,7 +26,7 @@ private slots:
     void on_createAccountButton_clicked();
 
 private:
-    Ui::RegistrationWindow *ui;
+    std::unique_ptr<Ui::RegistrationWindow> ui;
     UserManager *userManager;
 };
 

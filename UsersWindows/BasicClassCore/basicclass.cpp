@@ -13,11 +13,9 @@ BasicClass::BasicClass(UserManager* userManager, QWidget *parent, const std::str
 
 }
 
-BasicClass::~BasicClass() {
+BasicClass::~BasicClass() = default;
 
-}
-
-std::string BasicClass::getEmail(const std::string &username) {
+std::string BasicClass::getEmail(const std::string &login) {
     try {
         pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
         pqxx::work W(C);
@@ -34,7 +32,7 @@ std::string BasicClass::getEmail(const std::string &username) {
     }
 }
 
-std::string BasicClass::getName(const std::string &username) {
+std::string BasicClass::getName(const std::string &login) {
     try {
         pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
         pqxx::work W(C);
@@ -51,7 +49,7 @@ std::string BasicClass::getName(const std::string &username) {
     }
 }
 
-std::string BasicClass::getSurname(const std::string &username) {
+std::string BasicClass::getSurname(const std::string &login) {
     try {
         pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
         pqxx::work W(C);

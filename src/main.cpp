@@ -2,11 +2,11 @@
 
 #include "headers/mainwindow.h"
 #include "QApplication"
-std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
-UserManager userManager(connectionString);
+
 
 int main(int argc, char*argv[]) {
-
+    std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
+    UserManager userManager(connectionString);
 
     SetConsoleOutputCP(CP_UTF8);
 

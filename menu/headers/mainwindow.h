@@ -16,7 +16,7 @@ Q_OBJECT
 
 public:
     explicit MainWindow(UserManager* userManager, QWidget *parent = nullptr);
-    ~MainWindow() ;
+    ~MainWindow() override;
 
 private slots:
     void on_loginButton_clicked();

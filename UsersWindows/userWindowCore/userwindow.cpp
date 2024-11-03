@@ -22,10 +22,7 @@ void UserWindow::displayUserInfo() {
     ui->surnameLineEdit->setText(surnameText);
 }
 
-UserWindow::~UserWindow() {
-    delete ui;
-}
-
+UserWindow::~UserWindow() = default;
 void UserWindow::on_LogOutButton_clicked() {
     this->close();
 

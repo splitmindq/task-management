@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include "UserManager.h"
 #include "ui_userwindow.h"
+#include "memory"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class UserWindow; }
 QT_END_NAMESPACE
@@ -24,7 +26,8 @@ private slots:
     void on_LogOutButton_clicked();
 
 private:
-    Ui::UserWindow *ui;
+    std::unique_ptr<Ui::UserWindow> ui;
+
 
 };
 

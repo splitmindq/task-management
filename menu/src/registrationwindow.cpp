@@ -13,9 +13,7 @@ RegistrationWindow::RegistrationWindow(UserManager *userManager,QWidget *parent)
     ui->setupUi(this);
 }
 
-RegistrationWindow::~RegistrationWindow() {
-    delete ui;
-}
+RegistrationWindow::~RegistrationWindow() = default;
 
 void RegistrationWindow::on_backToMenuButton_clicked() {
 

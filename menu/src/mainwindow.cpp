@@ -11,8 +11,7 @@ MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
 
 }
 
-MainWindow::~MainWindow() {
-}
+MainWindow::~MainWindow() = default;
 
 void MainWindow::on_loginButton_clicked()  {
     QString login = ui->loginInput->text();
