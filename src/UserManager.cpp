@@ -167,6 +167,28 @@ int UserManager::getCompanyId(const std::string &username)  {
 }
 
 
+int UserManager::getId(const std::string &username)  {
+
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        pqxx::result R = W.exec("SELECT id FROM users WHERE username = " + W.quote(username));
+
+        if (R.size() == 1) {
+            return R[0][0].as<int>();
+        } else {
+            return -1;
+        }
+    }
+    catch (const std::system_error &e) {
+        std::cerr << e.what() << std::endl;
+        return -1;
+
+    }
+}
+
+
 std::string UserManager::getRole(const std::string &username) {
 
     try {

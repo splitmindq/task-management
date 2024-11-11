@@ -25,6 +25,7 @@ public:
 protected:
     UserManager *userManager;
     std::string username;
+    std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
 
     virtual std::string getEmail(const std::string& username);
     virtual std::string getName(const std::string& username);

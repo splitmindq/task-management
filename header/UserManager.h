@@ -60,8 +60,9 @@ public:
         }
     }
 
-
+  int  getId(const std::string &username);
 
 };
+
 
 #endif // LABS_USER_MANAGER_H

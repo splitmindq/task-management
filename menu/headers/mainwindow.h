@@ -26,6 +26,7 @@ private slots:
 private:
     std::unique_ptr<Ui::MainWindow> ui;
     UserManager *userManager;
+
 };
 
 #endif // TASK_MANAGEMENT_MAINWINDOW_H

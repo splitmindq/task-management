@@ -22,12 +22,15 @@ public:
     ~RegistrationWindow() override;
 
 private slots:
+
     void on_backToMenuButton_clicked();
     void on_createAccountButton_clicked();
 
 private:
+
     std::unique_ptr<Ui::RegistrationWindow> ui;
     UserManager *userManager;
+
 };
 
 

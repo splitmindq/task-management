@@ -7,7 +7,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_TOOLCHAIN_FILE "C:/Users/mzitr/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
@@ -42,6 +41,16 @@ set(SOURCES
         UsersWindows/BasicClassCore/basicclass.cpp
         UsersWindows/BasicClassCore/basicclass.h
         UsersWindows/BasicClassCore/basicclass.ui
+        UsersWindows/AdminWindowCore/adminclass.cpp
+        UsersWindows/AdminWindowCore/adminclass.h
+        UsersWindows/AdminWindowCore/adminclass.ui
+        Companies/src/Company.cpp
+        Companies/header/Company.h
+        Companies/header/CompanyManager.h
+        Companies/src/CompanyManager.cpp
+        menu/src/companyregwindow.cpp
+        menu/headers/companyregwindow.h
+        menu/src/companyregwindow.ui
         #        UsersWindows/headers/userwindow.h
 
         #---------------------
@@ -58,6 +67,7 @@ target_link_libraries(task_management
         Qt::Gui
         Qt::Widgets
 )
+
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/header")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")

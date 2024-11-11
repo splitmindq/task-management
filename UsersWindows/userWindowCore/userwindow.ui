@@ -103,7 +103,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="createCompanyButton">
       <property name="text">
        <string>Create Company</string>
       </property>

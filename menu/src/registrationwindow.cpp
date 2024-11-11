@@ -24,6 +24,7 @@ void RegistrationWindow::on_backToMenuButton_clicked() {
 }
 
 void RegistrationWindow::on_createAccountButton_clicked() {
+
     std::string name = ui->nameEdit->text().toStdString();
     std::string surname = ui->surnameEdit->text().toStdString();
     std::string email = ui->emailEdit->text().toStdString();
@@ -49,4 +50,5 @@ void RegistrationWindow::on_createAccountButton_clicked() {
     QMessageBox::information(this, "Registration", "You have successfully registered!");
 
     on_backToMenuButton_clicked();
+
 }

@@ -4,16 +4,18 @@
 #include "QMessageBox"
 #include "userWindowCore/userwindow.h"
 #include "headers/registrationwindow.h"
+
 MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
+
         QMainWindow(parent), ui(new Ui::MainWindow), userManager(userManager) {
     ui->setupUi(this);
-
 
 }
 
 MainWindow::~MainWindow() = default;
 
 void MainWindow::on_loginButton_clicked()  {
+
     QString login = ui->loginInput->text();
     QString password = ui->passwordInput->text();
 
@@ -35,6 +37,7 @@ void MainWindow::on_loginButton_clicked()  {
     } else {
         QMessageBox::warning(this, "Login", "Invalid username or password!");
     }
+
 }
 
 void MainWindow::on_registrationButton_clicked() {
@@ -42,7 +45,5 @@ void MainWindow::on_registrationButton_clicked() {
    auto *registrationWindow = new RegistrationWindow(userManager, nullptr);
     this->close();
     registrationWindow->show();
-
-
 
 }
