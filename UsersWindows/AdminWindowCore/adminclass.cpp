@@ -8,10 +8,16 @@
 #include "ui_AdminClass.h"
 
 
-AdminClass::AdminClass(UserManager *userManager,QWidget *parent,const std::string& username) :
-                    BasicClass(userManager,parent,username), ui(new Ui::AdminClass) {
+AdminClass::AdminClass(UserManager *userManager,QWidget *parent,User *user, std::shared_ptr<Company> company) :
+        BasicClass(userManager,parent,user), ui(new Ui::AdminClass),company(company) {
     ui->setupUi(this);
-//  displayUserInfo();
+
+    displayUserInfo();
 }
 
 AdminClass::~AdminClass() = default;
+
+void AdminClass::displayUserInfo() {
+
+
+}

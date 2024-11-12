@@ -24,16 +24,27 @@ void MainWindow::on_loginButton_clicked()  {
 
 
     if (userManager->login(username, pwd)) {
-        QMessageBox::information(this, "Login", "Login successful!");
 
         std::string role = userManager->getRole(username);
         int companyId = userManager->getCompanyId(username);
 
         if (companyId == -1) {
-            auto *userWindow = new UserWindow(userManager, nullptr,username);
+
+            userManager->loadUser(username);
+            int id = userManager->getId(username);
+            User *user = userManager->findUserById(id);
+            auto *userWindow = new UserWindow(userManager, nullptr,user);
+
             this->close();
             userWindow->show();
         }
+        else{
+
+
+
+
+        }
+
     } else {
         QMessageBox::warning(this, "Login", "Invalid username or password!");
     }

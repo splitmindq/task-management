@@ -25,3 +25,8 @@ void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company>& company) {
         std::cerr << "Ошибка при сохранении компании в базе данных: " << e.what() << std::endl;
     }
 }
+
+std::shared_ptr<Company> CompanyManager::getCompany() const {
+    return company;
+}
+

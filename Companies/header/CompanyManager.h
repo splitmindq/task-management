@@ -10,7 +10,7 @@
 
 class CompanyManager {
 private:
-    std::shared_ptr<Company> company;
+
     UserManager* userManager;
     std::string connectionString;
     pqxx::connection conn;
@@ -19,6 +19,7 @@ private:
     void saveCompanyToDb(const std::shared_ptr<Company>& company);
 
 public:
+    std::shared_ptr<Company> company;
 
     explicit CompanyManager(UserManager* userManager, const std::string& companyName, int adminId, const std::string& connectionString)
             : userManager(userManager), connectionString(connectionString), conn(connectionString) {
@@ -29,9 +30,10 @@ public:
         }
     }
 
-    void inviteUser(const std::shared_ptr<User>& user);
-    void setAdmin(int userId);
-//    std::vector<std::shared_ptr<User>> getUsers();
+//    void inviteUser(const std::shared_ptr<User>& user);
+//    void setAdmin(int userId);
+    [[nodiscard]] std::shared_ptr<Company> getCompany() const;
+
 };
 
 #endif //TASK_MANAGEMENT_COMPANYMANAGER_H

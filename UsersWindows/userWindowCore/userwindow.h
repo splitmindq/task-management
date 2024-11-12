@@ -10,6 +10,8 @@
 #include "ui_userwindow.h"
 #include "memory"
 #include "../Companies/header/CompanyManager.h"
+#include "../AdminWindowCore/adminclass.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class UserWindow; }
 QT_END_NAMESPACE
@@ -18,7 +20,7 @@ class UserWindow : public BasicClass {
 Q_OBJECT
 
 public:
-    explicit UserWindow(UserManager* userManager, QWidget *parent = nullptr, const std::string& username = "");
+    explicit UserWindow(UserManager* userManager, QWidget *parent = nullptr, User *user = nullptr);
     ~UserWindow() override;
     void displayUserInfo() override;
 

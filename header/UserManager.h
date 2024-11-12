@@ -17,10 +17,11 @@ private:
 
 
     void loadUsers();
-    void loadUser(const std::string& username);
-    void saveUser(const User& user);
+
 
 public:
+    void loadUser(const std::string& username);
+    void saveUser(const User& user);
     explicit UserManager(const std::string& connStr);
     UserManager() = default;
     ~UserManager() = default;

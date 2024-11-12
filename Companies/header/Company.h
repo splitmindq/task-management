@@ -12,12 +12,13 @@ struct Company{
 
 private:
 
+
+
+public:
     int id;
     std::string companyName;
     int adminId;
 
-
-public:
 
     Company(int companyId,const std::string &name ,int adminId):
             id(companyId),companyName(name),adminId(adminId){}

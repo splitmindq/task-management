@@ -86,12 +86,20 @@ void UserManager::loadUsers() {
 }
 
 void UserManager::saveUser(const User &user) {
-
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
         W.exec(std::format(
-                "INSERT INTO users (id, email, username, password, name, surname, role, companyId) VALUES ({}, '{}', '{}', '{}', '{}', '{}', '{}', {})",
+                "INSERT INTO users (id, email, username, password, name, surname, role, companyId) "
+                "VALUES ({}, '{}', '{}', '{}', '{}', '{}', '{}', {}) "
+                "ON CONFLICT (id) DO UPDATE "
+                "SET email = EXCLUDED.email, "
+                "username = EXCLUDED.username, "
+                "password = EXCLUDED.password, "
+                "name = EXCLUDED.name, "
+                "surname = EXCLUDED.surname, "
+                "role = EXCLUDED.role, "
+                "companyId = EXCLUDED.companyId",
                 user.id, user.email, user.username, user.password, user.name, user.surname, user.role, user.companyId
         ));
 
@@ -100,7 +108,6 @@ void UserManager::saveUser(const User &user) {
         std::cerr << e.what() << std::endl;
     }
 }
-
 
 
 int getMaxUserId(const std::string &connectionString) {

@@ -13,7 +13,7 @@ User::User(int id, const std::string& email, const std::string& username,
 }
 
 User *UserManager::findUserById(int id) {
-    for (const auto &user: users) {
+    for (const auto & user: users) {
         if (*user == id) {
             return user.get();
         }

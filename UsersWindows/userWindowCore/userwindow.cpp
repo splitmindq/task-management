@@ -5,19 +5,19 @@
 #include <QString>
 #include "../menu/headers/companyregwindow.h"
 
-UserWindow::UserWindow(UserManager* userManager, QWidget *parent, const std::string& username)
-        : BasicClass(userManager, parent, username), ui(new Ui::UserWindow) {
+UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
+        : BasicClass(userManager, parent,user), ui(new Ui::UserWindow) {
 
     ui->setupUi(this);
     displayUserInfo();
 }
 
 void UserWindow::displayUserInfo() {
-    QString emailText = QString("Email: %1").arg(getEmail(username).c_str());
+    QString emailText = QString("Email: %1").arg(getEmail(user->username).c_str());
     ui->emailLineEdit->setText(emailText);
-    QString nameText = QString("Name: %1").arg(getName(username).c_str());
+    QString nameText = QString("Name: %1").arg(getName(user->username).c_str());
     ui->nameLineEdit->setText(nameText);
-    QString surnameText = QString("Surname: %1").arg(getSurname(username).c_str());
+    QString surnameText = QString("Surname: %1").arg(getSurname(user->username).c_str());
     ui->surnameLineEdit->setText(surnameText);
 }
 
@@ -30,8 +30,15 @@ void UserWindow::on_LogOutButton_clicked() {
 }
 
 void UserWindow::onCompanyNameEntered(const QString &companyName) {
+
     qDebug() << "Company name " << companyName;
-    CompanyManager companyManager(userManager,companyName.toStdString(),userManager->getId(username),connectionString);
+    CompanyManager companyManager(userManager,companyName.toStdString(),userManager->getId(user->username),connectionString);
+    auto company = companyManager.getCompany();
+    user->companyId = company->id;
+    userManager->saveUser(*user);
+    auto *adminWindow = new AdminClass(userManager, nullptr,user,company);
+    adminWindow ->show();
+
 }
 
 void UserWindow::on_createCompanyButton_clicked() {
