@@ -17,7 +17,7 @@
             return -1;
         }
     }
-    void InviteManager::saveInviteToDb(const std::shared_ptr<Invite>& invite) {
+    void InviteManager::saveInviteToDb(const std::shared_ptr<Invite<int>>& invite) {
         try {
             pqxx::work txn(conn);
             txn.exec_params("INSERT INTO invites (id, message, sender_id, user_id) VALUES ($1, $2, $3, $4)",

@@ -1,32 +1,33 @@
 #ifndef TASK_MANAGEMENT_INVITE_H
 #define TASK_MANAGEMENT_INVITE_H
-#include "iostream"
+#include <iostream>
+#include <string>
 
+template <typename T>
 class Invite {
 private:
-    int id;
-    int senderId;
+    T id;
+    T senderId;
+    std::string message;
+    T receiverId;
 
 public:
-    std::string message;
-    int receiverId;
-
-    explicit Invite(int inviteId, int senderId, const std::string &inviteMessage, int receiverId)
+    Invite(T inviteId, T senderId, const std::string& inviteMessage, T receiverId)
             : id(inviteId), senderId(senderId), message(inviteMessage), receiverId(receiverId) {}
 
-    int getInviteId() const {
+    T getInviteId() const {
         return id;
     }
 
-    int getSenderId() const {
+    T getSenderId() const {
         return senderId;
     }
 
-    const std::string getMessage() const {
+    std::string getMessage() const {
         return message;
     }
 
-    int getReceiverId() const {
+    T getReceiverId() const {
         return receiverId;
     }
 };

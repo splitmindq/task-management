@@ -3,17 +3,15 @@
 int CompanyManager::getNextIdFromDb() {
     try {
         pqxx::work txn(conn);
-        pqxx::result R = txn.exec("SELECT MAX(id) FROM companies;");
-        txn.commit();
-        if (R.empty() || R[0][0].is_null()){
-            return 1;
-        }
-        return R.empty() ? 1 : R[0][0].as<int>() + 1;
+        std::string query = "SELECT MAX(id) FROM companies;";
+        int maxId = executeScalarQuery<int>(txn, query);
+        return maxId + 1;
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return -1;
     }
 }
+
 
 void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company>& company) {
     try {

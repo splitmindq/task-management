@@ -9,10 +9,10 @@ private:
     std::string connectionString;
     pqxx::connection conn;
     int getNextIdFromDb();
-    void saveInviteToDb(const std::shared_ptr<Invite>& invite);
+    void saveInviteToDb(const std::shared_ptr<Invite<int>>& invite);
 
 public:
-    std::shared_ptr<Invite> invite;
+    std::shared_ptr<Invite<int>> invite;
 
     explicit InviteManager(const std::string &connectionString)
             : connectionString(connectionString), conn(connectionString) {}
@@ -21,12 +21,12 @@ public:
 
         int newInviteId = getNextIdFromDb();
         if (newInviteId != -1) {
-            invite = std::make_shared<Invite>(newInviteId, senderId, message, receiverId);
+            auto invite = std::make_shared<Invite<int>>(newInviteId, senderId, message, receiverId);
             saveInviteToDb(invite);
         }
     }
 
-    [[nodiscard]] std::shared_ptr<Invite> getInvite() const {
+    [[nodiscard]] std::shared_ptr<Invite<int>> getInvite() const {
         return invite;
     }
 };

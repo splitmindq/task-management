@@ -55,6 +55,10 @@ set(SOURCES
         Invites/headers/Invite.h
         Invites/src/InviteManager.cpp
         Invites/headers/InviteManager.h
+        CustomException/core/dbException.cpp
+        CustomException/core/dbException.h
+        CustomException/core/dbExceptionHandler.cpp
+        CustomException/core/dbExceptionHandler.h
         #        UsersWindows/headers/userwindow.h
 
         #---------------------

@@ -6,7 +6,7 @@
 #include "../menu/headers/companyregwindow.h"
 
 UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
-        : BasicClass(userManager, parent,user), ui(new Ui::UserWindow){
+        : BasicClass(userManager, parent,user), ui(new Ui::UserWindow),currentOffset(0), limit(20){
     ui->setupUi(this);
     displayUserInfo();
 }
@@ -14,9 +14,10 @@ UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
 UserWindow::~UserWindow() = default;
 
 void UserWindow::acceptInvite() {
-    // Логика для принятия приглашения
+//
+//
+// }
 }
-
 void UserWindow::addInviteToList(const QString& senderName, const QString& message) {
     QWidget* inviteWidget = new QWidget();
     QHBoxLayout* layout = new QHBoxLayout();
@@ -58,7 +59,6 @@ void UserWindow::on_checkInvitesButton_clicked() {
     currentOffset = 0;
     loadNextInvites();
 }
-
 QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
     QList<QPair<QString, QString>> invites;
 
@@ -71,7 +71,7 @@ QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, in
             SELECT u.username AS sender, i.message
             FROM invites i
             JOIN users u ON i.sender_id = u.id
-            WHERE i.recipient_id = )" + std::to_string(user->id) +
+            WHERE i.user_id = )" + std::to_string(user->id) +
                 R"( LIMIT )" + std::to_string(limit) +
                 R"( OFFSET )" + std::to_string(offset));
 
