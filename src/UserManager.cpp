@@ -47,41 +47,41 @@ void UserManager::loadUser(const std::string &username) {
 }
 
 
-void UserManager::loadUsers() {
-
-    try {
-        pqxx::connection C(connectionString);
-        pqxx::work W(C);
-
-        pqxx::result R = W.exec("SELECT id, email, username, password, name, surname, role, companyId FROM users");
-
-        if (R.empty()) {
-            nextId = 1;
-        } else {
-            for (const auto &row: R) {
-                int id = row[0].as<int>();
-                std::string email = row[1].as<std::string>();
-                std::string username = row[2].as<std::string>();
-                std::string password = row[3].as<std::string>();
-                std::string name = row[4].as<std::string>();
-                std::string surname = row[5].as<std::string>();
-                std::string role = row[6].as<std::string>();
-                int companyId = row[7].as<int>();
-
-                auto user = std::make_unique<User>(id, email, username, password, name, surname);
-                user->role = role;
-                user->companyId = companyId;
-
-                users.push_back(std::move(user));
-                nextId = std::max(nextId, id + 1);
-            }
-        }
-
-        W.commit();
-    } catch (const std::system_error &e) {
-        std::cerr << e.what() << std::endl;
-    }
-}
+//void UserManager::loadUsers() {
+//
+//    try {
+//        pqxx::connection C(connectionString);
+//        pqxx::work W(C);
+//
+//        pqxx::result R = W.exec("SELECT id, email, username, password, name, surname, role, companyId FROM users");
+//
+//        if (R.empty()) {
+//            nextId = 1;
+//        } else {
+//            for (const auto &row: R) {
+//                int id = row[0].as<int>();
+//                std::string email = row[1].as<std::string>();
+//                std::string username = row[2].as<std::string>();
+//                std::string password = row[3].as<std::string>();
+//                std::string name = row[4].as<std::string>();
+//                std::string surname = row[5].as<std::string>();
+//                std::string role = row[6].as<std::string>();
+//                int companyId = row[7].as<int>();
+//
+//                auto user = std::make_unique<User>(id, email, username, password, name, surname);
+//                user->role = role;
+//                user->companyId = companyId;
+//
+//                users.push_back(std::move(user));
+//                nextId = std::max(nextId, id + 1);
+//            }
+//        }
+//
+//        W.commit();
+//    } catch (const std::system_error &e) {
+//        std::cerr << e.what() << std::endl;
+//    }
+//}
 
 void UserManager::saveUser(const User &user) {
     try {
@@ -252,5 +252,19 @@ void UserManager::updateUserInDb(const User& user) {
     }
     catch (const std::exception& e) {
         std::cerr << "Error updating user in database: " << e.what() << std::endl;
+    }
+}
+
+bool UserManager::isUsernameTaken(const std::string& username) {
+
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        pqxx::result R = W.exec("SELECT COUNT(*) FROM users WHERE username = " + W.quote(username));
+        return R[0][0].as<int>() > 0;
+    }
+    catch (const std::system_error &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
     }
 }

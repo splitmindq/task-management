@@ -14,10 +14,9 @@ UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
 UserWindow::~UserWindow() = default;
 
 void UserWindow::acceptInvite() {
-//
-//
-// }
+    // Логика для принятия приглашения
 }
+
 void UserWindow::addInviteToList(const QString& senderName, const QString& message) {
     QWidget* inviteWidget = new QWidget();
     QHBoxLayout* layout = new QHBoxLayout();

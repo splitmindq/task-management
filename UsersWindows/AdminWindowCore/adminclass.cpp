@@ -24,9 +24,11 @@ void AdminClass::displayUserInfo() {
 }
 
 void AdminClass::on_LogOutButton_clicked() {
+
     this->close();
-    MainWindow *mainWindow = new MainWindow(userManager, nullptr);
+    MainWindow *mainWindow = new MainWindow(nullptr);
     mainWindow->show();
+
 }
 
 void AdminClass::addEmployeeToList(const QString& employeeName, int employeeId) {

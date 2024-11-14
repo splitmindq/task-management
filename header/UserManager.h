@@ -12,11 +12,8 @@
 class UserManager {
 private:
     std::vector<std::unique_ptr<User>> users;
-    int nextId = 1;
     std::string connectionString;
-
-
-    void loadUsers();
+    //void loadUsers();
 
 
 public:
@@ -25,19 +22,9 @@ public:
     explicit UserManager(const std::string& connStr);
     UserManager() = default;
     ~UserManager() = default;
-    bool isUsernameTaken(const std::string& username){
+    bool isUsernameTaken(const std::string& username);
 
-        try {
-            pqxx::connection C(connectionString);
-            pqxx::work W(C);
-            pqxx::result R = W.exec("SELECT COUNT(*) FROM users WHERE username = " + W.quote(username));
-            return R[0][0].as<int>() > 0;
-        }
-        catch (const std::system_error &e) {
-            std::cerr << e.what() << std::endl;
-            return false;
-        }
-    };
+
     std::string getRole(const std::string& username);
     int getCompanyId(const std::string &username);
     void createUser(const std::string &name,const std::string &surname,const std::string &email,const std::string &login, const std::string &password);

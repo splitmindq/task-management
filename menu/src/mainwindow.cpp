@@ -4,67 +4,63 @@
 #include "QMessageBox"
 #include "userWindowCore/userwindow.h"
 #include "headers/registrationwindow.h"
+MainWindow::MainWindow(UserManager *userManager, QWidget *parent)
+                        : BasicClass(nullptr,parent, nullptr),ui(new Ui::MainWindow)
+{
 
-MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
-
-        QMainWindow(parent), ui(new Ui::MainWindow), userManager(userManager) {
     ui->setupUi(this);
+    displayUserInfo();
 
 }
-
 MainWindow::~MainWindow() = default;
 
-void MainWindow::on_loginButton_clicked()  {
+void MainWindow::on_registrationButton_clicked() {
 
+    auto *registrationWindow = new RegistrationWindow(userManager, nullptr);
+    this->close();
+    registrationWindow->show();
+}
+void MainWindow::on_loginButton_clicked() {
+
+    UserManager userMng(connectionString);
     QString login = ui->loginInput->text();
     QString password = ui->passwordInput->text();
 
     std::string username = login.toStdString();
     std::string pwd = password.toStdString();
 
+    if (userMng.login(username, pwd)) {
 
-    if (userManager->login(username, pwd)) {
+        std::string role = userMng.getRole(username);
+        int companyId = userMng.getCompanyId(username);
+        userMng.loadUser(username);
+        int id = userMng.getId(username);
+        User *user = userMng.findUserById(id);
 
-        std::string role = userManager->getRole(username);
-        int companyId = userManager->getCompanyId(username);
-        userManager->loadUser(username);
-        int id = userManager->getId(username);
-        User *user = userManager->findUserById(id);
+        if (!user) {
+            QMessageBox::warning(this, "Login", "User not found.");
+            return;
+        }
+
         if (companyId == -1) {
-
-            auto *userWindow = new UserWindow(userManager, nullptr, user);
-
+            auto *userWindow = new UserWindow(&userMng, nullptr, user);
             this->close();
             userWindow->show();
-        }
-        else{
-
-            if(user->role == "admin"){
-
-                CompanyManager companyManager(userManager, connectionString);
+        } else {
+            if (userMng.isAdmin(user->id)) {
+                CompanyManager companyManager(&userMng, connectionString);
                 std::shared_ptr<Company> company = companyManager.findCompanyByAdminId(user->id);
 
                 if (company) {
-                    auto *adminWindow = new AdminClass(userManager, nullptr, user, company);
-                    adminWindow->show();
                     this->close();
+                    auto *adminWindow = new AdminClass(&userMng, nullptr, user, company);
+                    adminWindow->show();
                 } else {
                     QMessageBox::warning(this, "Login", "Компания не найдена для данного администратора.");
                 }
             }
         }
     }
-    else {
-            QMessageBox::warning(this, "Login", "Invalid username or password!");
-        }
-    }
-
-
-
-void MainWindow::on_registrationButton_clicked() {
-
-   auto *registrationWindow = new RegistrationWindow(userManager, nullptr);
-    this->close();
-    registrationWindow->show();
 
 }
+
