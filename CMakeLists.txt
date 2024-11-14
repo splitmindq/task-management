@@ -6,15 +6,15 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
+SET(CMAKE_TOOLCHAIN_FILE)
 
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
-
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+
         REQUIRED)
 
 link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
@@ -51,6 +51,10 @@ set(SOURCES
         menu/src/companyregwindow.cpp
         menu/headers/companyregwindow.h
         menu/src/companyregwindow.ui
+        Invites/src/Invite.cpp
+        Invites/headers/Invite.h
+        Invites/src/InviteManager.cpp
+        Invites/headers/InviteManager.h
         #        UsersWindows/headers/userwindow.h
 
         #---------------------
@@ -74,7 +78,7 @@ target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/UsersWindows")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/recources")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/menu")
-
+target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Invites")
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(DEBUG_SUFFIX)

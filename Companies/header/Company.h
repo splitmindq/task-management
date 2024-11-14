@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-struct Company{
+class Company{
 
 private:
 

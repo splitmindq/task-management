@@ -62,6 +62,9 @@ public:
     }
 
   int  getId(const std::string &username);
+  bool isAdmin(int id);
+  void updateUserInDb(const User& user);
+
 
 };
 

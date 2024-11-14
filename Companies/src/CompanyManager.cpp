@@ -26,7 +26,23 @@ void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company>& company) {
     }
 }
 
-std::shared_ptr<Company> CompanyManager::getCompany() const {
-    return company;
-}
+std::shared_ptr<Company> CompanyManager::findCompanyByAdminId(int adminId) {
+    try {
+        pqxx::work txn(conn);
 
+        std::string query = "SELECT id, name FROM companies WHERE adminId = " + txn.quote(adminId) + " LIMIT 1;";
+        pqxx::result result = txn.exec(query);
+
+        if (!result.empty()) {
+            int companyId = result[0][0].as<int>();
+            std::string companyName = result[0][1].as<std::string>();
+            return std::make_shared<Company>(companyId, companyName, adminId);
+        }
+
+        txn.commit();
+    } catch (const std::exception& e) {
+        std::cerr << "Error finding company: " << e.what() << std::endl;
+    }
+
+    return nullptr;
+}

@@ -27,29 +27,39 @@ void MainWindow::on_loginButton_clicked()  {
 
         std::string role = userManager->getRole(username);
         int companyId = userManager->getCompanyId(username);
-
+        userManager->loadUser(username);
+        int id = userManager->getId(username);
+        User *user = userManager->findUserById(id);
         if (companyId == -1) {
 
-            userManager->loadUser(username);
-            int id = userManager->getId(username);
-            User *user = userManager->findUserById(id);
-            auto *userWindow = new UserWindow(userManager, nullptr,user);
+            auto *userWindow = new UserWindow(userManager, nullptr, user);
 
             this->close();
             userWindow->show();
         }
         else{
 
+            if(user->role == "admin"){
 
+                CompanyManager companyManager(userManager, connectionString);
+                std::shared_ptr<Company> company = companyManager.findCompanyByAdminId(user->id);
 
-
+                if (company) {
+                    auto *adminWindow = new AdminClass(userManager, nullptr, user, company);
+                    adminWindow->show();
+                    this->close();
+                } else {
+                    QMessageBox::warning(this, "Login", "Компания не найдена для данного администратора.");
+                }
+            }
         }
-
-    } else {
-        QMessageBox::warning(this, "Login", "Invalid username or password!");
+    }
+    else {
+            QMessageBox::warning(this, "Login", "Invalid username or password!");
+        }
     }
 
-}
+
 
 void MainWindow::on_registrationButton_clicked() {
 

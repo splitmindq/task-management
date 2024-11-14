@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "UserManager.h"
-
+#include "../Companies/header/CompanyManager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,6 +24,7 @@ private slots:
 
 
 private:
+    std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
     std::unique_ptr<Ui::MainWindow> ui;
     UserManager *userManager;
 

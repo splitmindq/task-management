@@ -40,8 +40,6 @@ void UserManager::loadUser(const std::string &username) {
         user->companyId = companyId;
 
         users.push_back(std::move(user));
-        nextId = std::max(nextId, id + 1);
-
         W.commit();
     } catch (const std::system_error &e) {
         std::cerr << "Ошибка при загрузке пользователя: " << e.what() << std::endl;
@@ -216,4 +214,43 @@ std::string UserManager::getRole(const std::string &username) {
 
     }
 
+}
+bool UserManager::isAdmin(int id) {
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        pqxx::result R = W.exec(
+                "SELECT role FROM users WHERE id = " + W.quote(id)
+        );
+
+        if (!R.empty()) {
+            std::string role = R[0][0].as<std::string>();
+            return role == "admin";
+        }
+        return false;
+    } catch (const std::system_error &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+}
+
+void UserManager::updateUserInDb(const User& user) {
+    try {
+        pqxx::connection conn(connectionString);
+        pqxx::work txn(conn);
+
+        std::string query =
+                "UPDATE users SET "
+                "username = " + txn.quote(user.username) + ", "
+                                                           "role = " + txn.quote(user.role) + ", "
+                                                                                              "companyId = " + txn.quote(user.companyId) + " "
+                                                                                                                                            "WHERE id = " + txn.quote(user.id) + ";";
+
+        txn.exec(query);
+        txn.commit();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error updating user in database: " << e.what() << std::endl;
+    }
 }

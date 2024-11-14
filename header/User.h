@@ -15,7 +15,7 @@ public:
     std::string name;
     std::string surname;
     std::string role = "user";
-    int companyId = 0;
+    int companyId = -1;
 
 
     User(int id, const std::string& email, const std::string& username,
