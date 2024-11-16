@@ -36,12 +36,10 @@ private slots:
     void loadMoreItems();
 
 private:
-    std::shared_ptr<Company> company;
     int currentOffset;
     int limit;
     std::unique_ptr<Ui::AdminClass> ui;
-    UserManager *userManager;
-
+    std::shared_ptr<Company> company;
 
     void setupLazyLoading();
     void loadNextEmployees();

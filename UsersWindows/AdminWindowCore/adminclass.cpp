@@ -10,9 +10,6 @@ AdminClass::AdminClass(UserManager *userManager, QWidget *parent, User *user, st
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     displayUserInfo();
     setupLazyLoading();
-
-
-
 }
 
 AdminClass::~AdminClass() = default;
@@ -27,20 +24,17 @@ void AdminClass::displayUserInfo() {
 }
 
 void AdminClass::on_LogOutButton_clicked() {
-
     this->close();
-    auto *mainWindow = new MainWindow(nullptr);
+    MainWindow *mainWindow = new MainWindow(userManager, nullptr);
     mainWindow->show();
-
 }
 
 void AdminClass::addEmployeeToList(const QString& employeeName, int employeeId) {
-    auto* employeeWidget = new QWidget();
+    QWidget* employeeWidget = new QWidget();
+    QHBoxLayout* layout = new QHBoxLayout();
 
-    auto* layout = new QHBoxLayout();
-
-    auto* nameLabel = new QLabel(employeeName, employeeWidget);
-    auto* inviteButton = new QPushButton("Invite", employeeWidget);
+    QLabel* nameLabel = new QLabel(employeeName, employeeWidget);
+    QPushButton* inviteButton = new QPushButton("Invite", employeeWidget);
 
     connect(inviteButton, &QPushButton::clicked, this, [this, employeeId, inviteButton]() {
         inviteEmployee(employeeId);
@@ -53,7 +47,7 @@ void AdminClass::addEmployeeToList(const QString& employeeName, int employeeId) 
     layout->setContentsMargins(0, 0, 0, 0);
     employeeWidget->setLayout(layout);
 
-    auto* item = new QListWidgetItem(ui->listWidget);
+    QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
     item->setSizeHint(employeeWidget->sizeHint());
     ui->listWidget->setItemWidget(item, employeeWidget);
 }
@@ -123,8 +117,7 @@ void AdminClass::inviteEmployee(int employeeId) {
     InviteManager inviteManager(connectionString);
 
     std::string message = "You were invited to " + company->companyName;
-    std::cout<<message;
-    std::cout<<"hui:"<<employeeId;
+    std::cout<<message<<user->id<<employeeId;
     inviteManager.createInvite(message, user->id, employeeId);
 
 }
