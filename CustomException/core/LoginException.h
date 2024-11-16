@@ -12,12 +12,12 @@
 #include <string>
 #include "dbException.h"
 
-class DbException:public std::exception{
+class LoginException:public std::exception{
 private:
     std::string message;
 
 public:
-    explicit DbException(const std::string& msg)
+    explicit LoginException(const std::string& msg)
             :message(msg){};
 
     const char* what() const noexcept override {
