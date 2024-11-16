@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "UserManager.h"
 #include "../Companies/header/CompanyManager.h"
-
+#include "../CustomException/core/LoginException.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;

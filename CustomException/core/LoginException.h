@@ -2,15 +2,15 @@
 // Created by mzitr on 14.11.2024.
 //
 
-#ifndef TASK_MANAGEMENT_DBEXCEPTION_H
-#define TASK_MANAGEMENT_DBEXCEPTION_H
+#ifndef TASK_MANAGEMENT_LOGINEXCEPTION_H
+#define TASK_MANAGEMENT_LOGINEXCEPTION_H
 
 
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
 #include <string>
-#include "dbException.h"
+#include "LoginException.h"
 
 class LoginException:public std::exception{
 private:
@@ -28,4 +28,4 @@ public:
 };
 
 
-#endif //TASK_MANAGEMENT_DBEXCEPTION_H
+#endif //TASK_MANAGEMENT_LOGINEXCEPTION_H

@@ -83,7 +83,6 @@ void AdminClass::loadNextEmployees() {
 
     currentOffset += limit;
 }
-
 QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int offset) {
     QList<QPair<QString, int>> employees;
 
@@ -95,7 +94,10 @@ QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int 
         }
 
         pqxx::work txn(conn);
-        pqxx::result res = txn.exec("SELECT name, id FROM users LIMIT " + std::to_string(limit) + " OFFSET " + std::to_string(offset));
+
+        txn.conn().prepare("get_employees", "SELECT name, id FROM users WHERE role != $1 LIMIT $2 OFFSET $3");
+
+        pqxx::result res = txn.exec_prepared("get_employees", "admin", limit, offset);
 
         for (const auto& row : res) {
             QString name = QString::fromStdString(row["name"].c_str());
@@ -112,12 +114,12 @@ QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int 
     return employees;
 }
 
+
 void AdminClass::inviteEmployee(int employeeId) {
 
     InviteManager inviteManager(connectionString);
 
     std::string message = "You were invited to " + company->companyName;
-    std::cout<<message<<user->id<<employeeId;
     inviteManager.createInvite(message, user->id, employeeId);
 
 }

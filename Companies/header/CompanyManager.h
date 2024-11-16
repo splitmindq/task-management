@@ -24,16 +24,20 @@ public:
             : userManager(userManager), connectionString(connectionString), conn(connectionString) {}
 
     void createCompany(const std::string& companyName, int adminId) {
-        try {
-            int newCompanyId = getNextIdFromDb();
-            if (newCompanyId != -1) {
-                company = std::make_shared<Company>(newCompanyId, companyName, adminId);
-                saveCompanyToDb(company);
-            }
-        } catch (const DbException& e) {
-            std::cerr << "Ошибка при создании компании: " << e.what() << std::endl;
+        int newCompanyId = getNextIdFromDb();
+
+        if (newCompanyId == -1) {
+            std::cerr << "Ошибка: не удалось получить новый ID для компании." << std::endl;
+            return;
         }
+
+        company = std::make_shared<Company>(newCompanyId, companyName, adminId);
+
+
+        std::cout << "Компания успешно создана: " << companyName << std::endl;
+        saveCompanyToDb(company);
     }
+
 
     [[nodiscard]] std::shared_ptr<Company> getCompany() const {
         return company;

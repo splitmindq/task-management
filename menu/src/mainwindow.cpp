@@ -14,52 +14,51 @@ MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
 
 MainWindow::~MainWindow() = default;
 
-void MainWindow::on_loginButton_clicked()  {
-
+void MainWindow::on_loginButton_clicked() {
     QString login = ui->loginInput->text();
     QString password = ui->passwordInput->text();
 
     std::string username = login.toStdString();
     std::string pwd = password.toStdString();
 
+    try {
+        if (userManager->login(username, pwd)) {
+            std::string role = userManager->getRole(username);
+            int companyId = userManager->getCompanyId(username);
+            userManager->loadUser(username);  // Здесь может быть выброшено исключение
+            int id = userManager->getId(username);
+            User *user = userManager->findUserById(id);
 
-    if (userManager->login(username, pwd)) {
+            if (companyId == -1) {
+                auto *userWindow = new UserWindow(userManager, nullptr, user);
+                this->close();
+                userWindow->show();
+            } else {
+                if (user->role == "admin") {
+                    CompanyManager companyManager(userManager, connectionString);
+                    std::shared_ptr<Company> company = companyManager.findCompanyByAdminId(user->id);
 
-        std::string role = userManager->getRole(username);
-        int companyId = userManager->getCompanyId(username);
-        userManager->loadUser(username);
-        int id = userManager->getId(username);
-        User *user = userManager->findUserById(id);
-        if (companyId == -1) {
-
-            auto *userWindow = new UserWindow(userManager, nullptr, user);
-
-            this->close();
-            userWindow->show();
-        }
-        else{
-
-            if(user->role == "admin"){
-
-                CompanyManager companyManager(userManager, connectionString);
-                std::shared_ptr<Company> company = companyManager.findCompanyByAdminId(user->id);
-
-                if (company) {
-                    auto *adminWindow = new AdminClass(userManager, nullptr, user, company);
-                    adminWindow->show();
-                    this->close();
-                } else {
-                    QMessageBox::warning(this, "Login", "Компания не найдена для данного администратора.");
+                    if (company) {
+                        auto *adminWindow = new AdminClass(userManager, nullptr, user, company);
+                        adminWindow->show();
+                        this->close();
+                    } else {
+                        throw LoginException("Компания не найдена для данного администратора.");
+                    }
                 }
             }
+        } else {
+            throw LoginException("Неверный логин или пароль!");
         }
     }
-    else {
-            QMessageBox::warning(this, "Login", "Invalid username or password!");
-        }
+    catch (const LoginException& e) {
+        QMessageBox::warning(this, "Login", QString::fromStdString(e.what()));
     }
 
-
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", QString("Unexpected error: %1").arg(e.what()));
+    }
+}
 
 void MainWindow::on_registrationButton_clicked() {
 

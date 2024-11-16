@@ -24,12 +24,13 @@ void UserWindow::addInviteToList(const QString& senderName, const QString& messa
 
     QLabel* nameLabel = new QLabel(senderName, inviteWidget);
     QPushButton* acceptButton = new QPushButton("Accept", inviteWidget);
-
+    QLabel* messageLabel = new QLabel(message,inviteWidget);
     connect(acceptButton, &QPushButton::clicked, this, [this, senderName]() {
         acceptInvite();
     });
 
     layout->addWidget(nameLabel);
+    layout->addWidget(messageLabel);
     layout->addWidget(acceptButton);
     layout->setContentsMargins(0, 0, 0, 0);
     inviteWidget->setLayout(layout);
@@ -58,9 +59,9 @@ void UserWindow::on_checkInvitesButton_clicked() {
     ui->listWidget->clear();
     currentOffset = 0;
     loadNextInvites();
-}
-QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
+}QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
     QList<QPair<QString, QString>> invites;
+    QSet<QString> seenSenders;
 
     try {
         pqxx::connection conn(connectionString);
@@ -71,14 +72,19 @@ QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, in
             SELECT u.username AS sender, i.message
             FROM invites i
             JOIN users u ON i.sender_id = u.id
-            WHERE i.user_id = )" + std::to_string(user->id) +
-                R"( LIMIT )" + std::to_string(limit) +
-                R"( OFFSET )" + std::to_string(offset));
+            WHERE i.user_id = $1
+            LIMIT $2 OFFSET $3
+            )",
+                user->id, limit, offset);
 
         for (const auto& row : res) {
             QString sender = QString::fromStdString(row["sender"].c_str());
             QString message = QString::fromStdString(row["message"].c_str());
-            invites.append(qMakePair(sender, message));
+
+            if (!seenSenders.contains(sender)) {
+                invites.append(qMakePair(sender, message));
+                seenSenders.insert(sender);
+            }
         }
 
         txn.commit();
