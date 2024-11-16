@@ -9,6 +9,7 @@ UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
         : BasicClass(userManager, parent,user), ui(new Ui::UserWindow),currentOffset(0), limit(20){
     ui->setupUi(this);
     displayUserInfo();
+
 }
 
 UserWindow::~UserWindow() = default;
@@ -54,11 +55,16 @@ void UserWindow::on_LogOutButton_clicked() {
 }
 
 void UserWindow::on_checkInvitesButton_clicked() {
+
+
     ui->listWidget->clear();
     currentOffset = 0;
     loadNextInvites();
+
 }
+
 QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
+    std::cout<<*user;
     QList<QPair<QString, QString>> invites;
 
     try {

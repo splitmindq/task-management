@@ -59,6 +59,9 @@ set(SOURCES
         CustomException/core/dbException.h
         CustomException/core/dbExceptionHandler.cpp
         CustomException/core/dbExceptionHandler.h
+        UsersWindows/EmployeeWindow/employeewindow.cpp
+        UsersWindows/EmployeeWindow/employeewindow.h
+        UsersWindows/EmployeeWindow/employeewindow.ui
         #        UsersWindows/headers/userwindow.h
 
         #---------------------

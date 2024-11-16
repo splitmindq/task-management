@@ -28,11 +28,11 @@ void UserManager::loadUser(const std::string &username) {
 
         const auto &row = R[0];
         int id = row[0].as<int>();
-        std::string email = row[1].as<std::string>();
-        std::string password = row[3].as<std::string>();
-        std::string name = row[4].as<std::string>();
-        std::string surname = row[5].as<std::string>();
-        std::string role = row[6].as<std::string>();
+        auto email = row[1].as<std::string>();
+        auto password = row[3].as<std::string>();
+        auto name = row[4].as<std::string>();
+        auto surname = row[5].as<std::string>();
+        auto role = row[6].as<std::string>();
         int companyId = row[7].as<int>();
 
         auto user = std::make_unique<User>(id, email, username, password, name, surname);
