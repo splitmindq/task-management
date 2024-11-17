@@ -20,6 +20,8 @@ companyRegWindow::~companyRegWindow() {
 }
 
 void companyRegWindow::on_createButton_clicked() {
+    ui->createButton->setEnabled(false);
+
     QString companyName = ui->nameEdit->text();
     if (companyName.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Название компании не может быть пустым.");

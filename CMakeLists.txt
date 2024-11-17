@@ -8,6 +8,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 SET(CMAKE_TOOLCHAIN_FILE)
 
+find_package(tinyxml2 CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
 find_package(Qt6 COMPONENTS
@@ -58,6 +59,12 @@ set(SOURCES
         CustomException/core/LoginException.h
         CustomException/core/dbExceptionHandler.cpp
         CustomException/core/dbExceptionHandler.h
+        XmlHandler/src/XmlHandler.cpp
+        XmlHandler/header/XmlHandler.h
+        UsersContainer/src/UserContainer.cpp
+        UsersContainer/header/UserContainer.h
+        UsersIterator/src/UsersIterator.cpp
+        UsersIterator/header/UsersIterator.h
         #        UsersWindows/headers/userwindow.h
 
         #---------------------
@@ -67,7 +74,7 @@ qt6_add_resources(RESOURCE_TARGET "${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc")
 
 add_executable(task_management ${SOURCES})
 
-target_link_libraries(task_management CURL::libcurl libpqxx::pqxx)
+target_link_libraries(task_management CURL::libcurl libpqxx::pqxx  tinyxml2::tinyxml2)
 
 target_link_libraries(task_management
         Qt::Core

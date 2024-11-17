@@ -4,6 +4,8 @@
 #include "QMessageBox"
 #include "userWindowCore/userwindow.h"
 #include "headers/registrationwindow.h"
+#include "tinyxml2.h"
+#include "filesystem"
 
 MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
 
@@ -15,6 +17,7 @@ MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
 MainWindow::~MainWindow() = default;
 
 void MainWindow::on_loginButton_clicked() {
+    ui->loginButton->setEnabled(false);
     QString login = ui->loginInput->text();
     QString password = ui->passwordInput->text();
 
@@ -25,7 +28,7 @@ void MainWindow::on_loginButton_clicked() {
         if (userManager->login(username, pwd)) {
             std::string role = userManager->getRole(username);
             int companyId = userManager->getCompanyId(username);
-            userManager->loadUser(username);  // Здесь может быть выброшено исключение
+            userManager->loadUser(username);
             int id = userManager->getId(username);
             User *user = userManager->findUserById(id);
 
@@ -48,6 +51,7 @@ void MainWindow::on_loginButton_clicked() {
                 }
             }
         } else {
+            ui->loginButton->setEnabled(true);
             throw LoginException("Неверный логин или пароль!");
         }
     }
@@ -61,7 +65,7 @@ void MainWindow::on_loginButton_clicked() {
 }
 
 void MainWindow::on_registrationButton_clicked() {
-
+    ui->registrationButton->setEnabled(false);
    auto *registrationWindow = new RegistrationWindow(userManager, nullptr);
     this->close();
     registrationWindow->show();

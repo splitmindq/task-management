@@ -5,6 +5,7 @@
 #include "UserManager.h"
 #include "../Companies/header/CompanyManager.h"
 #include "../CustomException/core/LoginException.h"
+#include "../XmlHandler/header/XmlHandler.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;

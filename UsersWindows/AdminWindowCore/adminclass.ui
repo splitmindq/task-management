@@ -58,7 +58,14 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>find employees</string>
+             <string>Find employees</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="docDownloadButton">
+            <property name="text">
+             <string>Download the list of unemployed users</string>
             </property>
            </widget>
           </item>

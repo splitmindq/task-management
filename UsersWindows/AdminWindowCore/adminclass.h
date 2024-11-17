@@ -6,6 +6,8 @@
 #include "../Companies/header/CompanyManager.h"
 #include "../menu/headers/mainwindow.h"
 #include "../Invites/headers/InviteManager.h"
+#include "../UsersIterator/header/UsersIterator.h"
+#include "../UsersContainer/header/UserContainer.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class AdminClass; }
 QT_END_NAMESPACE
@@ -28,11 +30,10 @@ public:
 private slots:
 
     void on_LogOutButton_clicked();
-
     void on_findEmployeesButton_clicked();
+    void on_docDownloadButton_clicked();
 
     void onScroll(int value);
-
     void loadMoreItems();
 
 private:

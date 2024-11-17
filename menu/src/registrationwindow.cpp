@@ -16,7 +16,7 @@ RegistrationWindow::RegistrationWindow(UserManager *userManager,QWidget *parent)
 RegistrationWindow::~RegistrationWindow() = default;
 
 void RegistrationWindow::on_backToMenuButton_clicked() {
-
+    ui->backToMenuButton->setEnabled(false);
     auto mainWindow = new MainWindow(userManager, nullptr);
     this->close();
     mainWindow->show();
@@ -24,7 +24,7 @@ void RegistrationWindow::on_backToMenuButton_clicked() {
 }
 
 void RegistrationWindow::on_createAccountButton_clicked() {
-
+    ui->createAccountButton->setEnabled(false);
     std::string name = ui->nameEdit->text().toStdString();
     std::string surname = ui->surnameEdit->text().toStdString();
     std::string email = ui->emailEdit->text().toStdString();
@@ -33,6 +33,7 @@ void RegistrationWindow::on_createAccountButton_clicked() {
 
     if (login.empty() || name.empty() || surname.empty() || email.empty() || password.empty()) {
         QMessageBox::warning(this, "Error", "Please fill out all fields.");
+        ui->createAccountButton->setEnabled(true);
         return;
     }
 
