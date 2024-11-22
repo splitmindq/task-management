@@ -22,11 +22,11 @@ void companyRegWindow::on_createButton_clicked() {
 
     QString companyName = ui->nameEdit->text();
     if (companyName.isEmpty()) {
-        QMessageBox::warning(this, "Ошибка", "Название компании не может быть пустым.");
+        QMessageBox::warning(this, "Error", "Name field cannot be empty.");
     } else {
         emit companyNameEntered(ui->nameEdit->text());
     }
-    QMessageBox::information(this,"Создание компании","Компания создана");
+    QMessageBox::information(this,"Company","Company Created");
     this->close();
 }
 

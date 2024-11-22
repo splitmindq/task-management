@@ -7,7 +7,9 @@
 
 #include <QMainWindow>
 #include "BasicClassCore/basicclass.h"
-
+#include "../Companies/header/CompanyManager.h"
+#include "../menu/headers/mainwindow.h"
+#include "../userWindowCore/userwindow.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class EmployeeWindow; }
 QT_END_NAMESPACE
@@ -16,14 +18,19 @@ class EmployeeWindow : public BasicClass{
 Q_OBJECT
 
 public:
-    explicit EmployeeWindow(QWidget *parent = nullptr);
-    void displayUserInfo(){
-        std::cout<<"";
-    }
+    explicit EmployeeWindow(UserManager *userManager,QWidget *parent = nullptr,User *user = nullptr,
+                            std::shared_ptr<Company> company = nullptr);
+
+    void displayUserInfo() override;
     ~EmployeeWindow() override ;
 
+private slots:
+    void on_LogOutButton_clicked();
+    void on_resignButton_clicked();
 private:
-    Ui::EmployeeWindow *ui;
+    std::unique_ptr<Ui::EmployeeWindow> ui;
+    std::shared_ptr<Company> company;
+
 };
 
 

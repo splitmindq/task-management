@@ -30,7 +30,7 @@ private:
     void openUserWindow(User *user);
     void handleAdminOrEmployee(User *user);
     void handleAdmin(User *user);
-    void openEmployeeWindow();
+    void openEmployeeWindow(User *user);
 
     std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
     std::unique_ptr<Ui::MainWindow> ui;

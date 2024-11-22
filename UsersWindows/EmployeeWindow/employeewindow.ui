@@ -40,10 +40,31 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <widget class="QListWidget" name="listWidget_4"/>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_8"/>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Upcoming deadlines</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="listWidget_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -58,14 +79,14 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>Find employees</string>
+             <string>Check Tasks</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QPushButton" name="docDownloadButton_4">
             <property name="text">
-             <string>Download the list of unemployed users</string>
+             <string>Employee Directory</string>
             </property>
            </widget>
           </item>
@@ -118,7 +139,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="LogOutButton_4">
+       <widget class="QPushButton" name="LogOutButton">
         <property name="text">
          <string>Log Out</string>
         </property>
@@ -127,9 +148,9 @@
      </layout>
     </item>
     <item>
-     <widget class="QPushButton" name="createCompanyButton">
+     <widget class="QPushButton" name="resignButton">
       <property name="text">
-       <string>Modify Company Info</string>
+       <string>Resign from the company</string>
       </property>
      </widget>
     </item>

@@ -17,11 +17,12 @@ void UserWindow::acceptInvite(int inviterId) {
     std::cout<<inviterId;
     auto inviter = userManager->findUserById(inviterId);
     int companyId = inviter->companyId;
-    std::cout<<companyId;
     user->role="employee";
     user->companyId = companyId;
     userManager->saveUser(*user);
-    auto employeeWindow = new EmployeeWindow();
+    CompanyManager companyManager(userManager, connectionString);
+    auto company = companyManager.findCompanyByAdminId(inviterId);
+    auto employeeWindow = new EmployeeWindow(userManager, nullptr,user,company);
     employeeWindow->show();
     this -> close();
 

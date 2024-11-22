@@ -42,6 +42,8 @@ public:
     }
 
     std::shared_ptr<Company> findCompanyByAdminId(int adminId);
+    std::shared_ptr<Company> findCompanyById(int id);
+
 
     template <typename T>
     T executeScalarQuery(pqxx::work& txn, const std::string& query) {

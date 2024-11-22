@@ -13,11 +13,9 @@
 class XmlHandler {
 public:
     XmlHandler() = default;
-
-    // Создание файла XML (выполняется только один раз)
     void createXmlFile(const std::string &filename, const std::string &rootElementName) {
         if (std::filesystem::exists(filename)) {
-            std::cout << "Файл уже существует: " << filename << std::endl;
+            std::cout << "File already exists: " << filename << std::endl;
             return;
         }
 
@@ -26,9 +24,9 @@ public:
         document.InsertFirstChild(root);
 
         if (document.SaveFile(filename.c_str()) == tinyxml2::XML_SUCCESS) {
-            std::cout << "XML файл успешно создан: " << filename << std::endl;
+            std::cout << "XML file created successfully: " << filename << std::endl;
         } else {
-            std::cerr << "Ошибка при создании XML файла!" << std::endl;
+            std::cerr << "Error creating XML file!" << std::endl;
         }
     }
 
@@ -62,15 +60,15 @@ public:
                 root->InsertEndChild(userElement);
 
                 if (document.SaveFile(filename.c_str()) == tinyxml2::XML_SUCCESS) {
-                    std::cout << "Пользователь успешно добавлен в XML!" << std::endl;
+                    std::cout << "User added to XML successfully!" << std::endl;
                 } else {
-                    std::cerr << "Ошибка при сохранении XML файла!" << std::endl;
+                    std::cerr << "Error saving XML file!" << std::endl;
                 }
             } else {
-                std::cerr << "Ошибка: корневой элемент не найден!" << std::endl;
+                std::cerr << "Error: root element not found!" << std::endl;
             }
         } else {
-            std::cerr << "Ошибка при загрузке XML файла!" << std::endl;
+            std::cerr << "Error loading XML file!" << std::endl;
         }
     }
 
@@ -85,17 +83,16 @@ public:
                 }
 
                 if (document.SaveFile(filename.c_str()) == tinyxml2::XML_SUCCESS) {
-                    std::cout << "Содержимое корневого элемента очищено: " << filename << std::endl;
+                    std::cout << "Root content cleared: " << filename << std::endl;
                 } else {
-                    std::cerr << "Ошибка при сохранении XML файла!" << std::endl;
+                    std::cerr << "Error saving XML file!" << std::endl;
                 }
             } else {
-                std::cerr << "Корневой элемент не найден в XML файле!" << std::endl;
+                std::cerr << "Root element not found in XML file!" << std::endl;
             }
         } else {
-            std::cerr << "Ошибка при загрузке XML файла!" << std::endl;
+            std::cerr << "Error loading XML file!" << std::endl;
         }
     }
-
 };
 #endif

@@ -64,7 +64,7 @@ void MainWindow::handleAdminOrEmployee(User *user) {
     if (user->role == "admin") {
         handleAdmin(user);
     } else {
-        openEmployeeWindow();
+        openEmployeeWindow(user);
     }
 }
 
@@ -81,10 +81,18 @@ void MainWindow::handleAdmin(User *user) {
     }
 }
 
-void MainWindow::openEmployeeWindow() {
-    auto employeeWindow = new EmployeeWindow(nullptr);
-    this->close();
-    employeeWindow->show();
+void MainWindow::openEmployeeWindow(User* user) {
+    CompanyManager companyManager(userManager, connectionString);
+    std::shared_ptr<Company> company = companyManager.findCompanyById(user->companyId);
+
+    if (company) {
+        auto employeeWindow = new EmployeeWindow(userManager, nullptr, user, company);
+        this->close();
+        employeeWindow->show();
+    }
+    else {
+        throw LoginException("Company not found for this user.");
+    }
 }
 
 void MainWindow::on_registrationButton_clicked() {
