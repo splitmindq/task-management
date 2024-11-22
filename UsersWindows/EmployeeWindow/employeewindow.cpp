@@ -11,6 +11,7 @@
 EmployeeWindow::EmployeeWindow(QWidget *parent) :
         BasicClass(nullptr,parent, nullptr), ui(new Ui::EmployeeWindow) {
     ui->setupUi(this);
+    displayUserInfo();
 }
 
 EmployeeWindow::~EmployeeWindow() {

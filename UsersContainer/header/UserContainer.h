@@ -29,14 +29,14 @@ public:
         return users.size();
     }
 
-    auto begin() {  // Используем auto, чтобы компилятор сам вывел тип итератора
+    auto begin() {
         return UsersIterator(users.begin());
     }
     auto end() {
         return UsersIterator(users.end());
     }
 
-    void addFilter(std::function<std::string()> filter) {
+    void addFilter(const std::function<std::string()> filter) {
         filters.push_back(filter);
     }
 

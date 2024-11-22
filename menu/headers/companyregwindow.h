@@ -26,10 +26,11 @@ signals:
 
 private slots:
     void on_createButton_clicked();
+    void on_returnButton_clicked();
 
 
 private:
-    Ui::companyRegWindow *ui;
+    std::unique_ptr<Ui::companyRegWindow> ui;
 };
 
 

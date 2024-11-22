@@ -121,7 +121,7 @@ void AdminClass::inviteEmployee(int employeeId) {
 
     InviteManager inviteManager(connectionString);
 
-    std::string message = "You were invited to " + company->companyName;
+    std::string message = "You were invited to " + company->getName();
     inviteManager.createInvite(message, user->id, employeeId);
 
 }

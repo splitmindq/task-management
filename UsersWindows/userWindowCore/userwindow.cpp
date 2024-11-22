@@ -13,11 +13,20 @@ UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
 
 UserWindow::~UserWindow() = default;
 
-void UserWindow::acceptInvite() {
-//
-//
-// }
+void UserWindow::acceptInvite(int inviterId) {
+    std::cout<<inviterId;
+    auto inviter = userManager->findUserById(inviterId);
+    int companyId = inviter->companyId;
+    std::cout<<companyId;
+    user->role="employee";
+    user->companyId = companyId;
+    userManager->saveUser(*user);
+    auto employeeWindow = new EmployeeWindow();
+    employeeWindow->show();
+    this -> close();
+
 }
+
 void UserWindow::addInviteToList(const QString& senderName, const QString& message) {
     QWidget* inviteWidget = new QWidget();
     QHBoxLayout* layout = new QHBoxLayout();
@@ -26,7 +35,11 @@ void UserWindow::addInviteToList(const QString& senderName, const QString& messa
     QPushButton* acceptButton = new QPushButton("Accept", inviteWidget);
     QLabel* messageLabel = new QLabel(message,inviteWidget);
     connect(acceptButton, &QPushButton::clicked, this, [this, senderName]() {
-        acceptInvite();
+
+        int inviterId = userManager->getId(senderName.toStdString());
+        userManager->loadUser(senderName.toStdString());
+        acceptInvite(inviterId);
+
     });
 
     layout->addWidget(nameLabel);
@@ -109,7 +122,7 @@ void UserWindow::onCompanyNameEntered(const QString &companyName) {
     CompanyManager companyManager(userManager, connectionString);
     companyManager.createCompany(companyName.toStdString(), user->id);
     auto company = companyManager.getCompany();
-    user->companyId = company->id;
+    user->companyId = company->getCompanyId();
     user->role = "admin";
     userManager->updateUserInDb(*user);
     auto *adminWindow = new AdminClass(userManager, nullptr, user, company);

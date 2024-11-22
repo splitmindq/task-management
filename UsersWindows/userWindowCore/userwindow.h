@@ -11,6 +11,7 @@
 #include "memory"
 #include "../Companies/header/CompanyManager.h"
 #include "../AdminWindowCore/adminclass.h"
+#include "EmployeeWindow/employeewindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class UserWindow; }
@@ -36,7 +37,7 @@ private:
     QList<QPair<QString, QString>> loadInvitesFromDatabase(int limit, int offset);
     void loadNextInvites();
     void addInviteToList(const QString& senderName,const QString& message);
-    void acceptInvite();
+    void acceptInvite(int companyId);
 };
 
 

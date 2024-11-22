@@ -1,40 +1,34 @@
-//
-// Created by mzitr on 04.11.2024.
-//
-
 #ifndef TASK_MANAGEMENT_COMPANY_H
 #define TASK_MANAGEMENT_COMPANY_H
+
 #include <iostream>
-#include <memory>
 #include <string>
+#include <stdexcept>
 
-class Company{
-
+class Company {
 private:
-
-
-
-public:
     int id;
     std::string companyName;
     int adminId;
 
+public:
+    Company(int companyId, const std::string &name, int adminId = -1)
+            : id(companyId), adminId(adminId) {
+        setName(name);
+    }
 
-    Company(int companyId,const std::string &name ,int adminId):
-            id(companyId),companyName(name),adminId(adminId){}
+    [[nodiscard]] int getCompanyId() const { return id; }
+    [[nodiscard]] const std::string &getName() const { return companyName; }
+    [[nodiscard]] int getAdminId() const { return adminId; }
 
-    int getCompanyId() const {return id;}
-    const std::string &getName() const {return companyName;}
-    int getAdminId() const {return adminId;}
+    void setAdminId(int setAdminId) { adminId = setAdminId; }
 
-    void setAdminId(int id) { adminId = id; }
-    void setName(const std::string& name) {companyName = name; }
-
-
-
-
-
+    void setName(const std::string_view &name) {
+        if (name.empty()) {
+            throw std::invalid_argument("Company name cannot be empty.");
+        }
+        companyName = name;
+    }
 };
 
-
-#endif //TASK_MANAGEMENT_COMPANY_H
+#endif // TASK_MANAGEMENT_COMPANY_H

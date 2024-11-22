@@ -57,14 +57,13 @@ set(SOURCES
         Invites/src/InviteManager.cpp
         Invites/headers/InviteManager.h
         CustomException/core/LoginException.h
-        CustomException/core/dbExceptionHandler.cpp
-        CustomException/core/dbExceptionHandler.h
         XmlHandler/src/XmlHandler.cpp
         XmlHandler/header/XmlHandler.h
         UsersContainer/src/UserContainer.cpp
         UsersContainer/header/UserContainer.h
         UsersIterator/src/UsersIterator.cpp
         UsersIterator/header/UsersIterator.h
+        UsersWindows/EmployeeWindow/employeewindow.cpp
         #        UsersWindows/headers/userwindow.h
 
         #---------------------

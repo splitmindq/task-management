@@ -13,7 +13,7 @@ public:
     explicit UsersIterator(typename std::vector<User>::iterator start) : it(start) {}
 
     User& operator*() { return *it; }
-    User* operator->() { return &(*it); }
+    User* operator->() { return std::to_address(it); }
 
     UsersIterator& operator++() {
         ++it;

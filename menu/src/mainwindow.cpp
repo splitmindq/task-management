@@ -14,7 +14,9 @@ MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
 
 }
 
+
 MainWindow::~MainWindow() = default;
+
 
 void MainWindow::on_loginButton_clicked() {
     ui->loginButton->setEnabled(false);
@@ -25,48 +27,69 @@ void MainWindow::on_loginButton_clicked() {
     std::string pwd = password.toStdString();
 
     try {
-        if (userManager->login(username, pwd)) {
-            std::string role = userManager->getRole(username);
-            int companyId = userManager->getCompanyId(username);
-            userManager->loadUser(username);
-            int id = userManager->getId(username);
-            User *user = userManager->findUserById(id);
-
-            if (companyId == -1) {
-                auto *userWindow = new UserWindow(userManager, nullptr, user);
-                this->close();
-                userWindow->show();
-            } else {
-                if (user->role == "admin") {
-                    CompanyManager companyManager(userManager, connectionString);
-                    std::shared_ptr<Company> company = companyManager.findCompanyByAdminId(user->id);
-
-                    if (company) {
-                        auto *adminWindow = new AdminClass(userManager, nullptr, user, company);
-                        adminWindow->show();
-                        this->close();
-                    } else {
-                        throw LoginException("Компания не найдена для данного администратора.");
-                    }
-                }
-            }
-        } else {
+        if (!userManager->login(username, pwd)) {
             ui->loginButton->setEnabled(true);
-            throw LoginException("Неверный логин или пароль!");
+            throw LoginException("Invalid username or password!");
         }
-    }
-    catch (const LoginException& e) {
-        QMessageBox::warning(this, "Login", QString::fromStdString(e.what()));
-    }
 
-    catch (const std::exception& e) {
+        handleUserRole(username);
+    } catch (const LoginException &e) {
+        QMessageBox::warning(this, "Login", QString::fromStdString(e.what()));
+    } catch (const std::exception &e) {
         QMessageBox::critical(this, "Error", QString("Unexpected error: %1").arg(e.what()));
     }
 }
 
+void MainWindow::handleUserRole(const std::string &username) {
+    std::string role = userManager->getRole(username);
+    int companyId = userManager->getCompanyId(username);
+    userManager->loadUser(username);
+    int id = userManager->getId(username);
+    User *user = userManager->findUserById(id);
+
+    if (companyId == -1) {
+        openUserWindow(user);
+    } else {
+        handleAdminOrEmployee(user);
+    }
+}
+
+void MainWindow::openUserWindow(User *user) {
+    auto *userWindow = new UserWindow(userManager, nullptr, user);
+    this->close();
+    userWindow->show();
+}
+
+void MainWindow::handleAdminOrEmployee(User *user) {
+    if (user->role == "admin") {
+        handleAdmin(user);
+    } else {
+        openEmployeeWindow();
+    }
+}
+
+void MainWindow::handleAdmin(User *user) {
+    CompanyManager companyManager(userManager, connectionString);
+    std::shared_ptr<Company> company = companyManager.findCompanyByAdminId(user->id);
+
+    if (company) {
+        auto adminWindow = new AdminClass(userManager, nullptr, user, company);
+        adminWindow->show();
+        this->close();
+    } else {
+        throw LoginException("Company not found for this administrator.");
+    }
+}
+
+void MainWindow::openEmployeeWindow() {
+    auto employeeWindow = new EmployeeWindow(nullptr);
+    this->close();
+    employeeWindow->show();
+}
+
 void MainWindow::on_registrationButton_clicked() {
     ui->registrationButton->setEnabled(false);
-   auto *registrationWindow = new RegistrationWindow(userManager, nullptr);
+    auto registrationWindow = new RegistrationWindow(userManager, nullptr);
     this->close();
     registrationWindow->show();
 

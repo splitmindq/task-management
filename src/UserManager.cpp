@@ -46,7 +46,6 @@ void UserManager::loadUser(const std::string &username) {
     }
 }
 
-
 void UserManager::loadUsers() {
 
     try {
@@ -107,7 +106,6 @@ void UserManager::saveUser(const User &user) {
     }
 }
 
-
 int getMaxUserId(const std::string &connectionString) {
     int maxId = 1;
 
@@ -131,8 +129,8 @@ int getMaxUserId(const std::string &connectionString) {
     return maxId + 1;
 }
 
-
-void UserManager::createUser(const std::string &name,const std::string &surname,const std::string &email,const std::string &login, const std::string &password) {
+void UserManager::createUser(const std::string &name, const std::string &surname, const std::string &email,
+                             const std::string &login, const std::string &password) {
 
 
     int id = getMaxUserId(connectionString);
@@ -150,7 +148,7 @@ void UserManager::createUser(const std::string &name,const std::string &surname,
 
 }
 
-int UserManager::getCompanyId(const std::string &username)  {
+int UserManager::getCompanyId(const std::string &username) {
 
     try {
         pqxx::connection C(connectionString);
@@ -171,8 +169,7 @@ int UserManager::getCompanyId(const std::string &username)  {
     }
 }
 
-
-int UserManager::getId(const std::string &username)  {
+int UserManager::getId(const std::string &username) {
 
     try {
         pqxx::connection C(connectionString);
@@ -215,6 +212,7 @@ std::string UserManager::getRole(const std::string &username) {
     }
 
 }
+
 bool UserManager::isAdmin(int id) {
     try {
         pqxx::connection C(connectionString);
@@ -235,7 +233,7 @@ bool UserManager::isAdmin(int id) {
     }
 }
 
-void UserManager::updateUserInDb(const User& user) {
+void UserManager::updateUserInDb(const User &user) {
     try {
         pqxx::connection conn(connectionString);
         pqxx::work txn(conn);
@@ -244,13 +242,14 @@ void UserManager::updateUserInDb(const User& user) {
                 "UPDATE users SET "
                 "username = " + txn.quote(user.username) + ", "
                                                            "role = " + txn.quote(user.role) + ", "
-                                                                                              "companyId = " + txn.quote(user.companyId) + " "
-                                                                                                                                            "WHERE id = " + txn.quote(user.id) + ";";
+                                                                                              "companyId = " +
+                txn.quote(user.companyId) + " "
+                                            "WHERE id = " + txn.quote(user.id) + ";";
 
         txn.exec(query);
         txn.commit();
     }
-    catch (const std::exception& e) {
+    catch (const std::system_error &e) {
         std::cerr << "Error updating user in database: " << e.what() << std::endl;
     }
 }

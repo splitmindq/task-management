@@ -17,8 +17,10 @@ Q_OBJECT
 
 public:
     explicit EmployeeWindow(QWidget *parent = nullptr);
-
-    ~EmployeeWindow() override;
+    void displayUserInfo(){
+        std::cout<<"";
+    }
+    ~EmployeeWindow() override ;
 
 private:
     Ui::EmployeeWindow *ui;

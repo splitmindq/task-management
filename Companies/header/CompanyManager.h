@@ -7,7 +7,6 @@
 #include <pqxx/pqxx>
 #include "Company.h"
 #include "UserManager.h"
-#include "../CustomException/core/dbExceptionHandler.h"
 class CompanyManager {
 private:
     UserManager* userManager;
@@ -27,14 +26,13 @@ public:
         int newCompanyId = getNextIdFromDb();
 
         if (newCompanyId == -1) {
-            std::cerr << "Ошибка: не удалось получить новый ID для компании." << std::endl;
-            return;
+          newCompanyId = 1;
         }
 
         company = std::make_shared<Company>(newCompanyId, companyName, adminId);
 
 
-        std::cout << "Компания успешно создана: " << companyName << std::endl;
+        std::cout << "Company successfully created:" << companyName << std::endl;
         saveCompanyToDb(company);
     }
 
@@ -49,7 +47,7 @@ public:
     T executeScalarQuery(pqxx::work& txn, const std::string& query) {
         pqxx::result R = txn.exec(query);
         if (R.empty() || R[0][0].is_null()) {
-            throw std::runtime_error("Query result is empty or NULL");
+            throw std::invalid_argument("Query result is empty or NULL");
         }
         return R[0][0].as<T>();
     }

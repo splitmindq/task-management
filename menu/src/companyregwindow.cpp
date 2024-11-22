@@ -15,9 +15,7 @@ companyRegWindow::companyRegWindow(QWidget *parent) :
 
 }
 
-companyRegWindow::~companyRegWindow() {
-    delete ui;
-}
+companyRegWindow::~companyRegWindow() = default;
 
 void companyRegWindow::on_createButton_clicked() {
     ui->createButton->setEnabled(false);
@@ -30,4 +28,10 @@ void companyRegWindow::on_createButton_clicked() {
     }
     QMessageBox::information(this,"Создание компании","Компания создана");
     this->close();
+}
+
+void companyRegWindow::on_returnButton_clicked(){
+    ui->returnButton->setEnabled(false);
+    this->close();
+
 }

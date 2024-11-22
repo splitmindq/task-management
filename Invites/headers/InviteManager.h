@@ -1,5 +1,4 @@
 #ifndef TASK_MANAGEMENT_INVITEMANAGER_H
-#define TASK_MANAGEMENT_1INVITEMANAGER_H
 #include "iostream"
 #include "pqxx/pqxx"
 #include "Invite.h"
@@ -21,8 +20,8 @@ public:
 
         int newInviteId = getNextIdFromDb();
         if (newInviteId != -1) {
-            auto invite = std::make_shared<Invite<int>>(newInviteId, senderId, message, receiverId);
-            saveInviteToDb(invite);
+            auto inviteObject = std::make_shared<Invite<int>>(newInviteId, senderId, message, receiverId);
+            saveInviteToDb(inviteObject);
         }
     }
 
