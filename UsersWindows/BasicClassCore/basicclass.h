@@ -9,6 +9,7 @@
 #include <UserManager.h>
 #include <pqxx/pqxx>
 #include <string>
+#include "EmailSender.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BasicClass; }
@@ -21,6 +22,7 @@ public:
     explicit BasicClass(UserManager *userManager, QWidget *parent = nullptr,User *user = nullptr);
     ~BasicClass() override;
     virtual void displayUserInfo() = 0;
+
 
 protected:
     UserManager *userManager;

@@ -9,8 +9,6 @@ int main(int argc, char *argv[]) {
 
     SetConsoleOutputCP(CP_UTF8);
 
-    EmailSender emailSender("<emailsender11@mail.ru>", "smtps://smtp.mail.ru:465",
-                            "emailsender11@mail.ru", "2bcQFBxtjmwUWdP7jxpT", "Kge6zBXU5SFsMnNsSkfk");
 
     QApplication MainMenu(argc, argv);
     MainWindow window(&userManager);

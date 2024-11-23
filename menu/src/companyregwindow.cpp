@@ -7,12 +7,9 @@
 #include "headers/companyregwindow.h"
 #include "ui_companyRegWindow.h"
 
-
 companyRegWindow::companyRegWindow(QWidget *parent) :
         QDialog(parent), ui(new Ui::companyRegWindow) {
     ui->setupUi(this);
-
-
 }
 
 companyRegWindow::~companyRegWindow() = default;

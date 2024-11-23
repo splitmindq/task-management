@@ -36,3 +36,10 @@ void EmployeeWindow::on_resignButton_clicked() {
 void EmployeeWindow::displayUserInfo(){
     std::cout<<"";
 }
+void EmployeeWindow::on_changeInfoButton_clicked() {
+    ui->changeInfoButton->setEnabled(false);
+    auto changeInfoWindow = new ChangeInfoWindow(nullptr,user,userManager);
+    changeInfoWindow->show();
+    this->close();
+
+}

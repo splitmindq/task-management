@@ -12,6 +12,7 @@
 #include "../Companies/header/CompanyManager.h"
 #include "../AdminWindowCore/adminclass.h"
 #include "EmployeeWindow/employeewindow.h"
+#include "ChangeInfoWindow/changeinfowindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class UserWindow; }
@@ -30,6 +31,7 @@ private slots:
     void onCompanyNameEntered(const QString &companyName);
     void on_createCompanyButton_clicked();
     void on_checkInvitesButton_clicked();
+    void on_changeInfoButton_clicked();
 private:
     std::unique_ptr<Ui::UserWindow> ui;
     int currentOffset;
@@ -38,6 +40,7 @@ private:
     void loadNextInvites();
     void addInviteToList(const QString& senderName,const QString& message);
     void acceptInvite(int companyId);
+    void clearInviteForUser(int inviterId);
 };
 
 

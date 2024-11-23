@@ -139,6 +139,12 @@ void AdminClass::on_docDownloadButton_clicked() {
         xmlHandler.addUserToXml(filename,&(*it));
 
     }
+}
 
+void AdminClass::on_changeInfoButton_clicked() {
+    ui->changeInfoButton->setEnabled(false);
+    auto changeInfoWindow = new ChangeInfoWindow(nullptr,user,userManager);
+    changeInfoWindow->show();
+    this->close();
 
 }

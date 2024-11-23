@@ -10,10 +10,7 @@
 //-------------------------------------------------------------------------------------
 
 #include <iostream>
-
-
 #include <vector>
-
 #include <string>
 #include <memory>
 #include <array>
@@ -26,8 +23,5 @@
 
 
 //-------------------------------------------------------------------------------------
-
-void displayMenu();
-void handleMenuChoice(int choice, UserManager& userManager, EmailSender& emailSender);
 
 #endif // LABS_SENDING_EMAIL_H

@@ -8,6 +8,7 @@
 #include "../Invites/headers/InviteManager.h"
 #include "../UsersIterator/header/UsersIterator.h"
 #include "../UsersContainer/header/UserContainer.h"
+#include "../ChangeInfoWindow/changeinfowindow.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class AdminClass; }
 QT_END_NAMESPACE
@@ -35,7 +36,7 @@ private slots:
 
     void onScroll(int value);
     void loadMoreItems();
-
+    void on_changeInfoButton_clicked();
 private:
     int currentOffset;
     int limit;

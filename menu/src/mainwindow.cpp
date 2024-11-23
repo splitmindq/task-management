@@ -81,7 +81,7 @@ void MainWindow::handleAdmin(User *user) {
     }
 }
 
-void MainWindow::openEmployeeWindow(User* user) {
+void MainWindow::openEmployeeWindow(User *user) {
     CompanyManager companyManager(userManager, connectionString);
     std::shared_ptr<Company> company = companyManager.findCompanyById(user->companyId);
 
@@ -89,8 +89,7 @@ void MainWindow::openEmployeeWindow(User* user) {
         auto employeeWindow = new EmployeeWindow(userManager, nullptr, user, company);
         this->close();
         employeeWindow->show();
-    }
-    else {
+    } else {
         throw LoginException("Company not found for this user.");
     }
 }

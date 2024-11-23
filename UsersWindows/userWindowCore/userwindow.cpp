@@ -13,6 +13,24 @@ UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
 
 UserWindow::~UserWindow() = default;
 
+void UserWindow::clearInviteForUser(int inviterId) {
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        W.exec("DELETE FROM invites WHERE user_id = " + W.quote(user->id) +
+            "AND sender_id = " + W.quote(inviterId)
+        );
+        W.commit();
+        std::cout << "Invites deleted for user ID: " << user->id << std::endl;
+    } catch (const pqxx::sql_error &e) {
+        std::cerr << "SQL error: " << e.what() << std::endl;
+        std::cerr << "Query was: " << e.query() << std::endl;
+    } catch (const std::system_error &e) {
+        std::cerr << "Error while loading invite: " << e.what() << std::endl;
+    }
+
+}
+
 void UserWindow::acceptInvite(int inviterId) {
     std::cout<<inviterId;
     auto inviter = userManager->findUserById(inviterId);
@@ -24,6 +42,7 @@ void UserWindow::acceptInvite(int inviterId) {
     auto company = companyManager.findCompanyByAdminId(inviterId);
     auto employeeWindow = new EmployeeWindow(userManager, nullptr,user,company);
     employeeWindow->show();
+    clearInviteForUser(inviterId);
     this -> close();
 
 }
@@ -135,4 +154,12 @@ void UserWindow::on_createCompanyButton_clicked() {
     auto *regWindow = new companyRegWindow(this);
     connect(regWindow, &companyRegWindow::companyNameEntered, this, &UserWindow::onCompanyNameEntered);
     regWindow->exec();
+}
+
+void UserWindow::on_changeInfoButton_clicked() {
+    ui->changeInfoButton->setEnabled(false);
+    auto changeInfoWindow = new ChangeInfoWindow(nullptr,user,userManager);
+    changeInfoWindow->show();
+    this->close();
+
 }

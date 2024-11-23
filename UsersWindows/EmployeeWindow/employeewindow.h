@@ -10,6 +10,8 @@
 #include "../Companies/header/CompanyManager.h"
 #include "../menu/headers/mainwindow.h"
 #include "../userWindowCore/userwindow.h"
+#include "../ChangeInfoWindow/changeinfowindow.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class EmployeeWindow; }
 QT_END_NAMESPACE
@@ -27,7 +29,9 @@ public:
 private slots:
     void on_LogOutButton_clicked();
     void on_resignButton_clicked();
-private:
+    void on_changeInfoButton_clicked();
+
+        private:
     std::unique_ptr<Ui::EmployeeWindow> ui;
     std::shared_ptr<Company> company;
 

@@ -15,11 +15,15 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
-
-        REQUIRED)
+        REQUIRED
+)
 
 link_directories("C:/Users/mzitr/vcpkg/installed/x64-windows/debug/lib")
+
 set(SOURCES
+
+        #---------------------
+
         src/main.cpp
         src/sendingEmail.cpp
         src/UserManager.cpp
@@ -31,49 +35,83 @@ set(SOURCES
         header/UserManager.h
         header/EmailSender.h
         header/sendingEmail.h
+
+        #---------------------
+
+        menu/headers/registrationwindow.h
         menu/headers/mainwindow.h
         menu/src/mainwindow.cpp
+        menu/src/registrationwindow.cpp
+        menu/src/registrationwindow.ui
+        menu/src/companyregwindow.cpp
+        menu/headers/companyregwindow.h
+        menu/src/companyregwindow.ui
+
+        #---------------------
+
         UsersWindows/userWindowCore/userwindow.cpp
         UsersWindows/userWindowCore/userwindow.h
         UsersWindows/userWindowCore/userwindow.ui
-        menu/src/registrationwindow.cpp
-        menu/headers/registrationwindow.h
-        menu/src/registrationwindow.ui
         UsersWindows/BasicClassCore/basicclass.cpp
         UsersWindows/BasicClassCore/basicclass.h
         UsersWindows/BasicClassCore/basicclass.ui
         UsersWindows/AdminWindowCore/adminclass.cpp
         UsersWindows/AdminWindowCore/adminclass.h
         UsersWindows/AdminWindowCore/adminclass.ui
+
+        #---------------------
+
         Companies/src/Company.cpp
         Companies/header/Company.h
         Companies/header/CompanyManager.h
         Companies/src/CompanyManager.cpp
-        menu/src/companyregwindow.cpp
-        menu/headers/companyregwindow.h
-        menu/src/companyregwindow.ui
+
+        #---------------------
+
+
         Invites/src/Invite.cpp
         Invites/headers/Invite.h
         Invites/src/InviteManager.cpp
         Invites/headers/InviteManager.h
-        CustomException/core/LoginException.h
-        XmlHandler/src/XmlHandler.cpp
-        XmlHandler/header/XmlHandler.h
-        UsersContainer/src/UserContainer.cpp
-        UsersContainer/header/UserContainer.h
-        UsersIterator/src/UsersIterator.cpp
-        UsersIterator/header/UsersIterator.h
-        UsersWindows/EmployeeWindow/employeewindow.cpp
-        #        UsersWindows/headers/userwindow.h
 
         #---------------------
 
+        CustomException/core/LoginException.h
+
+        #---------------------
+
+        XmlHandler/src/XmlHandler.cpp
+        XmlHandler/header/XmlHandler.h
+
+        #---------------------
+
+        UsersContainer/src/UserContainer.cpp
+        UsersContainer/header/UserContainer.h
+
+        #---------------------
+
+        UsersIterator/src/UsersIterator.cpp
+        UsersIterator/header/UsersIterator.h
+
+        #---------------------
+
+        UsersWindows/EmployeeWindow/employeewindow.cpp
+        UsersWindows/ChangeInfoWindow/changeinfowindow.cpp
+        UsersWindows/ChangeInfoWindow/changeinfowindow.h
+        UsersWindows/ChangeInfoWindow/changeinfowindow.ui
+
+        #---------------------
 )
+
 qt6_add_resources(RESOURCE_TARGET "${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc")
 
 add_executable(task_management ${SOURCES})
 
-target_link_libraries(task_management CURL::libcurl libpqxx::pqxx  tinyxml2::tinyxml2)
+target_link_libraries(task_management
+        CURL::libcurl
+        libpqxx::pqxx
+        tinyxml2::tinyxml2
+)
 
 target_link_libraries(task_management
         Qt::Core
@@ -94,22 +132,27 @@ if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     if (MSVC AND CMAKE_BUILD_TYPE MATCHES "Debug")
         set(DEBUG_SUFFIX "d")
     endif ()
+
     set(QT_INSTALL_PATH "${CMAKE_PREFIX_PATH}")
+
     if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
         set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
         if (NOT EXISTS "${QT_INSTALL_PATH}/bin")
             set(QT_INSTALL_PATH "${QT_INSTALL_PATH}/..")
         endif ()
     endif ()
+
     if (EXISTS "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll")
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E make_directory
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
+
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy
                 "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
     endif ()
+
     foreach (QT_LIB Core Gui Widgets)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy

@@ -132,7 +132,7 @@
        <number>20</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="changeInfoButton">
         <property name="text">
          <string>Change Profile Info</string>
         </property>
