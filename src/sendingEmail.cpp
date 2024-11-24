@@ -31,7 +31,7 @@ EmailSender::~EmailSender() {
     }
 }
 
-void EmailSender::sendEmail(const std::string &to, const std::string &subject, const std::string &message) {
+bool EmailSender::sendEmail(const std::string &to, const std::string &subject, const std::string &message) {
     UploadStatus uploadCtx = {0};
 
     std::string toHeader = "To: " + to + "\r\n";
@@ -61,9 +61,10 @@ void EmailSender::sendEmail(const std::string &to, const std::string &subject, c
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             std::cerr << "\nSecond try failed: " << curl_easy_strerror(res) << std::endl;
+            return false;
         }
     }
-    Sleep(1000);
+    return true;
     curl_slist_free_all(recipients);
 }
 

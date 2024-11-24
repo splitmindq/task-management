@@ -9,6 +9,7 @@
 #include "headers/mainwindow.h"
 #include "UserManager.h"
 #include "QMessageBox"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class RegistrationWindow; }
 QT_END_NAMESPACE
@@ -17,14 +18,16 @@ class RegistrationWindow : public QMainWindow {
 Q_OBJECT
 
 public:
-    explicit RegistrationWindow(UserManager *userManager,QWidget *parent = nullptr);
+    explicit RegistrationWindow(UserManager *userManager, QWidget *parent = nullptr);
 
     ~RegistrationWindow() override;
 
 private slots:
 
     void on_backToMenuButton_clicked();
+
     void on_createAccountButton_clicked();
+
 private:
 
     std::unique_ptr<Ui::RegistrationWindow> ui;

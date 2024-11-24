@@ -32,6 +32,7 @@ public:
     auto begin() {
         return UsersIterator(users.begin());
     }
+
     auto end() {
         return UsersIterator(users.end());
     }
@@ -42,7 +43,7 @@ public:
 
     void loadUsersFromDatabase();
 
-    static std::function<std::string()> filterByRole(const std::string& role) {
+    static std::function<std::string()> filterByRole(const std::string &role) {
         return [role]() {
             return "role = '" + role + "'";
         };

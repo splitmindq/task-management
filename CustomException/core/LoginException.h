@@ -12,15 +12,15 @@
 #include <string>
 #include "LoginException.h"
 
-class LoginException:public std::exception{
+class LoginException : public std::exception {
 private:
     std::string message;
 
 public:
-    explicit LoginException(const std::string& msg)
-            :message(msg){};
+    explicit LoginException(const std::string &msg)
+            : message(msg) {};
 
-    const char* what() const noexcept override {
+    const char *what() const noexcept override {
         return message.c_str();
     }
 

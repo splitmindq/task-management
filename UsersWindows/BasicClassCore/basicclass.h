@@ -19,8 +19,10 @@ class BasicClass : public QMainWindow {
 Q_OBJECT
 
 public:
-    explicit BasicClass(UserManager *userManager, QWidget *parent = nullptr,User *user = nullptr);
+    explicit BasicClass(UserManager *userManager, QWidget *parent = nullptr, User *user = nullptr);
+
     ~BasicClass() override;
+
     virtual void displayUserInfo() = 0;
 
 
@@ -29,9 +31,11 @@ protected:
     std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
     User *user;
 
-    virtual std::string getEmail(const std::string& username);
-    virtual std::string getName(const std::string& username);
-    virtual std::string getSurname(const std::string& username);
+    virtual std::string getEmail(const std::string &username);
+
+    virtual std::string getName(const std::string &username);
+
+    virtual std::string getSurname(const std::string &username);
 };
 
 

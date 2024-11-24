@@ -5,8 +5,8 @@
 #include <QString>
 #include "../menu/headers/companyregwindow.h"
 
-UserWindow::UserWindow(UserManager* userManager, QWidget *parent, User *user)
-        : BasicClass(userManager, parent,user), ui(new Ui::UserWindow),currentOffset(0), limit(20){
+UserWindow::UserWindow(UserManager *userManager, QWidget *parent, User *user)
+        : BasicClass(userManager, parent, user), ui(new Ui::UserWindow), currentOffset(0), limit(20) {
     ui->setupUi(this);
     displayUserInfo();
 }
@@ -18,7 +18,7 @@ void UserWindow::clearInviteForUser(int inviterId) {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
         W.exec("DELETE FROM invites WHERE user_id = " + W.quote(user->id) +
-            "AND sender_id = " + W.quote(inviterId)
+               "AND sender_id = " + W.quote(inviterId)
         );
         W.commit();
         std::cout << "Invites deleted for user ID: " << user->id << std::endl;
@@ -32,28 +32,28 @@ void UserWindow::clearInviteForUser(int inviterId) {
 }
 
 void UserWindow::acceptInvite(int inviterId) {
-    std::cout<<inviterId;
+    std::cout << inviterId;
     auto inviter = userManager->findUserById(inviterId);
     int companyId = inviter->companyId;
-    user->role="employee";
+    user->role = "employee";
     user->companyId = companyId;
     userManager->saveUser(*user);
     CompanyManager companyManager(userManager, connectionString);
     auto company = companyManager.findCompanyByAdminId(inviterId);
-    auto employeeWindow = new EmployeeWindow(userManager, nullptr,user,company);
+    auto employeeWindow = new EmployeeWindow(userManager, nullptr, user, company);
     employeeWindow->show();
     clearInviteForUser(inviterId);
-    this -> close();
+    this->close();
 
 }
 
-void UserWindow::addInviteToList(const QString& senderName, const QString& message) {
-    QWidget* inviteWidget = new QWidget();
-    QHBoxLayout* layout = new QHBoxLayout();
+void UserWindow::addInviteToList(const QString &senderName, const QString &message) {
+    QWidget *inviteWidget = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout();
 
-    QLabel* nameLabel = new QLabel(senderName, inviteWidget);
-    QPushButton* acceptButton = new QPushButton("Accept", inviteWidget);
-    QLabel* messageLabel = new QLabel(message,inviteWidget);
+    QLabel *nameLabel = new QLabel(senderName, inviteWidget);
+    QPushButton *acceptButton = new QPushButton("Accept", inviteWidget);
+    QLabel *messageLabel = new QLabel(message, inviteWidget);
     connect(acceptButton, &QPushButton::clicked, this, [this, senderName]() {
 
         int inviterId = userManager->getId(senderName.toStdString());
@@ -68,7 +68,7 @@ void UserWindow::addInviteToList(const QString& senderName, const QString& messa
     layout->setContentsMargins(0, 0, 0, 0);
     inviteWidget->setLayout(layout);
 
-    QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+    QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
     item->setSizeHint(inviteWidget->sizeHint());
     ui->listWidget->setItemWidget(item, inviteWidget);
 }
@@ -92,7 +92,9 @@ void UserWindow::on_checkInvitesButton_clicked() {
     ui->listWidget->clear();
     currentOffset = 0;
     loadNextInvites();
-}QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
+}
+
+QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
     QList<QPair<QString, QString>> invites;
     QSet<QString> seenSenders;
 
@@ -110,7 +112,7 @@ void UserWindow::on_checkInvitesButton_clicked() {
             )",
                 user->id, limit, offset);
 
-        for (const auto& row : res) {
+        for (const auto &row: res) {
             QString sender = QString::fromStdString(row["sender"].c_str());
             QString message = QString::fromStdString(row["message"].c_str());
 
@@ -121,7 +123,7 @@ void UserWindow::on_checkInvitesButton_clicked() {
         }
 
         txn.commit();
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "Error loading invites: " << e.what() << std::endl;
     }
 
@@ -131,7 +133,7 @@ void UserWindow::on_checkInvitesButton_clicked() {
 void UserWindow::loadNextInvites() {
     QList<QPair<QString, QString>> invites = loadInvitesFromDatabase(limit, currentOffset);
 
-    for (const auto& invite : invites) {
+    for (const auto &invite: invites) {
         addInviteToList(invite.first, invite.second);
     }
 

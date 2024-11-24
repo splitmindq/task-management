@@ -6,13 +6,13 @@ int CompanyManager::getNextIdFromDb() {
         std::string query = "SELECT MAX(id) FROM companies;";
         int maxId = executeScalarQuery<int>(txn, query);
         return maxId + 1;
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return -1;
     }
 }
 
-void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company>& company) {
+void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company> &company) {
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
@@ -27,7 +27,7 @@ void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company>& company) {
         ));
 
         W.commit();
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "Error while saving the company to the database: " << e.what() << std::endl;
     }
 }
@@ -46,7 +46,7 @@ std::shared_ptr<Company> CompanyManager::findCompanyByAdminId(int adminId) {
         }
 
         txn.commit();
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "Error finding company: " << e.what() << std::endl;
     }
 
@@ -68,7 +68,7 @@ std::shared_ptr<Company> CompanyManager::findCompanyById(int id) {
         }
 
         txn.commit();
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "Error finding company: " << e.what() << std::endl;
     }
 

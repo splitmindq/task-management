@@ -6,7 +6,7 @@
 #include <string>
 
 
-class User{
+class User {
 public:
     int id;
     std::string email;
@@ -18,15 +18,15 @@ public:
     int companyId = -1;
 
 
-    User(int id, const std::string& email, const std::string& username,
-         const std::string& password, const std::string& name,
-         const std::string& surname);
+    User(int id, const std::string &email, const std::string &username,
+         const std::string &password, const std::string &name,
+         const std::string &surname);
 
     bool operator==(int otherId) const {
         return this->id == otherId;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const User& user) {
+    friend std::ostream &operator<<(std::ostream &os, const User &user) {
         os << "ID: " << user.id << ", Email: " << user.email << ", Username: " << user.username
            << ", Name: " << user.name << ", Surname: " << user.surname << ", Role: " << user.role;
         return os;

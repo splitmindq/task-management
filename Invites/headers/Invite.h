@@ -1,9 +1,10 @@
 #ifndef TASK_MANAGEMENT_INVITE_H
 #define TASK_MANAGEMENT_INVITE_H
+
 #include <iostream>
 #include <string>
 
-template <typename T>
+template<typename T>
 class Invite {
 private:
     T id;
@@ -12,7 +13,7 @@ private:
     T receiverId;
 
 public:
-    Invite(T inviteId, T senderId, const std::string& inviteMessage, T receiverId)
+    Invite(T inviteId, T senderId, const std::string &inviteMessage, T receiverId)
             : id(inviteId), senderId(senderId), message(inviteMessage), receiverId(receiverId) {}
 
     T getInviteId() const {

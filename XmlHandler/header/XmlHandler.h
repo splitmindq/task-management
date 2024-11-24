@@ -4,15 +4,18 @@
 
 #ifndef TASK_MANAGEMENT_XMLHANDLER_H
 #define TASK_MANAGEMENT_XMLHANDLER_H
+
 #include "iostream"
 #include "string"
 #include "vector"
 #include "tinyxml2.h"
 #include "User.h"
 #include "../Companies/header/CompanyManager.h"
+
 class XmlHandler {
 public:
     XmlHandler() = default;
+
     void createXmlFile(const std::string &filename, const std::string &rootElementName) {
         if (std::filesystem::exists(filename)) {
             std::cout << "File already exists: " << filename << std::endl;
@@ -95,4 +98,5 @@ public:
         }
     }
 };
+
 #endif

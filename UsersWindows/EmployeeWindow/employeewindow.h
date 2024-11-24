@@ -16,24 +16,29 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class EmployeeWindow; }
 QT_END_NAMESPACE
 
-class EmployeeWindow : public BasicClass{
+class EmployeeWindow : public BasicClass {
 Q_OBJECT
 
 public:
-    explicit EmployeeWindow(UserManager *userManager,QWidget *parent = nullptr,User *user = nullptr,
+    explicit EmployeeWindow(UserManager *userManager, QWidget *parent = nullptr, User *user = nullptr,
                             std::shared_ptr<Company> company = nullptr);
 
     void displayUserInfo() override;
-    ~EmployeeWindow() override ;
+
+    ~EmployeeWindow() override;
 
 private slots:
+
     void on_LogOutButton_clicked();
+
     void on_resignButton_clicked();
+
     void on_changeInfoButton_clicked();
 
-        private:
+private:
     std::unique_ptr<Ui::EmployeeWindow> ui;
     std::shared_ptr<Company> company;
 
 };
+
 #endif //TASK_MANAGEMENT_EMPLOYEEWINDOW_H

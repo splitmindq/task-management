@@ -22,10 +22,13 @@ public:
     ~companyRegWindow() override;
 
 signals:
+
     void companyNameEntered(const QString &companyName);
 
 private slots:
+
     void on_createButton_clicked();
+
     void on_returnButton_clicked();
 
 

@@ -1,16 +1,13 @@
 #include "handleinfoclass.h"
 #include "ui_HandleInfoClass.h"
-#include <QMessageBox>
-#include "EmailSender.h"
-#include <random>
 
-HandleInfoClass::HandleInfoClass(QWidget *parent, User* user, UserManager* userManager) :
-        QDialog(parent), ui(new Ui::HandleInfoClass), user(user), userManager(userManager) {  // Используем QDialog
+
+HandleInfoClass::HandleInfoClass(QWidget *parent, User *user, UserManager *userManager) :
+        QDialog(parent), ui(new Ui::HandleInfoClass), user(user), userManager(userManager), attempts(0) {
     ui->setupUi(this);
     ui->codeLineEdit->setVisible(false);
     ui->checkCodeButton->setVisible(false);
     ui->codeLabel->setVisible(false);
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 }
 
 HandleInfoClass::~HandleInfoClass() {
@@ -18,11 +15,29 @@ HandleInfoClass::~HandleInfoClass() {
 }
 
 std::string HandleInfoClass::generateVerificationCode() {
-    std::string code = std::to_string(rand() % 1000000);
-    while (code.length() < 6) {
-        code = "0" + code;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 999999);
+    std::ostringstream oss;
+    oss << std::setw(6) << std::setfill('0') << dis(gen);
+    return oss.str();
+}
+
+bool HandleInfoClass::isPasswordValid() const {
+    return ui->passwordEdit->text().toStdString() != user->password;
+}
+
+void HandleInfoClass::updateUserInfo() {
+    if (!ui->nameEdit->text().isEmpty()) {
+        user->name = ui->nameEdit->text().toStdString();
     }
-    return code;
+    if (!ui->surnameEdit->text().isEmpty()) {
+        user->surname = ui->surnameEdit->text().toStdString();
+    }
+    if (!ui->passwordEdit->text().isEmpty()) {
+        user->password = ui->passwordEdit->text().toStdString();
+    }
+    userManager->saveUser(*user);
 }
 
 void HandleInfoClass::on_confirmButton_clicked() {
@@ -31,41 +46,46 @@ void HandleInfoClass::on_confirmButton_clicked() {
 
     ui->confirmButton->setEnabled(false);
 
-    if (!ui->passwordEdit->text().isEmpty()) {
-        std::string oldPassword = user->password;
-        if (ui->passwordEdit->text().toStdString() == oldPassword) {
-            QMessageBox::warning(this, "Error", "Fields cannot be the same.");
+    bool isAnyFieldChanged = !ui->nameEdit->text().isEmpty() && ui->nameEdit->text().toStdString() != user->name ||
+                             !ui->surnameEdit->text().isEmpty() && ui->surnameEdit->text().toStdString() != user->surname ||
+                             !ui->passwordEdit->text().isEmpty() && ui->passwordEdit->text().toStdString() != user->password;
+
+    if (!isAnyFieldChanged) {
+        QMessageBox::warning(this, "Error", "No changes detected. Please modify at least one field.");
+        ui->confirmButton->setEnabled(true);
+        return;
+    }
+
+    ui->codeLineEdit->setVisible(true);
+    ui->checkCodeButton->setVisible(true);
+    ui->codeLabel->setVisible(true);
+
+    verificationCode = generateVerificationCode();
+    std::string message = "Your code: " + verificationCode;
+
+    try {
+        if (!emailSender.sendEmail(user->email, "Profile information Changing", message)) {
+            QMessageBox::warning(this, "Error", "Failed to send verification email. Please try again.");
             ui->confirmButton->setEnabled(true);
             return;
-        } else {
-            ui->codeLineEdit->setVisible(true);
-            ui->checkCodeButton->setVisible(true);
-            ui->codeLabel->setVisible(true);
-
-            verificationCode = generateVerificationCode();
-            std::string message = "Your code: " + verificationCode;
-            emailSender.sendEmail(user->email, "Password Changing", message);
-            ui->confirmButton->setVisible(false);
         }
+    } catch (const std::exception &e) {
+        QMessageBox::warning(this, "Error", QString("An error occurred: %1").arg(e.what()));
+        ui->confirmButton->setEnabled(true);
+        return;
     }
+
+    ui->confirmButton->setVisible(false);
 }
+
 
 void HandleInfoClass::on_checkCodeButton_clicked() {
     QString enteredCode = ui->codeLineEdit->text();
     if (enteredCode.toStdString() == verificationCode) {
-        if(!ui->nameEdit->text().isEmpty()){
-            user->name = ui->nameEdit->text().toStdString();
-        }
-        if(!ui->surnameEdit->text().isEmpty()){
-            user->surname = ui->surnameEdit->text().toStdString();
-        }
-        if(!ui->passwordEdit->text().isEmpty()){
-            user->password = ui->passwordEdit->text().toStdString();
-        }
-        userManager->saveUser(*user);
+        updateUserInfo();
         QMessageBox::information(this, "Success", "Information updated!");
 
-        QWidget* parentWindow = parentWidget();
+        QWidget *parentWindow = parentWidget();
         if (parentWindow) {
             parentWindow->close();
         } else {
@@ -77,7 +97,8 @@ void HandleInfoClass::on_checkCodeButton_clicked() {
         this->close();
     } else {
         attempts++;
-        if (attempts >= 3) {
+        const int maxAttempts = 3;
+        if (attempts >= maxAttempts) {
             QMessageBox::warning(this, "Error", "Too many failed attempts. Exiting.");
             close();
         } else {

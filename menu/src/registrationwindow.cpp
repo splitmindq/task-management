@@ -8,8 +8,8 @@
 #include "ui_RegistrationWindow.h"
 #include "UserManager.h"
 
-RegistrationWindow::RegistrationWindow(UserManager *userManager,QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::RegistrationWindow),userManager(userManager) {
+RegistrationWindow::RegistrationWindow(UserManager *userManager, QWidget *parent) :
+        QMainWindow(parent), ui(new Ui::RegistrationWindow), userManager(userManager) {
     ui->setupUi(this);
 }
 
@@ -46,7 +46,7 @@ void RegistrationWindow::on_createAccountButton_clicked() {
         return;
     }
 
-    userManager->createUser(name,surname,email,login,password);
+    userManager->createUser(name, surname, email, login, password);
 
     QMessageBox::information(this, "Registration", "You have successfully registered!");
 

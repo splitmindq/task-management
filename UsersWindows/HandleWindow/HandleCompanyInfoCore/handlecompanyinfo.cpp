@@ -67,7 +67,6 @@ void HandleCompanyInfo::on_saveChangesButton_clicked() {
 
 }
 
-
 void HandleCompanyInfo::fireEmployee(int employeeId) {
 
     userManager->loadUserById(employeeId);

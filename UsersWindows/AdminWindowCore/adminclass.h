@@ -10,6 +10,7 @@
 #include "../UsersContainer/header/UserContainer.h"
 #include "HandleWindow/HandleUserInfo/handleinfoclass.h"
 #include "HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class AdminClass; }
 QT_END_NAMESPACE
@@ -32,12 +33,19 @@ public:
 private slots:
 
     void on_LogOutButton_clicked();
+
     void on_findEmployeesButton_clicked();
+
     void on_docDownloadButton_clicked();
+
     void onScroll(int value);
+
     void loadMoreItems();
+
     void on_changeInfoButton_clicked();
+
     void on_modifyCompanyButton_clicked();
+
 private:
     int currentOffset;
     int limit;
@@ -45,8 +53,11 @@ private:
     std::shared_ptr<Company> company;
 
     void setupLazyLoading();
+
     void loadNextEmployees();
+
     QList<QPair<QString, int>> loadEmployeesFromDatabase(int limit, int offset);
 
 };
+
 #endif //TASK_MANAGEMENT_ADMINCLASS_H

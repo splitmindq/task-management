@@ -11,7 +11,7 @@ void UserContainer::loadUsersFromDatabase() {
 
         std::string sql = "SELECT id, email, username, password, name, surname FROM users WHERE ";
         bool first = true;
-        for (const auto& filter : filters) {
+        for (const auto &filter: filters) {
             if (!first) {
                 sql += " AND ";
             }
@@ -21,7 +21,7 @@ void UserContainer::loadUsersFromDatabase() {
 
         pqxx::result res = txn.exec(sql);
 
-        for (const auto& row : res) {
+        for (const auto &row: res) {
             User user(
                     row["id"].as<int>(),
                     row["email"].as<std::string>(),
@@ -35,7 +35,7 @@ void UserContainer::loadUsersFromDatabase() {
 
         txn.commit();
     }
-    catch (const std::exception& e) {
+    catch (const std::exception &e) {
         std::cerr << "Ошибка при загрузке пользователей: " << e.what() << std::endl;
     }
 }

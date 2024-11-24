@@ -8,8 +8,9 @@
 #include "ui_EmployeeWindow.h"
 
 
-EmployeeWindow::EmployeeWindow(UserManager *userManager,QWidget *parent,User *user, std::shared_ptr<Company> company) :
-        BasicClass(userManager,parent, user), ui(new Ui::EmployeeWindow),company(company) {
+EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *user, std::shared_ptr<Company> company)
+        :
+        BasicClass(userManager, parent, user), ui(new Ui::EmployeeWindow), company(company) {
     ui->setupUi(this);
     displayUserInfo();
 }
@@ -20,20 +21,20 @@ void EmployeeWindow::on_LogOutButton_clicked() {
     ui->LogOutButton->setEnabled(false);
     this->close();
     auto *mainWindow = new MainWindow(userManager, nullptr);
-    mainWindow ->show();
+    mainWindow->show();
 }
 
 void EmployeeWindow::on_resignButton_clicked() {
     ui->resignButton->setEnabled(false);
-    user->companyId=-1;
-    user->role="user";
+    user->companyId = -1;
+    user->role = "user";
     userManager->saveUser(*user);
-    auto userWindow = new UserWindow(userManager, nullptr,user);
+    auto userWindow = new UserWindow(userManager, nullptr, user);
     this->close();
     userWindow->show();
 }
 
-void EmployeeWindow::displayUserInfo(){
+void EmployeeWindow::displayUserInfo() {
     QString emailText = QString("Email: %1").arg(user->email.c_str());
     ui->emailLineEdit_4->setText(emailText);
     QString nameText = QString("Name: %1").arg(user->name.c_str());
@@ -41,6 +42,7 @@ void EmployeeWindow::displayUserInfo(){
     QString surnameText = QString("Surname: %1").arg(user->surname.c_str());
     ui->surnameLineEdit_4->setText(surnameText);
 }
+
 void EmployeeWindow::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
     auto changeInfoWindow = new HandleInfoClass(this, user, userManager);

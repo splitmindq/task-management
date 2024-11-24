@@ -18,7 +18,9 @@ public:
     }
 
     [[nodiscard]] int getCompanyId() const { return id; }
+
     [[nodiscard]] const std::string &getName() const { return companyName; }
+
     [[nodiscard]] int getAdminId() const { return adminId; }
 
     void setAdminId(int setAdminId) { adminId = setAdminId; }

@@ -30,12 +30,12 @@ void AdminClass::on_LogOutButton_clicked() {
     mainWindow->show();
 }
 
-void AdminClass::addEmployeeToList(const QString& employeeName, int employeeId) {
-    auto* employeeWidget = new QWidget();
-    auto* layout = new QHBoxLayout();
+void AdminClass::addEmployeeToList(const QString &employeeName, int employeeId) {
+    auto *employeeWidget = new QWidget();
+    auto *layout = new QHBoxLayout();
 
-    auto* nameLabel = new QLabel(employeeName, employeeWidget);
-    auto* inviteButton = new QPushButton("Invite", employeeWidget);
+    auto *nameLabel = new QLabel(employeeName, employeeWidget);
+    auto *inviteButton = new QPushButton("Invite", employeeWidget);
 
     connect(inviteButton, &QPushButton::clicked, this, [this, employeeId, inviteButton]() {
         inviteEmployee(employeeId);
@@ -48,7 +48,7 @@ void AdminClass::addEmployeeToList(const QString& employeeName, int employeeId) 
     layout->setContentsMargins(0, 0, 0, 0);
     employeeWidget->setLayout(layout);
 
-    auto* item = new QListWidgetItem(ui->listWidget);
+    auto *item = new QListWidgetItem(ui->listWidget);
     item->setSizeHint(employeeWidget->sizeHint());
     ui->listWidget->setItemWidget(item, employeeWidget);
 }
@@ -66,12 +66,14 @@ void AdminClass::onScroll(int value) {
         loadMoreItems();
     }
 }
+
 void AdminClass::loadMoreItems() {
-    QList<QPair<QString, int>> moreEmployees =  loadEmployeesFromDatabase(limit, currentOffset);
-    for (const auto& employee : moreEmployees) {
+    QList<QPair<QString, int>> moreEmployees = loadEmployeesFromDatabase(limit, currentOffset);
+    for (const auto &employee: moreEmployees) {
         addEmployeeToList(employee.first, employee.second);
     }
 }
+
 void AdminClass::setupLazyLoading() {
     connect(ui->listWidget->verticalScrollBar(), &QScrollBar::valueChanged, this, &AdminClass::onScroll);
 }
@@ -79,12 +81,13 @@ void AdminClass::setupLazyLoading() {
 void AdminClass::loadNextEmployees() {
     QList<QPair<QString, int>> employees = loadEmployeesFromDatabase(limit, currentOffset);
 
-    for (const auto& employee : employees) {
+    for (const auto &employee: employees) {
         addEmployeeToList(employee.first, employee.second);
     }
 
     currentOffset += limit;
 }
+
 QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int offset) {
     QList<QPair<QString, int>> employees;
 
@@ -101,7 +104,7 @@ QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int 
 
         pqxx::result res = txn.exec_prepared("get_employees", "admin", limit, offset);
 
-        for (const auto& row : res) {
+        for (const auto &row: res) {
             QString name = QString::fromStdString(row["name"].c_str());
             int id = row["id"].as<int>();
             employees.append(qMakePair(name, id));
@@ -109,7 +112,7 @@ QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int 
 
         txn.commit();
     }
-    catch (const std::exception& e) {
+    catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
@@ -134,9 +137,9 @@ void AdminClass::on_docDownloadButton_clicked() {
     XmlHandler xmlHandler;
     std::string filename = "users.xml";
     xmlHandler.clearRootContent(filename);
-    xmlHandler.createXmlFile(filename,"Users");
+    xmlHandler.createXmlFile(filename, "UsersList");
     for (auto it = container.begin(); it != container.end(); ++it) {
-        xmlHandler.addUserToXml(filename,&(*it));
+        xmlHandler.addUserToXml(filename, &(*it));
 
     }
 }
@@ -151,7 +154,7 @@ void AdminClass::on_changeInfoButton_clicked() {
 
 void AdminClass::on_modifyCompanyButton_clicked() {
 
-    auto* handleCompanyWindow = new HandleCompanyInfo(this,company,user,userManager);
+    auto *handleCompanyWindow = new HandleCompanyInfo(this, company, user, userManager);
     handleCompanyWindow->show();
 
 

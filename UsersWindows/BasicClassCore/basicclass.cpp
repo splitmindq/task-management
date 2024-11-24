@@ -8,8 +8,8 @@
 #include "ui_BasicClass.h"
 
 
-BasicClass::BasicClass(UserManager* userManager, QWidget *parent, User *user)
-        : QMainWindow(parent), userManager(userManager),user(user) {
+BasicClass::BasicClass(UserManager *userManager, QWidget *parent, User *user)
+        : QMainWindow(parent), userManager(userManager), user(user) {
 }
 
 BasicClass::~BasicClass() = default;

@@ -1,4 +1,5 @@
 #ifndef TASK_MANAGEMENT_INVITEMANAGER_H
+
 #include "iostream"
 #include "pqxx/pqxx"
 #include "Invite.h"
@@ -7,8 +8,10 @@ class InviteManager {
 private:
     std::string connectionString;
     pqxx::connection conn;
+
     int getNextIdFromDb();
-    void saveInviteToDb(const std::shared_ptr<Invite<int>>& invite);
+
+    void saveInviteToDb(const std::shared_ptr<Invite<int>> &invite);
 
 public:
     std::shared_ptr<Invite<int>> invite;

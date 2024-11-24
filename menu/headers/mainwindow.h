@@ -18,18 +18,25 @@ class MainWindow : public QMainWindow {
 Q_OBJECT
 
 public:
-    explicit MainWindow(UserManager* userManager, QWidget *parent = nullptr);
+    explicit MainWindow(UserManager *userManager, QWidget *parent = nullptr);
+
     ~MainWindow() override;
 
 private slots:
+
     void on_loginButton_clicked();
+
     void on_registrationButton_clicked();
 
 private:
     void handleUserRole(const std::string &username);
+
     void openUserWindow(User *user);
+
     void handleAdminOrEmployee(User *user);
+
     void handleAdmin(User *user);
+
     void openEmployeeWindow(User *user);
 
     std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";

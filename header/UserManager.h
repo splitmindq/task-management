@@ -4,6 +4,7 @@
 
 #ifndef LABS_USER_MANAGER_H
 #define LABS_USER_MANAGER_H
+
 #include <vector>
 #include <memory>
 #include "User.h"
@@ -20,13 +21,19 @@ private:
 
 
 public:
-    void loadUser(const std::string& username);
+    void loadUser(const std::string &username);
+
     void loadUserById(int userId);
-    void saveUser(const User& user);
-    explicit UserManager(const std::string& connStr);
+
+    void saveUser(const User &user);
+
+    explicit UserManager(const std::string &connStr);
+
     UserManager() = default;
+
     ~UserManager() = default;
-    bool isUsernameTaken(const std::string& username){
+
+    bool isUsernameTaken(const std::string &username) {
 
         try {
             pqxx::connection C(connectionString);
@@ -39,13 +46,19 @@ public:
             return false;
         }
     };
-    std::string getRole(const std::string& username);
+
+    std::string getRole(const std::string &username);
+
     int getCompanyId(const std::string &username);
-    void createUser(const std::string &name,const std::string &surname,const std::string &email,const std::string &login, const std::string &password);
-    User* findUserById(int id);
+
+    void
+    createUser(const std::string &name, const std::string &surname, const std::string &email, const std::string &login,
+               const std::string &password);
+
+    User *findUserById(int id);
 
 
-    bool login(const std::string& username, const std::string& password)  {
+    bool login(const std::string &username, const std::string &password) {
         try {
             pqxx::connection C(connectionString);
             pqxx::work W(C);
@@ -56,15 +69,17 @@ public:
 
             return R[0][0].as<int>() > 0;
         }
-        catch (const std::system_error& e) {
+        catch (const std::system_error &e) {
             std::cerr << e.what() << std::endl;
             return false;
         }
     }
 
-  int  getId(const std::string &username);
-  bool isAdmin(int id);
-  void updateUserInDb(const User& user);
+    int getId(const std::string &username);
+
+    bool isAdmin(int id);
+
+    void updateUserInDb(const User &user);
 
 
 };

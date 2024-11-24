@@ -23,11 +23,11 @@ void companyRegWindow::on_createButton_clicked() {
     } else {
         emit companyNameEntered(ui->nameEdit->text());
     }
-    QMessageBox::information(this,"Company","Company Created");
+    QMessageBox::information(this, "Company", "Company Created");
     this->close();
 }
 
-void companyRegWindow::on_returnButton_clicked(){
+void companyRegWindow::on_returnButton_clicked() {
     ui->returnButton->setEnabled(false);
     this->close();
 

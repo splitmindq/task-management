@@ -12,15 +12,16 @@ private:
 public:
     explicit UsersIterator(typename std::vector<User>::iterator start) : it(start) {}
 
-    User& operator*() { return *it; }
-    User* operator->() { return std::to_address(it); }
+    User &operator*() { return *it; }
 
-    UsersIterator& operator++() {
+    User *operator->() { return std::to_address(it); }
+
+    UsersIterator &operator++() {
         ++it;
         return *this;
     }
 
-    bool operator!=(const UsersIterator& other) const {
+    bool operator!=(const UsersIterator &other) const {
         return it != other.it;
     }
 };
