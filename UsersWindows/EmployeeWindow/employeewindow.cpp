@@ -34,12 +34,17 @@ void EmployeeWindow::on_resignButton_clicked() {
 }
 
 void EmployeeWindow::displayUserInfo(){
-    std::cout<<"";
+    QString emailText = QString("Email: %1").arg(user->email.c_str());
+    ui->emailLineEdit_4->setText(emailText);
+    QString nameText = QString("Name: %1").arg(user->name.c_str());
+    ui->nameLineEdit_4->setText(nameText);
+    QString surnameText = QString("Surname: %1").arg(user->surname.c_str());
+    ui->surnameLineEdit_4->setText(surnameText);
 }
 void EmployeeWindow::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
-    auto changeInfoWindow = new ChangeInfoWindow(nullptr,user,userManager);
+    auto changeInfoWindow = new HandleInfoClass(this, user, userManager);
     changeInfoWindow->show();
-    this->close();
+    ui->changeInfoButton->setEnabled(true);
 
 }

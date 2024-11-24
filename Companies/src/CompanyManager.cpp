@@ -12,15 +12,23 @@ int CompanyManager::getNextIdFromDb() {
     }
 }
 
-
 void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company>& company) {
     try {
-        pqxx::work txn(conn);
-        txn.exec_params("INSERT INTO companies (name, adminId) VALUES ($1, $2)",
-                        company->getName(), company->getAdminId());
-        txn.commit();
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        W.exec(std::format(
+                "INSERT INTO companies (id, name, adminId) "
+                "VALUES ({}, '{}', {}) "
+                "ON CONFLICT (id) DO UPDATE "
+                "SET name = EXCLUDED.name, "
+                "adminId = EXCLUDED.adminId",
+                company->getCompanyId(), company->getName(), company->getAdminId()
+        ));
+
+        W.commit();
     } catch (const std::exception& e) {
-        std::cerr << "Error while saving the company to the database:" << e.what() << std::endl;
+        std::cerr << "Error while saving the company to the database: " << e.what() << std::endl;
     }
 }
 

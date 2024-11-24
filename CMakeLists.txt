@@ -58,6 +58,7 @@ set(SOURCES
         UsersWindows/AdminWindowCore/adminclass.cpp
         UsersWindows/AdminWindowCore/adminclass.h
         UsersWindows/AdminWindowCore/adminclass.ui
+        UsersWindows/EmployeeWindow/employeewindow.cpp
 
         #---------------------
 
@@ -95,10 +96,12 @@ set(SOURCES
 
         #---------------------
 
-        UsersWindows/EmployeeWindow/employeewindow.cpp
-        UsersWindows/ChangeInfoWindow/changeinfowindow.cpp
-        UsersWindows/ChangeInfoWindow/changeinfowindow.h
-        UsersWindows/ChangeInfoWindow/changeinfowindow.ui
+        UsersWindows/HandleWindow/HandleUserInfo/handleinfoclass.cpp
+        UsersWindows/HandleWindow/HandleUserInfo/handleinfoclass.h
+        UsersWindows/HandleWindow/HandleUserInfo/handleinfoclass.ui
+        UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.cpp
+        UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.h
+        UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.ui
 
         #---------------------
 )

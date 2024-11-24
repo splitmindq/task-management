@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ChangeInfoWindow</class>
- <widget class="QWidget" name="ChangeInfoWindow">
+ <class>HandleInfoClass</class>
+ <widget class="QDialog" name="HandleInfoClass">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>770</width>
-    <height>589</height>
+    <width>709</width>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ChangeInfoWindow</string>
+   <string>HandleInfoClass</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -67,7 +67,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Enter</string>
+        <string>Name</string>
        </property>
       </widget>
      </item>
@@ -93,23 +93,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Email</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="emailEdit">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="placeholderText">
-        <string>Enter your Email</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Password</string>
@@ -122,6 +105,19 @@
         <string>Password</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>

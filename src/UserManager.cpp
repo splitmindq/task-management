@@ -46,6 +46,40 @@ void UserManager::loadUser(const std::string &username) {
     }
 }
 
+void UserManager::loadUserById(int userId) {
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+
+        pqxx::result R = W.exec(
+                "SELECT id, email, username, password, name, surname, role, companyId FROM users WHERE id = " +
+                W.quote(userId));
+
+        if (R.empty()) {
+            std::cout << "Пользователь с id '" << userId << "' не найден." << std::endl;
+            return;
+        }
+
+        const auto &row = R[0];
+        std::string email = row[1].as<std::string>();
+        std::string username = row[2].as<std::string>();
+        std::string password = row[3].as<std::string>();
+        std::string name = row[4].as<std::string>();
+        std::string surname = row[5].as<std::string>();
+        std::string role = row[6].as<std::string>();
+        int companyId = row[7].as<int>();
+
+        auto user = std::make_unique<User>(userId, email, username, password, name, surname);
+        user->role = role;
+        user->companyId = companyId;
+
+        users.push_back(std::move(user));
+        W.commit();
+    } catch (const std::system_error &e) {
+        std::cerr << "Ошибка при загрузке пользователя: " << e.what() << std::endl;
+    }
+}
+
 void UserManager::loadUsers() {
 
     try {

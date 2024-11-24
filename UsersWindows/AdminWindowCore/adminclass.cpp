@@ -143,8 +143,16 @@ void AdminClass::on_docDownloadButton_clicked() {
 
 void AdminClass::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
-    auto changeInfoWindow = new ChangeInfoWindow(nullptr,user,userManager);
+    auto changeInfoWindow = new HandleInfoClass(this, user, userManager);
     changeInfoWindow->show();
-    this->close();
+    ui->changeInfoButton->setEnabled(true);
+
+}
+
+void AdminClass::on_modifyCompanyButton_clicked() {
+
+    auto* handleCompanyWindow = new HandleCompanyInfo(this,company,user,userManager);
+    handleCompanyWindow->show();
+
 
 }

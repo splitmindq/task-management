@@ -127,7 +127,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QPushButton" name="createCompanyButton">
+     <widget class="QPushButton" name="modifyCompanyButton">
       <property name="text">
        <string>Modify Company Info</string>
       </property>

@@ -12,8 +12,7 @@
 #include "../Companies/header/CompanyManager.h"
 #include "../AdminWindowCore/adminclass.h"
 #include "EmployeeWindow/employeewindow.h"
-#include "ChangeInfoWindow/changeinfowindow.h"
-
+#include "HandleWindow/HandleUserInfo/handleinfoclass.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class UserWindow; }
 QT_END_NAMESPACE

@@ -21,6 +21,7 @@ private:
 
 public:
     void loadUser(const std::string& username);
+    void loadUserById(int userId);
     void saveUser(const User& user);
     explicit UserManager(const std::string& connStr);
     UserManager() = default;

@@ -158,8 +158,9 @@ void UserWindow::on_createCompanyButton_clicked() {
 
 void UserWindow::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
-    auto changeInfoWindow = new ChangeInfoWindow(nullptr,user,userManager);
+    auto changeInfoWindow = new HandleInfoClass(this, user, userManager);
     changeInfoWindow->show();
-    this->close();
+    ui->changeInfoButton->setEnabled(true);
+
 
 }

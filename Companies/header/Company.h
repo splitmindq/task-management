@@ -29,6 +29,7 @@ public:
         }
         companyName = name;
     }
+
 };
 
 #endif // TASK_MANAGEMENT_COMPANY_H

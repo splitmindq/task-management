@@ -8,7 +8,8 @@
 #include "../Invites/headers/InviteManager.h"
 #include "../UsersIterator/header/UsersIterator.h"
 #include "../UsersContainer/header/UserContainer.h"
-#include "../ChangeInfoWindow/changeinfowindow.h"
+#include "HandleWindow/HandleUserInfo/handleinfoclass.h"
+#include "HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class AdminClass; }
 QT_END_NAMESPACE
@@ -33,10 +34,10 @@ private slots:
     void on_LogOutButton_clicked();
     void on_findEmployeesButton_clicked();
     void on_docDownloadButton_clicked();
-
     void onScroll(int value);
     void loadMoreItems();
     void on_changeInfoButton_clicked();
+    void on_modifyCompanyButton_clicked();
 private:
     int currentOffset;
     int limit;

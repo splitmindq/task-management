@@ -47,6 +47,12 @@ public:
             return "role = '" + role + "'";
         };
     }
+
+    static std::function<std::string()> filterByCompanyId(int companyId) {
+        return [companyId]() {
+            return "companyId = '" + std::to_string(companyId) + "'";
+        };
+    }
 };
 
 #endif //TASK_MANAGEMENT_USERCONTAINER_H

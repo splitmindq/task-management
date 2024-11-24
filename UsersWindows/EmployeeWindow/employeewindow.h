@@ -10,7 +10,7 @@
 #include "../Companies/header/CompanyManager.h"
 #include "../menu/headers/mainwindow.h"
 #include "../userWindowCore/userwindow.h"
-#include "../ChangeInfoWindow/changeinfowindow.h"
+#include "HandleWindow/HandleUserInfo/handleinfoclass.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class EmployeeWindow; }
@@ -36,6 +36,4 @@ private slots:
     std::shared_ptr<Company> company;
 
 };
-
-
 #endif //TASK_MANAGEMENT_EMPLOYEEWINDOW_H
