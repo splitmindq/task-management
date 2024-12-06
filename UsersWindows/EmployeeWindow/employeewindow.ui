@@ -74,7 +74,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
-           <widget class="QPushButton" name="findEmployeesButton_4">
+           <widget class="QPushButton" name="checkTaskButton">
             <property name="styleSheet">
              <string notr="true"/>
             </property>

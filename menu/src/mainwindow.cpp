@@ -35,8 +35,10 @@ void MainWindow::on_loginButton_clicked() {
         handleUserRole(username);
     } catch (const LoginException &e) {
         QMessageBox::warning(this, "Login", QString::fromStdString(e.what()));
+        ui->loginButton->setEnabled(true);
     } catch (const std::exception &e) {
         QMessageBox::critical(this, "Error", QString("Unexpected error: %1").arg(e.what()));
+        ui->loginButton->setEnabled(true);
     }
 }
 

@@ -24,7 +24,7 @@ public:
         return senderId;
     }
 
-    std::string getMessage() const {
+    [[nodiscard]] std::string getMessage() const {
         return message;
     }
 

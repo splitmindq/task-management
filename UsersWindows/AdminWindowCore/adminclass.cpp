@@ -3,11 +3,14 @@
 #include <pqxx/pqxx>
 #include <iostream>
 #include <QScrollBar>
+#include <utility>
+#include "../Task/header/Task.h"
 
 AdminClass::AdminClass(UserManager *userManager, QWidget *parent, User *user, std::shared_ptr<Company> company)
-        : BasicClass(userManager, parent, user), ui(new Ui::AdminClass), company(company), currentOffset(0), limit(20) {
+        : BasicClass(userManager, parent, user), ui(new Ui::AdminClass), company(std::move(company)), currentOffset(0), limit(20) {
     ui->setupUi(this);
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->statusLabel->setVisible(false);
     displayUserInfo();
     setupLazyLoading();
 }
@@ -91,31 +94,13 @@ void AdminClass::loadNextEmployees() {
 QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int offset) {
     QList<QPair<QString, int>> employees;
 
-    try {
-        pqxx::connection conn(connectionString);
-        if (!conn.is_open()) {
-            std::cerr << "Failed to connect to the database!" << std::endl;
-            return employees;
-        }
-
-        pqxx::work txn(conn);
-
-        txn.conn().prepare("get_employees", "SELECT name, id FROM users WHERE role != $1 LIMIT $2 OFFSET $3");
-
-        pqxx::result res = txn.exec_prepared("get_employees", "admin", limit, offset);
-
-        for (const auto &row: res) {
-            QString name = QString::fromStdString(row["name"].c_str());
-            int id = row["id"].as<int>();
-            employees.append(qMakePair(name, id));
-        }
-
-        txn.commit();
+    UserContainer unemployedUsers;
+    unemployedUsers.addFilter(UserContainer::filterByRole("user"));
+    unemployedUsers.loadUsersFromDatabase();
+    for (const auto& emp: unemployedUsers) {
+        QString name = QString::fromStdString(emp.name);
+        employees.append(qMakePair(name, emp.id));
     }
-    catch (const std::exception &e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-
     return employees;
 }
 
@@ -157,5 +142,86 @@ void AdminClass::on_modifyCompanyButton_clicked() {
     auto *handleCompanyWindow = new HandleCompanyInfo(this, company, user, userManager);
     handleCompanyWindow->show();
 
+
+}
+
+QList<QPair<QString, int>> AdminClass::loadCompanyEmployeesFromDatabase(int limit, int offset) {
+    QList<QPair<QString, int>> employees;
+
+    UserContainer employeeContainer;
+    employeeContainer.addFilter(UserContainer::filterByCompanyId(user->companyId));
+    employeeContainer.addFilter(UserContainer::filterByRole("employee"));
+    employeeContainer.loadUsersFromDatabase();
+
+    for (auto it = employeeContainer.begin(); it != employeeContainer.end(); ++it) {
+
+        QString name = QString::fromStdString(it->username);
+        employees.append(qMakePair(name, it->id));
+    }
+
+    return employees;
+}
+
+void AdminClass::addCompanyEmployeeToList(const QString &employeeName, int employeeId) {
+    auto *employeeWidget = new QWidget();
+    auto *layout = new QHBoxLayout();
+
+    auto *nameLabel = new QLabel(employeeName, employeeWidget);
+    auto *addTaskButton = new QPushButton("Add Task", employeeWidget);
+
+    connect(addTaskButton, &QPushButton::clicked, this, [this, employeeId, addTaskButton]() {
+        giveTask(employeeId, addTaskButton);
+    });
+
+    layout->addWidget(nameLabel);
+    layout->addWidget(addTaskButton);
+    layout->setContentsMargins(0, 0, 0, 0);
+    employeeWidget->setLayout(layout);
+
+    auto *item = new QListWidgetItem(ui->listWidget);
+    item->setSizeHint(employeeWidget->sizeHint());
+    ui->listWidget->setItemWidget(item, employeeWidget);
+}
+
+
+void AdminClass::loadNextCompanyEmployees() {
+
+    QList<QPair<QString, int>> employees = loadCompanyEmployeesFromDatabase(limit, currentOffset);
+
+    for (const auto &employee: employees) {
+        addCompanyEmployeeToList(employee.first, employee.second);
+    }
+
+    currentOffset += limit;
+
+}
+
+void AdminClass::giveTask(int employeeId, QPushButton *addTaskButton) {
+
+    TaskWindow dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        QString taskDescription = dialog.getTaskDescription();
+        QDateTime deadline = dialog.getDeadline();
+        auto deadlineTime = std::chrono::system_clock::from_time_t(deadline.toSecsSinceEpoch());
+        TaskManager taskManager(connectionString);
+        taskManager.createTask(employeeId, user->companyId, taskDescription.toStdString(), deadlineTime);
+        ui->statusLabel->setText("Task successfully created!");
+        ui->statusLabel->setStyleSheet("color: green;");
+        ui->statusLabel->setVisible(true);
+        addTaskButton->setEnabled(false);
+        QTimer::singleShot(3000, this, [this, addTaskButton]() {
+            ui->statusLabel->setVisible(false);
+            addTaskButton->setEnabled(true);
+        });
+
+
+    }
+}
+
+
+void AdminClass::on_giveTask_clicked() {
+    ui->listWidget->clear();
+    currentOffset = 0;
+    loadNextCompanyEmployees();
 
 }

@@ -38,6 +38,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QLabel" name="statusLabel">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QListWidget" name="listWidget"/>
@@ -52,6 +59,13 @@
         </property>
         <item>
          <layout class="QGridLayout" name="gridLayout">
+          <item row="2" column="0">
+           <widget class="QPushButton" name="docDownloadButton">
+            <property name="text">
+             <string>Download the list of unemployed users</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QPushButton" name="findEmployeesButton">
             <property name="styleSheet">
@@ -63,9 +77,9 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QPushButton" name="docDownloadButton">
+           <widget class="QPushButton" name="giveTask">
             <property name="text">
-             <string>Download the list of unemployed users</string>
+             <string>Give tasks</string>
             </property>
            </widget>
           </item>

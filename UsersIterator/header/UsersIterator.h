@@ -2,6 +2,7 @@
 #ifndef TASK_MANAGEMENT_USERSITERATOR_H
 #define TASK_MANAGEMENT_USERSITERATOR_H
 
+#include <utility>
 #include <vector>
 #include "../header/User.h"
 
@@ -10,7 +11,7 @@ private:
     typename std::vector<User>::iterator it;
 
 public:
-    explicit UsersIterator(typename std::vector<User>::iterator start) : it(start) {}
+    explicit UsersIterator(typename std::vector<User>::iterator start) : it(std::move(start)) {}
 
     User &operator*() { return *it; }
 

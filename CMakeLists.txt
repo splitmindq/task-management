@@ -102,6 +102,16 @@ set(SOURCES
         UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.cpp
         UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.h
         UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.ui
+        Task/src/Task.cpp
+        Task/header/Task.h
+        Task/src/TaskManager.cpp
+        Task/header/TaskManager.h
+        Task/TaskWindow/taskwindow.cpp
+        Task/TaskWindow/taskwindow.h
+        Task/TaskWindow/taskwindow.ui
+        UsersWindows/EmployeeWindow/ToDoListWindow/todolist.cpp
+        UsersWindows/EmployeeWindow/ToDoListWindow/todolist.h
+        UsersWindows/EmployeeWindow/ToDoListWindow/todolist.ui
 
         #---------------------
 )

@@ -30,22 +30,31 @@ EmailSender::~EmailSender() {
         curl_easy_cleanup(curl);
     }
 }
-
 bool EmailSender::sendEmail(const std::string &to, const std::string &subject, const std::string &message) {
     UploadStatus uploadCtx = {0};
+
+
 
     std::string toHeader = "To: " + to + "\r\n";
     std::string fromHeader = "From: " + from + "\r\n";
     std::string subjectHeader = "Subject: " + subject + "\r\n";
     std::string messageBody = message + "\r\n";
 
-    uploadCtx.payloadText = {toHeader.c_str(), fromHeader.c_str(), subjectHeader.c_str(), "\r\n", messageBody.c_str()};
+    uploadCtx.payloadText = {
+            toHeader.c_str(),
+            fromHeader.c_str(),
+            subjectHeader.c_str(),
+            "\r\n",
+            messageBody.c_str()
+    };
 
     curl_easy_setopt(curl, CURLOPT_USERNAME, username.c_str());
     curl_easy_setopt(curl, CURLOPT_PASSWORD, password.c_str());
     curl_easy_setopt(curl, CURLOPT_URL, smtpUrl.c_str());
     curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
     curl_easy_setopt(curl, CURLOPT_MAIL_FROM, from.c_str());
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
 
     struct curl_slist *recipients = nullptr;
     recipients = curl_slist_append(recipients, to.c_str());
@@ -57,14 +66,16 @@ bool EmailSender::sendEmail(const std::string &to, const std::string &subject, c
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
         std::cerr << "\nFirst try failed: " << curl_easy_strerror(res) << std::endl;
+
         curl_easy_setopt(curl, CURLOPT_PASSWORD, secondPassword.c_str());
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             std::cerr << "\nSecond try failed: " << curl_easy_strerror(res) << std::endl;
+            curl_slist_free_all(recipients);
             return false;
         }
     }
-    return true;
-    curl_slist_free_all(recipients);
-}
 
+    curl_slist_free_all(recipients);
+    return true;
+}

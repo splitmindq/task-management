@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskWindow</class>
+ <widget class="QDialog" name="TaskWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>456</width>
+    <height>413</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TaskWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">  QDialog {
+        background-color: #2B2B2B; /* Темный фон */
+        border: 1px solid #3C3C3C; /* Темная рамка */
+        border-radius: 8px; /* Умеренное закругление углов */
+    }
+    QLabel {
+        color: #E0E0E0; /* Светлый текст */
+        font-size: 14px;
+        font-weight: 500; /* Полужирный текст */
+        margin-bottom: 8px; /* Увеличенный отступ снизу */
+    }
+    QLineEdit, QDateEdit {
+        border: 1px solid #3C3C3C; /* Темная рамка */
+        border-radius: 4px; /* Небольшое закругление углов */
+        padding: 6px 8px; /* Увеличенный отступ внутри поля */
+        background-color: #252525; /* Темный фон полей ввода */
+        color: #FFFFFF; /* Белый текст */
+        font-size: 14px;
+    }
+    QLineEdit::placeholder, QDateEdit::placeholder {
+        color: #7D7D7D; /* Светло-серый цвет текста-заполнителя */
+        font-style: italic; /* Курсив для заполнителя */
+    }
+    QPushButton {
+        background-color: #3C3C3C; /* Темный фон кнопки */
+        color: #FFFFFF; /* Белый текст кнопки */
+        border: 1px solid #5A5A5A; /* Рамка для строгости */
+        border-radius: 4px; /* Умеренное закругление углов */
+        padding: 10px 16px; /* Просторный отступ внутри кнопки */
+        font-size: 15px;
+        font-weight: 600; /* Увеличенная жирность текста */
+    }
+    QPushButton:hover {
+        background-color: #4C4C4C; /* Более светлый фон при наведении */
+        border-color: #6A6A6A; /* Светлая рамка при наведении */
+    }
+    QPushButton:pressed {
+        background-color: #2C2C2C; /* Темный фон при нажатии */
+        border-color: #5A5A5A; /* Темная рамка при нажатии */
+    }
+    QPushButton:disabled {
+        background-color: #3A3A3A; /* Бледный фон для неактивных кнопок */
+        color: #7D7D7D; /* Бледный текст для неактивных кнопок */
+        border-color: #5A5A5A; /* Слабая рамка для неактивных кнопок */
+    }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="placeholderText">
+      <string>Enter task subject:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDateEdit" name="dateEdit"/>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Policy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Submit</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:red; font-style: italic;font-size:14px;</string>
+     </property>
+     <property name="text">
+      <string>fill in all fields!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

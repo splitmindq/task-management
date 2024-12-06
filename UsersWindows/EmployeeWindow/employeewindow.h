@@ -35,6 +35,7 @@ private slots:
 
     void on_changeInfoButton_clicked();
 
+    void on_checkTaskButton_clicked();
 private:
     std::unique_ptr<Ui::EmployeeWindow> ui;
     std::shared_ptr<Company> company;

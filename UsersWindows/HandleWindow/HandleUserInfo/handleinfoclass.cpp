@@ -42,7 +42,7 @@ void HandleInfoClass::updateUserInfo() {
 
 void HandleInfoClass::on_confirmButton_clicked() {
     EmailSender emailSender("<emailsender11@mail.ru>", "smtps://smtp.mail.ru:465",
-                            "emailsender11@mail.ru", "2bcQFBxtjmwUWdP7jxpT", "Kge6zBXU5SFsMnNsSkfk");
+                            "emailsender11@mail.ru", "EiQ6CgicPRbKHnESunqJ", "BvVX14M6PVfV6TcxxFre");
 
     ui->confirmButton->setEnabled(false);
 
@@ -56,16 +56,14 @@ void HandleInfoClass::on_confirmButton_clicked() {
         return;
     }
 
-    ui->codeLineEdit->setVisible(true);
-    ui->checkCodeButton->setVisible(true);
-    ui->codeLabel->setVisible(true);
+
 
     verificationCode = generateVerificationCode();
     std::string message = "Your code: " + verificationCode;
 
     try {
         if (!emailSender.sendEmail(user->email, "Profile information Changing", message)) {
-            QMessageBox::warning(this, "Error", "Failed to send verification email. Please try again.");
+            QMessageBox::warning(this, "Error", "Failed to send verification email. Please check internet connection.");
             ui->confirmButton->setEnabled(true);
             return;
         }
@@ -74,7 +72,9 @@ void HandleInfoClass::on_confirmButton_clicked() {
         ui->confirmButton->setEnabled(true);
         return;
     }
-
+    ui->codeLineEdit->setVisible(true);
+    ui->checkCodeButton->setVisible(true);
+    ui->codeLabel->setVisible(true);
     ui->confirmButton->setVisible(false);
 }
 

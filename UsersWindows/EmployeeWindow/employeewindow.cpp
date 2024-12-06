@@ -6,7 +6,7 @@
 
 #include "employeewindow.h"
 #include "ui_EmployeeWindow.h"
-
+#include "../EmployeeWindow/ToDoListWindow/todolist.h"
 
 EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *user, std::shared_ptr<Company> company)
         :
@@ -42,6 +42,11 @@ void EmployeeWindow::displayUserInfo() {
     QString surnameText = QString("Surname: %1").arg(user->surname.c_str());
     ui->surnameLineEdit_4->setText(surnameText);
 }
+
+void EmployeeWindow::on_checkTaskButton_clicked() {
+
+
+};
 
 void EmployeeWindow::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
