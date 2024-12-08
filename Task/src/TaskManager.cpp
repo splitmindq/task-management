@@ -47,3 +47,19 @@ void TaskManager::saveTaskToDb(const std::shared_ptr<Task> &task) {
 
     }
 }
+int TaskManager::getOverdueTaskCount(int userId){
+
+   TaskContainer taskContainer;
+   taskContainer.addFilter(TaskContainer::filterTasksByUserId(userId));
+   taskContainer.loadTasksFromDatabase();
+   int overdueCount = 0;
+   for(auto &task : taskContainer)
+   {
+       if(task.isDeadlinePassed()){
+           ++overdueCount;
+       }
+   }
+
+    return overdueCount;
+
+}

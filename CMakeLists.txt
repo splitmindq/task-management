@@ -86,13 +86,13 @@ set(SOURCES
 
         #---------------------
 
-        UsersContainer/src/UserContainer.cpp
-        UsersContainer/header/UserContainer.h
+        ItemContainer/src/ItemContainer.cpp
+        ItemContainer/header/ItemContainer.h
 
         #---------------------
 
-        UsersIterator/src/UsersIterator.cpp
-        UsersIterator/header/UsersIterator.h
+        ItemsIterator/src/ItemsIterator.cpp
+        ItemsIterator/header/ItemsIterator.h
 
         #---------------------
 
@@ -102,16 +102,26 @@ set(SOURCES
         UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.cpp
         UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.h
         UsersWindows/HandleWindow/HandleCompanyInfoCore/handlecompanyinfo.ui
+
+        #---------------------
+
         Task/src/Task.cpp
         Task/header/Task.h
         Task/src/TaskManager.cpp
         Task/header/TaskManager.h
+
+        #---------------------
+
         Task/TaskWindow/taskwindow.cpp
         Task/TaskWindow/taskwindow.h
         Task/TaskWindow/taskwindow.ui
-        UsersWindows/EmployeeWindow/ToDoListWindow/todolist.cpp
-        UsersWindows/EmployeeWindow/ToDoListWindow/todolist.h
-        UsersWindows/EmployeeWindow/ToDoListWindow/todolist.ui
+        UsersWindows/EmployeeWindow/ToDoListWindow/todowindow.cpp
+        UsersWindows/EmployeeWindow/ToDoListWindow/todowindow.h
+        UsersWindows/EmployeeWindow/ToDoListWindow/todowindow.ui
+        ItemContainer/src/ItemContainer.cpp
+        ItemContainer/header/ItemContainer.h
+
+        #---------------------
 
         #---------------------
 )
@@ -136,7 +146,7 @@ target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/UsersWindows")
-target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/recources")
+target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/resources")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/menu")
 target_include_directories(task_management PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Invites")
 

@@ -8,7 +8,7 @@
 #include "Task.h"
 #include "UserManager.h"
 #include "User.h"
-
+#include "../ItemContainer/header/ItemContainer.h"
 class TaskManager {
 
 private:
@@ -44,6 +44,7 @@ public:
         }
         return nullptr;
     }
+    int getOverdueTaskCount(int userId);
 };
 
 

@@ -11,6 +11,7 @@
 #include "../menu/headers/mainwindow.h"
 #include "../userWindowCore/userwindow.h"
 #include "HandleWindow/HandleUserInfo/handleinfoclass.h"
+#include "../EmployeeWindow/ToDoListWindow/todowindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class EmployeeWindow; }
@@ -36,6 +37,7 @@ private slots:
     void on_changeInfoButton_clicked();
 
     void on_checkTaskButton_clicked();
+
 private:
     std::unique_ptr<Ui::EmployeeWindow> ui;
     std::shared_ptr<Company> company;

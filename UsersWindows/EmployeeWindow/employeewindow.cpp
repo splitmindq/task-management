@@ -5,12 +5,13 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_EmployeeWindow.h" resolved
 
 #include "employeewindow.h"
+
+#include <utility>
 #include "ui_EmployeeWindow.h"
-#include "../EmployeeWindow/ToDoListWindow/todolist.h"
 
 EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *user, std::shared_ptr<Company> company)
         :
-        BasicClass(userManager, parent, user), ui(new Ui::EmployeeWindow), company(company) {
+        BasicClass(userManager, parent, user), ui(new Ui::EmployeeWindow), company(std::move(company)) {
     ui->setupUi(this);
     displayUserInfo();
 }
@@ -44,6 +45,10 @@ void EmployeeWindow::displayUserInfo() {
 }
 
 void EmployeeWindow::on_checkTaskButton_clicked() {
+
+    auto taskWindow = new ToDoWindow(this, user);
+    taskWindow->show();
+    this->hide();
 
 
 };

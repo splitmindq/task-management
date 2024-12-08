@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/img/contacts.png</file>
+        <file>resources/img/left.png</file>
+        <file>resources/img/right.png</file>
     </qresource>
 </RCC>

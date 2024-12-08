@@ -11,7 +11,7 @@
 #include "QScrollBar"
 #include "Windows.h"
 #include "../Companies/header/CompanyManager.h"
-#include "../UsersContainer/header/UserContainer.h"
+#include "../ItemContainer/header/ItemContainer.h"
 #include "headers/mainwindow.h"
 
 QT_BEGIN_NAMESPACE
