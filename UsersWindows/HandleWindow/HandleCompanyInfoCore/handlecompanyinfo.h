@@ -13,6 +13,7 @@
 #include "../Companies/header/CompanyManager.h"
 #include "../ItemContainer/header/ItemContainer.h"
 #include "headers/mainwindow.h"
+#include "../Task/header/TaskManager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class HandleCompanyInfo; }
@@ -42,6 +43,7 @@ private slots:
 
     void on_deleteCompanyButton_clicked();
 
+
 private:
     Ui::HandleCompanyInfo *ui;
     std::shared_ptr<Company> company;
@@ -60,6 +62,8 @@ private:
     void loadNextEmployees();
 
     QList<QPair<QString, int>> loadEmployeesFromDatabase(int limit, int offset);
+
+
 };
 
 

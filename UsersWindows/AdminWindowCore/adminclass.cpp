@@ -96,6 +96,8 @@ QList<QPair<QString, int>> AdminClass::loadEmployeesFromDatabase(int limit, int 
 
     UserContainer unemployedUsers;
     unemployedUsers.addFilter(UserContainer::filterByRole("user"));
+    unemployedUsers.addFilter(UserContainer::filterByLimit(limit));
+    unemployedUsers.addFilter(UserContainer::filterByOffset(offset));
     unemployedUsers.loadUsersFromDatabase();
     for (const auto& emp: unemployedUsers) {
         QString name = QString::fromStdString(emp.name);
@@ -151,6 +153,8 @@ QList<QPair<QString, int>> AdminClass::loadCompanyEmployeesFromDatabase(int limi
     UserContainer employeeContainer;
     employeeContainer.addFilter(UserContainer::filterByCompanyId(user->companyId));
     employeeContainer.addFilter(UserContainer::filterByRole("employee"));
+    employeeContainer.addFilter(UserContainer::filterByLimit(limit));
+    employeeContainer.addFilter(UserContainer::filterByOffset(offset));
     employeeContainer.loadUsersFromDatabase();
 
     for (auto it = employeeContainer.begin(); it != employeeContainer.end(); ++it) {

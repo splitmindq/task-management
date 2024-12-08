@@ -87,7 +87,14 @@ void HandleCompanyInfo::addEmployeeToList(const QString &employeeName, int emplo
     auto *employeeWidget = new QWidget();
     auto *layout = new QHBoxLayout();
 
+    std::string connStr = "host=localhost dbname=database user=mzitr password=yourpassword";
+
+    TaskManager taskManager(connStr);
+    int overdueTasks = taskManager.getOverdueTaskCount(employeeId);
+    QString statText = QString("Overdue tasks: %1").arg(overdueTasks);
+
     auto *nameLabel = new QLabel(employeeName, employeeWidget);
+    auto *statisticLabel = new QLabel(statText,employeeWidget);
     auto *fireButton = new QPushButton("fire", employeeWidget);
 
     connect(fireButton, &QPushButton::clicked, this, [this, employeeId, fireButton]() {
@@ -98,6 +105,7 @@ void HandleCompanyInfo::addEmployeeToList(const QString &employeeName, int emplo
     });
 
     layout->addWidget(nameLabel);
+    layout->addWidget(statisticLabel);
     layout->addWidget(fireButton);
     layout->setContentsMargins(0, 0, 0, 0);
     employeeWidget->setLayout(layout);
@@ -178,7 +186,5 @@ void HandleCompanyInfo::on_deleteCompanyButton_clicked() {
     auto *mainWindow = new MainWindow(userManager, nullptr);
     mainWindow->show();
 
-
 }
-
 

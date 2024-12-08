@@ -1,9 +1,16 @@
-#include "../header/ItemContainer.h"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <chrono>
 #include <pqxx/pqxx>
+#include "../header/ItemContainer.h"
+
+std::chrono::system_clock::time_point parseDeadline(const std::string& deadlineStr) {
+    std::tm tm = {};
+    std::istringstream ss(deadlineStr);
+    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
+    return std::chrono::system_clock::from_time_t(std::mktime(&tm));
+}
 
 template<>
 void UserContainer::loadUsersFromDatabase() {
@@ -12,14 +19,39 @@ void UserContainer::loadUsersFromDatabase() {
         pqxx::work txn(conn);
 
         std::string sql = "SELECT id, email, username, password, name, surname FROM users";
-        if (!filters.empty()) {
-            sql += " WHERE ";
-            for (size_t i = 0; i < filters.size(); ++i) {
-                if (i > 0) {
-                    sql += " AND ";
+        std::ostringstream whereClause;
+        bool firstFilter = true;
+
+        for (const auto& filter : filters) {
+            std::string filterStr = filter();
+            if (!filterStr.empty() && filterStr.find("LIMIT") == std::string::npos && filterStr.find("OFFSET") == std::string::npos) {
+                if (firstFilter) {
+                    whereClause << " WHERE " << filterStr;
+                    firstFilter = false;
+                } else {
+                    whereClause << " AND " << filterStr;
                 }
-                sql += filters[i]();
             }
+        }
+
+        sql += whereClause.str();
+
+        std::string limitStr, offsetStr;
+        for (const auto& filter : filters) {
+            std::string filterStr = filter();
+            if (filterStr.find("LIMIT") != std::string::npos) {
+                limitStr = filterStr;
+            }
+            if (filterStr.find("OFFSET") != std::string::npos) {
+                offsetStr = filterStr;
+            }
+        }
+
+        if (!limitStr.empty()) {
+            sql += " " + limitStr;
+        }
+        if (!offsetStr.empty()) {
+            sql += " " + offsetStr;
         }
 
         pqxx::result res = txn.exec(sql);
@@ -36,17 +68,9 @@ void UserContainer::loadUsersFromDatabase() {
         }
 
         txn.commit();
-    }
-    catch (const std::exception &e) {
+    } catch (const std::exception &e) {
         std::cerr << "Ошибка при загрузке пользователей: " << e.what() << std::endl;
     }
-}
-
-std::chrono::system_clock::time_point parseDeadline(const std::string& deadlineStr) {
-    std::tm tm = {};
-    std::istringstream ss(deadlineStr);
-    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
-    return std::chrono::system_clock::from_time_t(std::mktime(&tm));
 }
 
 template<>
@@ -56,14 +80,39 @@ void TaskContainer::loadTasksFromDatabase() {
         pqxx::work txn(conn);
 
         std::string sql = "SELECT id, user_id, company_id, aim, deadline, status FROM tasks";
-        if (!filters.empty()) {
-            sql += " WHERE ";
-            for (size_t i = 0; i < filters.size(); ++i) {
-                if (i > 0) {
-                    sql += " AND ";
+        std::ostringstream whereClause;
+        bool firstFilter = true;
+
+        for (const auto& filter : filters) {
+            std::string filterStr = filter();
+            if (!filterStr.empty() && filterStr.find("LIMIT") == std::string::npos && filterStr.find("OFFSET") == std::string::npos) {
+                if (firstFilter) {
+                    whereClause << " WHERE " << filterStr;
+                    firstFilter = false;
+                } else {
+                    whereClause << " AND " << filterStr;
                 }
-                sql += filters[i]();
             }
+        }
+
+        sql += whereClause.str();
+
+        std::string limitStr, offsetStr;
+        for (const auto& filter : filters) {
+            std::string filterStr = filter();
+            if (filterStr.find("LIMIT") != std::string::npos) {
+                limitStr = filterStr;
+            }
+            if (filterStr.find("OFFSET") != std::string::npos) {
+                offsetStr = filterStr;
+            }
+        }
+
+        if (!limitStr.empty()) {
+            sql += " " + limitStr;
+        }
+        if (!offsetStr.empty()) {
+            sql += " " + offsetStr;
         }
 
         pqxx::result res = txn.exec(sql);
@@ -74,14 +123,13 @@ void TaskContainer::loadTasksFromDatabase() {
                     row["company_id"].as<int>(),
                     row["aim"].as<std::string>(),
                     parseDeadline(row["deadline"].as<std::string>())
-                    );
+            );
             task.setStatus(row["status"].as<int>());
             addItem(task);
         }
 
         txn.commit();
-    }
-    catch (const std::exception &e) {
+    } catch (const std::exception &e) {
         std::cerr << "Ошибка при загрузке задач: " << e.what() << std::endl;
     }
 }

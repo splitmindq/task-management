@@ -70,7 +70,17 @@ public:
         };
     }
 
+    static std::function<std::string()> filterByLimit(int limit) {
+        return [limit]() {
+            return "LIMIT " + std::to_string(limit);
+        };
+    }
 
+    static std::function<std::string()> filterByOffset(int offset) {
+        return [offset]() {
+            return "OFFSET " + std::to_string(offset);
+        };
+    }
 };
 
 using UserContainer = ItemContainer<User>;
