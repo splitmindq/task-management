@@ -32,11 +32,11 @@ public:
     }
 
     auto begin() {
-        return Iterator<T>(items.begin()); // Используем Iterator<T>
+        return Iterator<T>(items.begin());
     }
 
     auto end() {
-        return Iterator<T>(items.end()); // Используем Iterator<T>
+        return Iterator<T>(items.end());
     }
 
     void addFilter(const std::function<std::string()> &filter) {
@@ -63,6 +63,14 @@ public:
             return "user_id = '" + std::to_string(userId) + "'";
         };
     }
+
+    static std::function<std::string()> filterTasksByStatus(int status) {
+        return [status]() {
+            return "status = '" + std::to_string(status) + "'";
+        };
+    }
+
+
 };
 
 using UserContainer = ItemContainer<User>;

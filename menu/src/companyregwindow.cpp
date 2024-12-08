@@ -32,3 +32,4 @@ void companyRegWindow::on_returnButton_clicked() {
     this->close();
 
 }
+

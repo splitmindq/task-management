@@ -38,6 +38,8 @@ private slots:
 
     void on_checkTaskButton_clicked();
 
+    void on_employeeDirectoryBttn_clicked();
+
 private:
     std::unique_ptr<Ui::EmployeeWindow> ui;
     std::shared_ptr<Company> company;

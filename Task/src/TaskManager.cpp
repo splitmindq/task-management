@@ -38,28 +38,49 @@ void TaskManager::saveTaskToDb(const std::shared_ptr<Task> &task) {
         std::string deadline_str = oss.str();
 
         // Выполняем SQL-запрос
-        txn.exec_params("INSERT INTO tasks (id, user_id, company_id, aim, deadline, status) VALUES ($1, $2, $3, $4, $5, $6)",
-                        task->getId(), task->getUserId(), task->getCompanyId(),
-                        task->getAim(), deadline_str, task->getStatus());
+        txn.exec_params(
+                "INSERT INTO tasks (id, user_id, company_id, aim, deadline, status) VALUES ($1, $2, $3, $4, $5, $6)",
+                task->getId(), task->getUserId(), task->getCompanyId(),
+                task->getAim(), deadline_str, task->getStatus());
         txn.commit(); // Подтверждаем транзакцию
     } catch (const std::exception &e) {
         std::cerr << "Error saving task to database: " << e.what() << std::endl;
 
     }
 }
-int TaskManager::getOverdueTaskCount(int userId){
 
-   TaskContainer taskContainer;
-   taskContainer.addFilter(TaskContainer::filterTasksByUserId(userId));
-   taskContainer.loadTasksFromDatabase();
-   int overdueCount = 0;
-   for(auto &task : taskContainer)
-   {
-       if(task.isDeadlinePassed()){
-           ++overdueCount;
-       }
-   }
+int TaskManager::getOverdueTaskCount(int userId) {
+
+    TaskContainer taskContainer;
+    taskContainer.addFilter(TaskContainer::filterTasksByUserId(userId));
+    taskContainer.loadTasksFromDatabase();
+    int overdueCount = 0;
+    for (auto &task: taskContainer) {
+        if (task.isDeadlinePassed()) {
+            ++overdueCount;
+        }
+    }
 
     return overdueCount;
 
 }
+
+void TaskManager::updateTaskStatus(const Task &task) {
+    try {
+        pqxx::work transaction(conn);
+
+        std::string updateQuery = R"(
+            UPDATE tasks
+            SET status = $1
+            WHERE user_id = $2 AND aim = $3
+        )";
+
+        transaction.exec_params(updateQuery, task.getStatus(), task.getUserId(), task.getAim());
+        transaction.commit();
+
+        std::cout << "Статус задачи с aim = '" << task.getAim() << "' и user_id = " << task.getUserId() << " успешно обновлён.\n";
+    } catch (const std::exception &e) {
+        std::cerr << "Ошибка при обновлении статуса задачи: " << e.what() << '\n';
+    }
+}
+

@@ -121,12 +121,14 @@ set(SOURCES
         ItemContainer/src/ItemContainer.cpp
         ItemContainer/header/ItemContainer.h
 
+        
+
         #---------------------
 
         #---------------------
 )
 
-qt6_add_resources(RESOURCE_TARGET "${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc")
+qt_add_resources(RESOURCE_FILES resources.qrc)
 
 add_executable(task_management ${SOURCES})
 

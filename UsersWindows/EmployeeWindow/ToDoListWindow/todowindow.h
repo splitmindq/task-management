@@ -5,6 +5,9 @@
 #include "QPixmap"
 #include "EmployeeWindow/employeewindow.h"
 #include "QListWidget"
+#include "locale.h"
+#include <QLocale>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ToDoWindow; }
@@ -28,6 +31,8 @@ private slots:
 
     void on_leftButton_clicked();
 
+    void on_submitButton_clicked();
+
 private:
     User *user;
     int currentOffset;
@@ -46,6 +51,17 @@ private:
 
     void moveItem(QListWidget *sourceList, QListWidget *targetList);
 
+    QList<QPair<QString, QString>> loadTasksFromDatabaseWithStatus(int status, int limit, int offset);
+
+    void loadNextInProcessTasks();
+
+    void addTasksToInProcessList(const QString &taskAim, const QString &taskDeadline);
+
+    void setupLazyLoadingForInProcessList();
+
+    void onInProcessScroll(int value);
+
+    void loadMoreInProcessItems();
     };
 
 #endif //TASK_MANAGEMENT_TODOWINDOW_H

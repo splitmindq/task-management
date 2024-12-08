@@ -75,7 +75,7 @@ void TaskContainer::loadTasksFromDatabase() {
                     row["aim"].as<std::string>(),
                     parseDeadline(row["deadline"].as<std::string>())
                     );
-            task.setStatus(row["status"].as<bool>());
+            task.setStatus(row["status"].as<int>());
             addItem(task);
         }
 

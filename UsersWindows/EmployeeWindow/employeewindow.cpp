@@ -13,6 +13,7 @@ EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *
         :
         BasicClass(userManager, parent, user), ui(new Ui::EmployeeWindow), company(std::move(company)) {
     ui->setupUi(this);
+    ui->label_3->setVisible(false);
     displayUserInfo();
 }
 
@@ -45,12 +46,11 @@ void EmployeeWindow::displayUserInfo() {
 }
 
 void EmployeeWindow::on_checkTaskButton_clicked() {
-
+    ui->checkTaskButton->setEnabled(false);
     auto taskWindow = new ToDoWindow(this, user);
     taskWindow->show();
     this->hide();
-
-
+    ui->checkTaskButton->setEnabled(true);
 };
 
 void EmployeeWindow::on_changeInfoButton_clicked() {
@@ -59,4 +59,14 @@ void EmployeeWindow::on_changeInfoButton_clicked() {
     changeInfoWindow->show();
     ui->changeInfoButton->setEnabled(true);
 
+}
+void EmployeeWindow::on_employeeDirectoryBttn_clicked() {
+    UserContainer userContainer;
+    userContainer.addFilter(UserContainer::filterByCompanyId(user->companyId));
+    userContainer.addFilter(UserContainer::filterByRole("admin"));
+    userContainer.loadUsersFromDatabase();
+    auto user = userContainer.begin();
+
+    ui->label_3->setText(" Name: " + QString::fromStdString(user->name) + ", Email: " + QString::fromStdString(user->email));
+    ui->label_3->setVisible(true);
 }
