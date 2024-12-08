@@ -185,9 +185,6 @@ QListWidgetItem* findSelectedItem(const QList<QListWidget*>& lists) {
 
 
 void ToDoWindow::on_leftButton_clicked() {
-    ui->loadList->clearSelection();
-    ui->inProcessList->clearSelection();
-    ui->doneList->clearSelection();
 
     if (ui->loadList->currentItem()) {
         moveItem(ui->loadList, ui->inProcessList);
@@ -199,9 +196,10 @@ void ToDoWindow::on_leftButton_clicked() {
         qDebug() << "Ни один элемент не выбран. Операция переноса отменена.";
     }
 
-    ui->loadList->clearSelection();
-    ui->inProcessList->clearSelection();
-    ui->doneList->clearSelection();
+    ui->loadList->setCurrentItem(nullptr);
+    ui->inProcessList->setCurrentItem(nullptr);
+    ui->doneList->setCurrentItem(nullptr);
+
 }
 
 void ToDoWindow::on_rightButton_clicked() {
@@ -218,7 +216,7 @@ void ToDoWindow::on_rightButton_clicked() {
         qDebug() << "Ни один элемент не выбран. Операция переноса отменена.";
     }
 
-    ui->loadList->clearSelection();
-    ui->inProcessList->clearSelection();
-    ui->doneList->clearSelection();
+    ui->loadList->setCurrentItem(nullptr);
+    ui->inProcessList->setCurrentItem(nullptr);
+    ui->doneList->setCurrentItem(nullptr);
 }
