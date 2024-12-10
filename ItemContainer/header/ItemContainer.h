@@ -81,7 +81,17 @@ public:
             return "OFFSET " + std::to_string(offset);
         };
     }
+
+    static std::function<std::string()> filtredByTime(int remainingDays) {
+        return [remainingDays]() {
+            return "deadline <= NOW() + INTERVAL '" + std::to_string(remainingDays) + " days' AND deadline >= NOW()";
+        };
+    }
+
+
+
 };
+
 
 using UserContainer = ItemContainer<User>;
 using TaskContainer = ItemContainer<Task>;

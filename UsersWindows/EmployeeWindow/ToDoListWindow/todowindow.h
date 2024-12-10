@@ -21,6 +21,8 @@ public:
 
     void addTasksToList(const QString &taskAim, const QString &taskDeadline);
 
+    static std::string timePointToString(const std::chrono::system_clock::time_point &timePoint) ;
+
     ~ToDoWindow() override;
 
 private slots:
@@ -30,6 +32,7 @@ private slots:
     void on_rightButton_clicked();
 
     void on_leftButton_clicked();
+
 
     void on_submitButton_clicked();
 

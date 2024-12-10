@@ -40,9 +40,17 @@ private slots:
 
     void on_employeeDirectoryBttn_clicked();
 
+    void on_upcomingButton_clicked();
+
+
 private:
     std::unique_ptr<Ui::EmployeeWindow> ui;
     std::shared_ptr<Company> company;
+
+    void onScroll(int value);
+    void loadMoreItems();
+    QList<QPair<QString, QString>> loadTasksFromDatabase();
+    void addTasksToList(const QString &taskAim, const QString &taskDeadline);
 
 };
 

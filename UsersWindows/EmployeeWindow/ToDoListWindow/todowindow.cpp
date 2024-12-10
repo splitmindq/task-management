@@ -53,7 +53,7 @@ void ToDoWindow::onScroll(int value) {
     }
 }
 
-std::string timePointToString(const std::chrono::system_clock::time_point &timePoint) {
+std::string ToDoWindow:: timePointToString(const std::chrono::system_clock::time_point &timePoint) {
     std::time_t timeT = std::chrono::system_clock::to_time_t(timePoint);
     std::tm localTime{};
 #ifdef _WIN32
@@ -76,6 +76,8 @@ QList<QPair<QString, QString>> ToDoWindow::loadTasksFromDatabase(int limit, int 
     TaskContainer taskContainer;
     taskContainer.addFilter(TaskContainer::filterTasksByUserId(user->id));
     taskContainer.addFilter(TaskContainer::filterTasksByStatus(0));
+    taskContainer.addFilter(TaskContainer::filterByLimit(limit));
+    taskContainer.addFilter(TaskContainer::filterByOffset(offset));
     taskContainer.loadTasksFromDatabase();
 
     for (const auto &emp: taskContainer) {
@@ -323,6 +325,8 @@ QList<QPair<QString, QString>> ToDoWindow::loadTasksFromDatabaseWithStatus(int s
     TaskContainer taskContainer;
     taskContainer.addFilter(TaskContainer::filterTasksByUserId(user->id));
     taskContainer.addFilter(TaskContainer::filterTasksByStatus(status));
+    taskContainer.addFilter(TaskContainer::filterByLimit(limit));
+    taskContainer.addFilter(TaskContainer::filterByOffset(offset));
     taskContainer.loadTasksFromDatabase();
 
     for (const auto &emp : taskContainer) {

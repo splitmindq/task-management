@@ -5,7 +5,6 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_EmployeeWindow.h" resolved
 
 #include "employeewindow.h"
-
 #include <utility>
 #include "ui_EmployeeWindow.h"
 
@@ -15,7 +14,66 @@ EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *
     ui->setupUi(this);
     ui->label_3->setVisible(false);
     displayUserInfo();
+    ui->listWidget_4->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    connect(ui->listWidget_4->verticalScrollBar(), &QScrollBar::valueChanged, this, &EmployeeWindow::onScroll);
+
+
 }
+
+QList<QPair<QString, QString>> EmployeeWindow::loadTasksFromDatabase() {
+    QList<QPair<QString, QString>> tasks;
+
+     TaskContainer taskContainer;
+    taskContainer.addFilter(TaskContainer::filtredByTime(5));
+    taskContainer.addFilter(TaskContainer ::filterTasksByUserId(user->id));
+    taskContainer.loadTasksFromDatabase();
+
+    for (const auto &emp: taskContainer) {
+        QString aim = QString::fromStdString(emp.getAim());
+        QString deadline = QString::fromStdString(ToDoWindow::timePointToString(emp.getDeadline()));
+        tasks.append(qMakePair(aim, deadline));
+    }
+    return tasks;
+}
+void EmployeeWindow::addTasksToList(const QString &taskAim, const QString &taskDeadline) {
+    auto *taskWidget = new QWidget();
+    auto *layout = new QHBoxLayout(taskWidget);
+
+    auto *aimLabel = new QLabel(taskAim, taskWidget);
+    auto *deadLineLabel = new QLabel(taskDeadline, taskWidget);
+
+    QDate deadLineDate = QDate::fromString(taskDeadline, "dd.MM.yyyy");
+    if (deadLineDate < QDate::currentDate()) {
+        aimLabel->setStyleSheet("color: red; font-weight: bold;");
+    }
+
+    layout->addWidget(aimLabel);
+    layout->addWidget(deadLineLabel);
+    layout->setContentsMargins(0, 0, 0, 0);
+    taskWidget->setLayout(layout);
+
+    auto *item = new QListWidgetItem(ui->listWidget_4);
+    item->setSizeHint(taskWidget->sizeHint());
+    ui->listWidget_4->setItemWidget(item, taskWidget);
+}
+
+void EmployeeWindow::loadMoreItems() {
+    QList<QPair<QString, QString>> moreTasks = loadTasksFromDatabase();
+    for (const auto &task: moreTasks) {
+        addTasksToList(task.first, task.second);
+    }
+
+
+}
+
+
+void EmployeeWindow::onScroll(int value) {
+    int maxValue = ui->listWidget_4->verticalScrollBar()->maximum();
+    if (value >= maxValue - 10){
+        loadMoreItems();
+    }
+}
+
 
 EmployeeWindow::~EmployeeWindow() = default;
 
@@ -69,4 +127,9 @@ void EmployeeWindow::on_employeeDirectoryBttn_clicked() {
 
     ui->label_3->setText(" Name: " + QString::fromStdString(user->name) + ", Email: " + QString::fromStdString(user->email));
     ui->label_3->setVisible(true);
+}
+
+void EmployeeWindow::on_upcomingButton_clicked() {
+    ui->listWidget_4->clear();
+    loadMoreItems();
 }

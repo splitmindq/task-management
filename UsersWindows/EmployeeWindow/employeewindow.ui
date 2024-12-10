@@ -125,6 +125,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="upcomingButton">
+              <property name="text">
+               <string>Check Upcoming Deadlines</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>

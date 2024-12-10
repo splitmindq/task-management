@@ -149,7 +149,7 @@ QList<QPair<QString, int>> HandleCompanyInfo::loadEmployeesFromDatabase(int limi
 void HandleCompanyInfo::on_deleteCompanyButton_clicked() {
 
     UserContainer employees;
-    employees.addFilter(employees.filterByCompanyId(user->companyId));
+    employees.addFilter(UserContainer::filterByCompanyId(user->companyId));
     employees.loadUsersFromDatabase();
 
     for (auto it = employees.begin(); it != employees.end(); ++it) {

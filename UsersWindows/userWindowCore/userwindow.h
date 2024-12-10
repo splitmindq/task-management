@@ -41,6 +41,7 @@ private slots:
 
     void on_changeInfoButton_clicked();
 
+
 private:
     std::unique_ptr<Ui::UserWindow> ui;
     int currentOffset;
