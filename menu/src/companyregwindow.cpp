@@ -10,6 +10,8 @@
 companyRegWindow::companyRegWindow(QWidget *parent) :
         QDialog(parent), ui(new Ui::companyRegWindow) {
     ui->setupUi(this);
+    setWindowTitle("Task Management");
+
 }
 
 companyRegWindow::~companyRegWindow() = default;

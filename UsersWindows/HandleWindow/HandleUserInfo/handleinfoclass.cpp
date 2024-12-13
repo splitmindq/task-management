@@ -8,6 +8,8 @@ HandleInfoClass::HandleInfoClass(QWidget *parent, User *user, UserManager *userM
     ui->codeLineEdit->setVisible(false);
     ui->checkCodeButton->setVisible(false);
     ui->codeLabel->setVisible(false);
+    setWindowTitle("Task Management");
+
 }
 
 HandleInfoClass::~HandleInfoClass() {

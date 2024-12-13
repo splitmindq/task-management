@@ -9,6 +9,7 @@ UserWindow::UserWindow(UserManager *userManager, QWidget *parent, User *user)
         : BasicClass(userManager, parent, user), ui(new Ui::UserWindow), currentOffset(0), limit(20) {
     ui->setupUi(this);
     displayUserInfo();
+    showMaximized();
 }
 
 UserWindow::~UserWindow() = default;
@@ -21,7 +22,6 @@ void UserWindow::clearInviteForUser(int inviterId) {
                "AND sender_id = " + W.quote(inviterId)
         );
         W.commit();
-        std::cout << "Invites deleted for user ID: " << user->id << std::endl;
     } catch (const pqxx::sql_error &e) {
         std::cerr << "SQL error: " << e.what() << std::endl;
         std::cerr << "Query was: " << e.query() << std::endl;
@@ -48,12 +48,12 @@ void UserWindow::acceptInvite(int inviterId) {
 }
 
 void UserWindow::addInviteToList(const QString &senderName, const QString &message) {
-    QWidget *inviteWidget = new QWidget();
-    QHBoxLayout *layout = new QHBoxLayout();
+    auto * inviteWidget = new QWidget();
+    auto * layout = new QHBoxLayout();
 
-    QLabel *nameLabel = new QLabel(senderName, inviteWidget);
-    QPushButton *acceptButton = new QPushButton("Accept", inviteWidget);
-    QLabel *messageLabel = new QLabel(message, inviteWidget);
+    auto *nameLabel = new QLabel(senderName, inviteWidget);
+    auto *acceptButton = new QPushButton("Accept", inviteWidget);
+    auto *messageLabel = new QLabel(message, inviteWidget);
     connect(acceptButton, &QPushButton::clicked, this, [this, senderName]() {
 
         int inviterId = userManager->getId(senderName.toStdString());
@@ -68,7 +68,7 @@ void UserWindow::addInviteToList(const QString &senderName, const QString &messa
     layout->setContentsMargins(0, 0, 0, 0);
     inviteWidget->setLayout(layout);
 
-    QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
+    auto *item = new QListWidgetItem(ui->listWidget);
     item->setSizeHint(inviteWidget->sizeHint());
     ui->listWidget->setItemWidget(item, inviteWidget);
 }
@@ -84,7 +84,7 @@ void UserWindow::displayUserInfo() {
 
 void UserWindow::on_LogOutButton_clicked() {
     this->close();
-    MainWindow *mainWindow = new MainWindow(userManager, nullptr);
+    auto *mainWindow = new MainWindow(userManager, nullptr);
     mainWindow->show();
 }
 
@@ -94,7 +94,7 @@ void UserWindow::on_checkInvitesButton_clicked() {
     loadNextInvites();
 }
 
-QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, int offset) {
+QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int lim, int offset) {
     QList<QPair<QString, QString>> invites;
     QSet<QString> seenSenders;
 
@@ -110,7 +110,7 @@ QList<QPair<QString, QString>> UserWindow::loadInvitesFromDatabase(int limit, in
             WHERE i.user_id = $1
             LIMIT $2 OFFSET $3
             )",
-                user->id, limit, offset);
+                user->id, lim, offset);
 
         for (const auto &row: res) {
             QString sender = QString::fromStdString(row["sender"].c_str());
@@ -153,19 +153,48 @@ void UserWindow::onCompanyNameEntered(const QString &companyName) {
 }
 
 void UserWindow::on_createCompanyButton_clicked() {
+    ui->createCompanyButton->setEnabled(false);
     auto *regWindow = new companyRegWindow(this);
     connect(regWindow, &companyRegWindow::companyNameEntered, this, &UserWindow::onCompanyNameEntered);
-    regWindow->exec();
+
+    QRect parentGeometry = this->geometry();
+    regWindow->resize(parentGeometry.size());
+    regWindow->showMaximized();
+    ui->createCompanyButton->setEnabled(true);
+
 }
 
 void UserWindow::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
     auto changeInfoWindow = new HandleInfoClass(this, user, userManager);
-    changeInfoWindow->show();
+
+    QRect parentGeometry = this->geometry();
+
+    changeInfoWindow->resize(parentGeometry.size());
+    changeInfoWindow->showMaximized();
+
     ui->changeInfoButton->setEnabled(true);
+}
+
+void UserWindow::clearAllInvites() {
+
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        W.exec("DELETE FROM invites WHERE user_id = " + W.quote(user->id));
+        W.commit();
+    } catch (std::system_error &e) {
+        std::cerr << "Error while loading invite: " << e.what() << std::endl;
+    }
 
 
 }
 
+void UserWindow::on_clearInvitesButton_clicked() {
+
+    clearAllInvites();
+    ui->listWidget->clear();
+
+}
 
 

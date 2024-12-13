@@ -14,6 +14,8 @@
 #include "../AdminWindowCore/adminclass.h"
 #include "EmployeeWindow/employeewindow.h"
 #include "HandleWindow/HandleUserInfo/handleinfoclass.h"
+#include "QAbstractAnimation"
+#include "QPropertyAnimation"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class UserWindow; }
@@ -41,13 +43,14 @@ private slots:
 
     void on_changeInfoButton_clicked();
 
+    void on_clearInvitesButton_clicked();
 
 private:
     std::unique_ptr<Ui::UserWindow> ui;
     int currentOffset;
     int limit;
 
-    QList<QPair<QString, QString>> loadInvitesFromDatabase(int limit, int offset);
+    QList<QPair<QString, QString>> loadInvitesFromDatabase(int lim, int offset);
 
     void loadNextInvites();
 
@@ -56,6 +59,9 @@ private:
     void acceptInvite(int companyId);
 
     void clearInviteForUser(int inviterId);
+
+    void clearAllInvites();
+
 };
 
 

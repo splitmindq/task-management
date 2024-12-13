@@ -13,6 +13,67 @@
   <property name="windowTitle">
    <string>RegistrationWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+   /* Темный фон */
+    color: #dcdcdc; /* Светлый текст */
+    font-family: &quot;Arial&quot;, sans-serif;
+}
+
+QLineEdit {
+    background-color: #2d2d2d; /* Темный фон для полей ввода */
+    border: 1px solid #4a4a4a; /* Тонкая граница */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 2px;
+    color: #dcdcdc; /* Светлый цвет текста */
+}
+
+QLineEdit:focus {
+    border: 1px solid #6a5acd; /* При фокусе — светло-фиолетовая граница */
+    background-color: #353535; /* Слегка светлее фон при фокусе */
+}
+
+QPushButton {
+    background-color: #4a4a4a; /* Темно-серый фон кнопок */
+    border: 1px solid black; /* Граница с фиолетовым оттенком */
+    border-radius: 5px; /* Закругленные углы кнопок */
+    padding: 5px;
+    color: #dcdcdc; /* Светлый текст на кнопках */
+    font-size: 14px;
+}
+
+QPushButton:hover {
+    border-color: #8a7fb3; /* Светлая граница */
+}
+
+QPushButton:pressed {
+    background-color: #5a4f85; /* Темный фиолетовый при нажатии */
+}
+
+QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+QFrame {
+    border: none;
+}
+
+QGroupBox {
+    border: 1px solid #3a3a3a;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #2d2d2d;
+}
+
+QGroupBox:title {
+    color: #dcdcdc;
+    padding: 5px;
+    font-size: 18px;
+}
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -38,6 +99,13 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+</string>
       </property>
       <property name="text">
        <string>Create your Account</string>

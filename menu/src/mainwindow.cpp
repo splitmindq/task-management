@@ -11,6 +11,8 @@ MainWindow::MainWindow(UserManager *userManager, QWidget *parent) :
 
         QMainWindow(parent), ui(new Ui::MainWindow), userManager(userManager) {
     ui->setupUi(this);
+    setWindowTitle("Task Management");
+    showMaximized();
 
 }
 
@@ -58,8 +60,8 @@ void MainWindow::handleUserRole(const std::string &username) {
 
 void MainWindow::openUserWindow(User *user) {
     auto *userWindow = new UserWindow(userManager, nullptr, user);
-    this->close();
     userWindow->show();
+    QTimer::singleShot(100, this, &QWidget::close); // Закрываем текущее окно через 100 мс
 }
 
 void MainWindow::handleAdminOrEmployee(User *user) {
@@ -77,7 +79,7 @@ void MainWindow::handleAdmin(User *user) {
     if (company) {
         auto adminWindow = new AdminClass(userManager, nullptr, user, company);
         adminWindow->show();
-        this->close();
+        QTimer::singleShot(100, this, &QWidget::close); // Закрываем текущее окно через 100 мс
     } else {
         throw LoginException("Company not found for this administrator.");
     }
@@ -89,8 +91,8 @@ void MainWindow::openEmployeeWindow(User *user) {
 
     if (company) {
         auto employeeWindow = new EmployeeWindow(userManager, nullptr, user, company);
-        this->close();
         employeeWindow->show();
+        QTimer::singleShot(100, this, &QWidget::close); // Закрываем текущее окно через 100 мс
     } else {
         throw LoginException("Company not found for this user.");
     }
@@ -99,7 +101,7 @@ void MainWindow::openEmployeeWindow(User *user) {
 void MainWindow::on_registrationButton_clicked() {
     ui->registrationButton->setEnabled(false);
     auto registrationWindow = new RegistrationWindow(userManager, nullptr);
-    this->close();
-    registrationWindow->show();
+    registrationWindow->showMaximized();
+    ui->registrationButton->setEnabled(true);
 
 }

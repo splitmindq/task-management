@@ -1,6 +1,7 @@
 #include "sendingEmail.h"
 #include "headers/mainwindow.h"
 #include "QApplication"
+#include "QScreen"
 int main(int argc, char *argv[]) {
 
     std::string connectionString = "host=localhost dbname=database user=mzitr password=yourpassword";
@@ -8,11 +9,9 @@ int main(int argc, char *argv[]) {
 
     SetConsoleOutputCP(CP_UTF8);
 
-
     QApplication MainMenu(argc, argv);
-    MainWindow window(&userManager);
-    window.show();
 
+    MainWindow window(&userManager);
     return QApplication::exec();
 
 }

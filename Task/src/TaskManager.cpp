@@ -72,13 +72,12 @@ void TaskManager::updateTaskStatus(const Task &task) {
         std::string updateQuery = R"(
             UPDATE tasks
             SET status = $1
-            WHERE user_id = $2 AND aim = $3
+            WHERE user_id = $2 AND id = $3
         )";
 
-        transaction.exec_params(updateQuery, task.getStatus(), task.getUserId(), task.getAim());
+        transaction.exec_params(updateQuery, task.getStatus(), task.getUserId(), task.getId());
         transaction.commit();
 
-        std::cout << "Статус задачи с aim = '" << task.getAim() << "' и user_id = " << task.getUserId() << " успешно обновлён.\n";
     } catch (const std::exception &e) {
         std::cerr << "Ошибка при обновлении статуса задачи: " << e.what() << '\n';
     }

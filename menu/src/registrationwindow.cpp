@@ -11,15 +11,15 @@
 RegistrationWindow::RegistrationWindow(UserManager *userManager, QWidget *parent) :
         QMainWindow(parent), ui(new Ui::RegistrationWindow), userManager(userManager) {
     ui->setupUi(this);
+    setWindowTitle("Task Management");
+
 }
 
 RegistrationWindow::~RegistrationWindow() = default;
 
 void RegistrationWindow::on_backToMenuButton_clicked() {
     ui->backToMenuButton->setEnabled(false);
-    auto mainWindow = new MainWindow(userManager, nullptr);
     this->close();
-    mainWindow->show();
 
 }
 

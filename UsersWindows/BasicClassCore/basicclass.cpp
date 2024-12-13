@@ -10,6 +10,7 @@
 
 BasicClass::BasicClass(UserManager *userManager, QWidget *parent, User *user)
         : QMainWindow(parent), userManager(userManager), user(user) {
+
 }
 
 BasicClass::~BasicClass() = default;

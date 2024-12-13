@@ -66,7 +66,8 @@ private:
     void loadNextCompanyEmployees();
     static QList<QPair<QString, int>> loadEmployeesFromDatabase(int limit, int offset);
     QList<QPair<QString, int>> loadCompanyEmployeesFromDatabase(int limit, int offset);
+    void updateInviteButtonState(QPushButton* inviteButton, int employeeId);
 
-};
+    };
 
 #endif //TASK_MANAGEMENT_ADMINCLASS_H

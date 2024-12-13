@@ -6,12 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>662</width>
-    <height>570</height>
+    <width>688</width>
+    <height>667</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ToDoWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QPushButton {
+    background-color: #4a4a4a; /* Темно-серый фон кнопок */
+    border: 1px solid black; /* Граница с фиолетовым оттенком */
+    border-radius: 5px; /* Закругленные углы кнопок */
+    padding: 5px;
+    color: #dcdcdc; /* Светлый текст на кнопках */
+    font-size: 14px;
+}
+
+QPushButton:hover {
+    background-color: #6a5acd; /* При наведении — светлый фиолетовый фон */
+    border-color: #8a7fb3; /* Светлая граница */
+}
+
+QPushButton:pressed {
+    background-color: #5a4f85; /* Темный фиолетовый при нажатии */
+}
+
+
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -51,22 +74,40 @@
       </property>
       <item>
        <widget class="QLabel" name="label_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
+        </property>
         <property name="text">
-         <string>                                 Done</string>
+         <string> Done</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>                     In Process</string>
+         <string>In Process</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>                   Tasks</string>
+         <string>Tasks</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -74,18 +115,18 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>20</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>100</width>
-          <height>20</height>
-         </size>
+        <property name="leftMargin">
+         <number>20</number>
         </property>
-       </spacer>
+       </layout>
       </item>
       <item>
        <widget class="QListWidget" name="doneList"/>
@@ -133,7 +174,7 @@
         <item>
          <widget class="QPushButton" name="leftButton">
           <property name="text">
-           <string> </string>
+           <string/>
           </property>
           <property name="icon">
            <iconset theme="QIcon::ThemeIcon::GoPrevious"/>

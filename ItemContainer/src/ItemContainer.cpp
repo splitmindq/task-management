@@ -96,25 +96,6 @@ void TaskContainer::loadTasksFromDatabase() {
         }
 
         sql += whereClause.str();
-
-        std::string limitStr, offsetStr;
-        for (const auto& filter : filters) {
-            std::string filterStr = filter();
-            if (filterStr.find("LIMIT") != std::string::npos) {
-                limitStr = filterStr;
-            }
-            if (filterStr.find("OFFSET") != std::string::npos) {
-                offsetStr = filterStr;
-            }
-        }
-
-        if (!limitStr.empty()) {
-            sql += " " + limitStr;
-        }
-        if (!offsetStr.empty()) {
-            sql += " " + offsetStr;
-        }
-
         pqxx::result res = txn.exec(sql);
         for (const auto &row: res) {
             Task task(

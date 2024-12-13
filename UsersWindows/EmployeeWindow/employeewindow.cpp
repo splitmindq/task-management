@@ -16,6 +16,8 @@ EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *
     displayUserInfo();
     ui->listWidget_4->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     connect(ui->listWidget_4->verticalScrollBar(), &QScrollBar::valueChanged, this, &EmployeeWindow::onScroll);
+    setWindowTitle("Task Management");
+    showMaximized();
 
 
 }
@@ -23,7 +25,7 @@ EmployeeWindow::EmployeeWindow(UserManager *userManager, QWidget *parent, User *
 QList<QPair<QString, QString>> EmployeeWindow::loadTasksFromDatabase() {
     QList<QPair<QString, QString>> tasks;
 
-     TaskContainer taskContainer;
+    TaskContainer taskContainer;
     taskContainer.addFilter(TaskContainer::filtredByTime(5));
     taskContainer.addFilter(TaskContainer ::filterTasksByUserId(user->id));
     taskContainer.loadTasksFromDatabase();
@@ -63,7 +65,6 @@ void EmployeeWindow::loadMoreItems() {
         addTasksToList(task.first, task.second);
     }
 
-
 }
 
 
@@ -83,6 +84,7 @@ void EmployeeWindow::on_LogOutButton_clicked() {
     auto *mainWindow = new MainWindow(userManager, nullptr);
     mainWindow->show();
 }
+
 
 void EmployeeWindow::on_resignButton_clicked() {
     ui->resignButton->setEnabled(false);
@@ -114,10 +116,15 @@ void EmployeeWindow::on_checkTaskButton_clicked() {
 void EmployeeWindow::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
     auto changeInfoWindow = new HandleInfoClass(this, user, userManager);
-    changeInfoWindow->show();
-    ui->changeInfoButton->setEnabled(true);
 
+    QRect parentGeometry = this->geometry();
+
+    changeInfoWindow->resize(parentGeometry.size());
+    changeInfoWindow->showMaximized();
+
+    ui->changeInfoButton->setEnabled(true);
 }
+
 void EmployeeWindow::on_employeeDirectoryBttn_clicked() {
     UserContainer userContainer;
     userContainer.addFilter(UserContainer::filterByCompanyId(user->companyId));

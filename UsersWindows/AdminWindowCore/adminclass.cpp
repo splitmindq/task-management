@@ -13,6 +13,9 @@ AdminClass::AdminClass(UserManager *userManager, QWidget *parent, User *user, st
     ui->statusLabel->setVisible(false);
     displayUserInfo();
     setupLazyLoading();
+    setWindowTitle("Task Management");
+    showMaximized();
+
 }
 
 AdminClass::~AdminClass() = default;
@@ -33,12 +36,33 @@ void AdminClass::on_LogOutButton_clicked() {
     mainWindow->show();
 }
 
+
+void AdminClass::updateInviteButtonState(QPushButton* inviteButton, int employeeId) {
+    try {
+        pqxx::connection C(connectionString);
+        pqxx::work W(C);
+        pqxx::result R = W.exec_params("SELECT id FROM invites WHERE user_id = $1 AND sender_id = $2 LIMIT 1",employeeId,user->id);
+        if (R.empty()) {
+            inviteButton->setText("Invite");
+            inviteButton->setEnabled(true);
+        } else {
+            inviteButton->setText("Invited");
+            inviteButton->setEnabled(false);
+        }
+    } catch (const std::system_error &e) {
+        std::cerr << "Failed to check invite status: " << e.what() << std::endl;
+        inviteButton->setText("Error");
+        inviteButton->setEnabled(false);
+    }
+}
+
 void AdminClass::addEmployeeToList(const QString &employeeName, int employeeId) {
     auto *employeeWidget = new QWidget();
-    auto *layout = new QHBoxLayout();
-
+    auto *layout = new QHBoxLayout(employeeWidget);
     auto *nameLabel = new QLabel(employeeName, employeeWidget);
-    auto *inviteButton = new QPushButton("Invite", employeeWidget);
+    auto *inviteButton = new QPushButton(employeeWidget);
+
+    updateInviteButtonState(inviteButton, employeeId);
 
     connect(inviteButton, &QPushButton::clicked, this, [this, employeeId, inviteButton]() {
         inviteEmployee(employeeId);
@@ -134,15 +158,24 @@ void AdminClass::on_docDownloadButton_clicked() {
 void AdminClass::on_changeInfoButton_clicked() {
     ui->changeInfoButton->setEnabled(false);
     auto changeInfoWindow = new HandleInfoClass(this, user, userManager);
-    changeInfoWindow->show();
-    ui->changeInfoButton->setEnabled(true);
 
+    QRect parentGeometry = this->geometry();
+
+    changeInfoWindow->resize(parentGeometry.size());
+    changeInfoWindow->showMaximized();
+
+    ui->changeInfoButton->setEnabled(true);
 }
 
 void AdminClass::on_modifyCompanyButton_clicked() {
+    ui->modifyCompanyButton->setEnabled(false);
+    auto handleCompanyWindow = new HandleCompanyInfo(this, company, user, userManager);
+    QRect parentGeometry = this->geometry();
 
-    auto *handleCompanyWindow = new HandleCompanyInfo(this, company, user, userManager);
-    handleCompanyWindow->show();
+    handleCompanyWindow->resize(parentGeometry.size());
+
+    handleCompanyWindow->showMaximized();
+    ui->modifyCompanyButton->setEnabled(true);
 
 
 }
@@ -159,7 +192,7 @@ QList<QPair<QString, int>> AdminClass::loadCompanyEmployeesFromDatabase(int limi
 
     for (auto it = employeeContainer.begin(); it != employeeContainer.end(); ++it) {
 
-        QString name = QString::fromStdString(it->username);
+        QString name = QString::fromStdString(it->name);
         employees.append(qMakePair(name, it->id));
     }
 
@@ -173,7 +206,7 @@ void AdminClass::addCompanyEmployeeToList(const QString &employeeName, int emplo
     auto *nameLabel = new QLabel(employeeName, employeeWidget);
     auto *addTaskButton = new QPushButton("Add Task", employeeWidget);
 
-    connect(addTaskButton, &QPushButton::clicked, this, [this, employeeId, addTaskButton]() {
+    connect(addTaskButton, &QPushButton::clicked, this,[this, employeeId, addTaskButton]() {
         giveTask(employeeId, addTaskButton);
     });
 

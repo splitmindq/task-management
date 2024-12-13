@@ -16,6 +16,7 @@ TaskWindow::TaskWindow(QWidget *parent) :
     connect(ui->pushButton, &QPushButton::clicked, this, &TaskWindow::onSubmit);
     ui->label->setVisible(false);
     setWindowTitle("Enter Task and Deadline");
+
 }
 
 TaskWindow::~TaskWindow() {

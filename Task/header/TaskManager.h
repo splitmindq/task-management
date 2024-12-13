@@ -52,9 +52,9 @@ public:
                 int id = result[0][0].as<int>();
                 int userId = result[0][1].as<int>();
                 int companyId = result[0][2].as<int>();
-                std::string fetchedAim = result[0][3].as<std::string>();
+                auto fetchedAim = result[0][3].as<std::string>();
 
-                std::string deadlineStr = result[0][4].as<std::string>();
+                auto deadlineStr = result[0][4].as<std::string>();
                 std::chrono::system_clock::time_point deadline;
 
                 try {
@@ -79,8 +79,6 @@ public:
                 task->setStatus(status);
                 return task;
             }
-
-            std::cerr << "Задача с aim '" << aim << "' не найдена.\n";
             return nullptr;
         } catch (const std::exception &e) {
             std::cerr << "Ошибка выполнения запроса: " << e.what() << '\n';

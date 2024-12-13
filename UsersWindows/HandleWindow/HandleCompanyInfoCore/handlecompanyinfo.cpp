@@ -20,6 +20,7 @@ HandleCompanyInfo::HandleCompanyInfo(QWidget *parent, std::shared_ptr<Company> c
     ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setupLazyLoading();
     loadMoreItems();
+    setWindowTitle("Task Management");
 
 }
 

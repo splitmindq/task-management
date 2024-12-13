@@ -48,13 +48,13 @@ private:
 
     void onScroll(int value);
 
-    QList<QPair<QString, QString>> loadTasksFromDatabase(int limit, int offset);
+    QList<QPair<QString, QString>> loadTasksFromDatabase(int lim, int offset);
 
     void loadNextTasks();
 
     void moveItem(QListWidget *sourceList, QListWidget *targetList);
 
-    QList<QPair<QString, QString>> loadTasksFromDatabaseWithStatus(int status, int limit, int offset);
+    QList<QPair<QString, QString>> loadTasksFromDatabaseWithStatus(int status, int lim, int offset);
 
     void loadNextInProcessTasks();
 
@@ -65,6 +65,12 @@ private:
     void onInProcessScroll(int value);
 
     void loadMoreInProcessItems();
+
+    static void updateTaskStatuses(const QStringList &aims, int status);
+
+    static QStringList extractAims(QListWidget *list);
+
+
     };
 
 #endif //TASK_MANAGEMENT_TODOWINDOW_H
