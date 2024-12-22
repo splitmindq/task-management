@@ -7,7 +7,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 SET(CMAKE_TOOLCHAIN_FILE)
-
+if(MSVC)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
+endif()
 find_package(tinyxml2 CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
@@ -120,8 +122,6 @@ set(SOURCES
         UsersWindows/EmployeeWindow/ToDoListWindow/todowindow.ui
         ItemContainer/src/ItemContainer.cpp
         ItemContainer/header/ItemContainer.h
-
-        
 
         #---------------------
 

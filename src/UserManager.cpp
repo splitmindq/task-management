@@ -287,3 +287,28 @@ void UserManager::updateUserInDb(const User &user) {
         std::cerr << "Error updating user in database: " << e.what() << std::endl;
     }
 }
+
+void UserManager::clearTasks(const User &user){
+
+    try {
+        pqxx::connection C("host=localhost dbname=database user=mzitr password=yourpassword");
+
+
+
+
+        pqxx::work txn(C);
+
+        txn.conn().prepare("delete tasks","DELETE FROM tasks WHERE company_id = $1 AND user_id = $2");
+
+        pqxx::result res = txn.exec_prepared("delete tasks",user.companyId,user.id);
+
+        txn.commit();
+
+    } catch (const pqxx::sql_error &e) {
+        std::cerr << "SQL error: " << e.what() << std::endl;
+        std::cerr << "Query was: " << e.query() << std::endl;
+    } catch (const std::system_error &e) {
+        std::cerr << "Error while loading invite: " << e.what() << std::endl;
+    }
+
+}

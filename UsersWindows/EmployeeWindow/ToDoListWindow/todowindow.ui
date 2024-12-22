@@ -14,7 +14,11 @@
    <string>ToDoWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
+   <string notr="true">QLabel {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 1px;
+}
 QPushButton {
     background-color: #4a4a4a; /* Темно-серый фон кнопок */
     border: 1px solid black; /* Граница с фиолетовым оттенком */
@@ -25,12 +29,10 @@ QPushButton {
 }
 
 QPushButton:hover {
-    background-color: #6a5acd; /* При наведении — светлый фиолетовый фон */
     border-color: #8a7fb3; /* Светлая граница */
 }
 
 QPushButton:pressed {
-    background-color: #5a4f85; /* Темный фиолетовый при нажатии */
 }
 
 

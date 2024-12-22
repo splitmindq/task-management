@@ -28,6 +28,7 @@ public:
         }
     }
 
+
     [[nodiscard]] std::shared_ptr<Invite<int>> getInvite() const {
         return invite;
     }

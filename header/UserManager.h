@@ -81,6 +81,7 @@ public:
 
     void updateUserInDb(const User &user);
 
+    static void clearTasks(const User &user);
 
 };
 

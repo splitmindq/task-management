@@ -32,6 +32,8 @@ public:
 
     void inviteEmployee(int employeeId);
 
+    void refreshCompanyInfo();
+
     void giveTask(int employeeId, QPushButton *addTaskButton);
 
     void addCompanyEmployeeToList(const QString &employeeName, int employeeId);

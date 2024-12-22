@@ -49,6 +49,7 @@ void EmployeeWindow::addTasksToList(const QString &taskAim, const QString &taskD
         aimLabel->setStyleSheet("color: red; font-weight: bold;");
     }
 
+    deadLineLabel->setAlignment(Qt::AlignRight);
     layout->addWidget(aimLabel);
     layout->addWidget(deadLineLabel);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -88,13 +89,18 @@ void EmployeeWindow::on_LogOutButton_clicked() {
 
 void EmployeeWindow::on_resignButton_clicked() {
     ui->resignButton->setEnabled(false);
+    UserManager::clearTasks(*user);
     user->companyId = -1;
     user->role = "user";
     userManager->saveUser(*user);
     auto userWindow = new UserWindow(userManager, nullptr, user);
     this->close();
     userWindow->show();
+
+
 }
+
+
 
 void EmployeeWindow::displayUserInfo() {
     QString emailText = QString("Email: %1").arg(user->email.c_str());

@@ -9,6 +9,7 @@
 #include "UserManager.h"
 #include "QMessageBox"
 
+
 class CompanyManager {
 private:
     UserManager *userManager;
@@ -18,7 +19,7 @@ private:
     int getNextIdFromDb();
 
 public:
-    void saveCompanyToDb(const std::shared_ptr<Company> &company);
+    void saveCompanyToDb(const std::shared_ptr<Company> &companyObject);
 
     std::shared_ptr<Company> company;
 

@@ -6,13 +6,13 @@ int CompanyManager::getNextIdFromDb() {
         std::string query = "SELECT MAX(id) FROM companies;";
         int maxId = executeScalarQuery<int>(txn, query);
         return maxId + 1;
-    } catch (const std::exception &e) {
+    } catch (const std::system_error &e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return -1;
     }
 }
 
-void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company> &company) {
+void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company> &companyObject) {
     try {
         pqxx::connection C(connectionString);
         pqxx::work W(C);
@@ -23,12 +23,12 @@ void CompanyManager::saveCompanyToDb(const std::shared_ptr<Company> &company) {
                 "ON CONFLICT (id) DO UPDATE "
                 "SET name = EXCLUDED.name, "
                 "adminId = EXCLUDED.adminId",
-                company->getCompanyId(), company->getName(), company->getAdminId()
+                companyObject->getCompanyId(), companyObject->getName(), companyObject->getAdminId()
         ));
 
         W.commit();
-    } catch (const std::exception &e) {
-        std::cerr << "Error while saving the company to the database: " << e.what() << std::endl;
+    } catch (const std::system_error &e) {
+        std::cerr << "Error while saving the companyObject to the database: " << e.what() << std::endl;
     }
 }
 
@@ -41,12 +41,12 @@ std::shared_ptr<Company> CompanyManager::findCompanyByAdminId(int adminId) {
 
         if (!result.empty()) {
             int companyId = result[0][0].as<int>();
-            std::string companyName = result[0][1].as<std::string>();
+            auto companyName = result[0][1].as<std::string>();
             return std::make_shared<Company>(companyId, companyName, adminId);
         }
 
         txn.commit();
-    } catch (const std::exception &e) {
+    } catch (const std::system_error &e) {
         std::cerr << "Error finding company: " << e.what() << std::endl;
     }
 
@@ -62,13 +62,13 @@ std::shared_ptr<Company> CompanyManager::findCompanyById(int id) {
 
         if (!result.empty()) {
             int companyId = result[0][0].as<int>();
-            std::string companyName = result[0][1].as<std::string>();
+            auto companyName = result[0][1].as<std::string>();
             int adminId = result[0][2].as<int>();
             return std::make_shared<Company>(companyId, companyName, adminId);
         }
 
         txn.commit();
-    } catch (const std::exception &e) {
+    } catch (const std::system_error &e) {
         std::cerr << "Error finding company: " << e.what() << std::endl;
     }
 

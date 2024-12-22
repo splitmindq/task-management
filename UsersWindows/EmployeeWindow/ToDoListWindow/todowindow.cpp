@@ -6,6 +6,7 @@
 ToDoWindow::ToDoWindow(QWidget *parent, User *user) :
         QMainWindow(parent), user(user), ui(new Ui::ToDoWindow), currentOffset(0), limit(20) {
     ui->setupUi(this);
+    ui->doneList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->loadList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->inProcessList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setupLazyLoading();

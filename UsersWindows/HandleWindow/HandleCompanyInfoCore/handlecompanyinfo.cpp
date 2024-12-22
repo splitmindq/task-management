@@ -73,14 +73,18 @@ void HandleCompanyInfo::fireEmployee(int employeeId) {
     userManager->loadUserById(employeeId);
     auto employee = userManager->findUserById(employeeId);
 
+    userManager->clearTasks(*user);
     employee->companyId = -1;
     employee->role = "user";
+
     userManager->saveUser(*employee);
 
     ui->listWidget->clear();
     currentOffset = 0;
     setupLazyLoading();
     loadMoreItems();
+    emit companyInfoUpdated();
+
 }
 
 
@@ -155,6 +159,7 @@ void HandleCompanyInfo::on_deleteCompanyButton_clicked() {
 
     for (auto it = employees.begin(); it != employees.end(); ++it) {
 
+        userManager->clearTasks(*user);
         it->companyId = -1;
         it->role = "user";
         userManager->saveUser(*it);
@@ -169,6 +174,9 @@ void HandleCompanyInfo::on_deleteCompanyButton_clicked() {
         pqxx::work W(C);
         W.exec("DELETE FROM invites WHERE sender_id = " + W.quote(user->id));
         W.commit();
+
+
+
     } catch (const pqxx::sql_error &e) {
         std::cerr << "SQL error: " << e.what() << std::endl;
         std::cerr << "Query was: " << e.query() << std::endl;
@@ -183,9 +191,9 @@ void HandleCompanyInfo::on_deleteCompanyButton_clicked() {
         qDebug() << "Parent window is nullptr!";
     }
 
-    this->close();
     auto *mainWindow = new MainWindow(userManager, nullptr);
     mainWindow->show();
+    this->close();
 
 }
 

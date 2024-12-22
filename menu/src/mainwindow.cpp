@@ -25,7 +25,7 @@ void MainWindow::on_loginButton_clicked() {
     QString login = ui->loginInput->text();
     QString password = ui->passwordInput->text();
 
-    std::string username = login.toStdString();
+        std::string username = login.toStdString();
     std::string pwd = password.toStdString();
 
     try {
@@ -61,7 +61,7 @@ void MainWindow::handleUserRole(const std::string &username) {
 void MainWindow::openUserWindow(User *user) {
     auto *userWindow = new UserWindow(userManager, nullptr, user);
     userWindow->show();
-    QTimer::singleShot(100, this, &QWidget::close); // Закрываем текущее окно через 100 мс
+    QTimer::singleShot(100, this, &QWidget::close);
 }
 
 void MainWindow::handleAdminOrEmployee(User *user) {
@@ -79,7 +79,7 @@ void MainWindow::handleAdmin(User *user) {
     if (company) {
         auto adminWindow = new AdminClass(userManager, nullptr, user, company);
         adminWindow->show();
-        QTimer::singleShot(100, this, &QWidget::close); // Закрываем текущее окно через 100 мс
+        QTimer::singleShot(100, this, &QWidget::close);
     } else {
         throw LoginException("Company not found for this administrator.");
     }
@@ -92,7 +92,7 @@ void MainWindow::openEmployeeWindow(User *user) {
     if (company) {
         auto employeeWindow = new EmployeeWindow(userManager, nullptr, user, company);
         employeeWindow->show();
-        QTimer::singleShot(100, this, &QWidget::close); // Закрываем текущее окно через 100 мс
+        QTimer::singleShot(100, this, &QWidget::close);
     } else {
         throw LoginException("Company not found for this user.");
     }

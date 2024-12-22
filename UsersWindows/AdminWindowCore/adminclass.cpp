@@ -4,7 +4,6 @@
 #include <iostream>
 #include <QScrollBar>
 #include <utility>
-#include "../Task/header/Task.h"
 
 AdminClass::AdminClass(UserManager *userManager, QWidget *parent, User *user, std::shared_ptr<Company> company)
         : BasicClass(userManager, parent, user), ui(new Ui::AdminClass), company(std::move(company)), currentOffset(0), limit(20) {
@@ -47,6 +46,7 @@ void AdminClass::updateInviteButtonState(QPushButton* inviteButton, int employee
             inviteButton->setEnabled(true);
         } else {
             inviteButton->setText("Invited");
+            inviteButton->setStyleSheet("background-color: #4444444f");
             inviteButton->setEnabled(false);
         }
     } catch (const std::system_error &e) {
@@ -171,13 +171,19 @@ void AdminClass::on_modifyCompanyButton_clicked() {
     ui->modifyCompanyButton->setEnabled(false);
     auto handleCompanyWindow = new HandleCompanyInfo(this, company, user, userManager);
     QRect parentGeometry = this->geometry();
-
+    connect(handleCompanyWindow, &HandleCompanyInfo::companyInfoUpdated, this, &AdminClass::refreshCompanyInfo);
     handleCompanyWindow->resize(parentGeometry.size());
 
     handleCompanyWindow->showMaximized();
     ui->modifyCompanyButton->setEnabled(true);
 
 
+}
+
+void AdminClass::refreshCompanyInfo() {
+    ui->listWidget->clear();
+    currentOffset = 0;
+    loadNextCompanyEmployees();
 }
 
 QList<QPair<QString, int>> AdminClass::loadCompanyEmployeesFromDatabase(int limit, int offset) {

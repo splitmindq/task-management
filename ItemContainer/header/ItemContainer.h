@@ -48,44 +48,43 @@ public:
 
     static std::function<std::string()> filterByRole(const std::string &role) {
         return [role]() {
-            return "role = '" + role + "'";
+            return std::format("role = '{}'",role);
         };
     }
 
     static std::function<std::string()> filterByCompanyId(int companyId) {
         return [companyId]() {
-            return "companyId = '" + std::to_string(companyId) + "'";
+            return std::format("companyId = '{}'", companyId);
         };
     }
 
     static std::function<std::string()> filterTasksByUserId(int userId) {
         return [userId]() {
-            return "user_id = '" + std::to_string(userId) + "'";
+            return std::format("user_id = '{}'", userId);
         };
     }
 
     static std::function<std::string()> filterTasksByStatus(int status) {
         return [status]() {
-            return "status = '" + std::to_string(status) + "'";
+            return std::format("status = '{}'", status);
         };
     }
 
     static std::function<std::string()> filterByLimit(int limit) {
         return [limit]() {
-            return "LIMIT " + std::to_string(limit);
+            return std::format("LIMIT {}", limit);
         };
     }
 
     static std::function<std::string()> filterByOffset(int offset) {
         return [offset]() {
-            return "OFFSET " + std::to_string(offset);
+            return std::format("OFFSET {}", offset);
         };
     }
 
     static std::function<std::string()> filtredByTime(int remainingDays) {
         return [remainingDays]() {
-            return "deadline <= NOW() + INTERVAL '" + std::to_string(remainingDays) + " days' AND deadline >= NOW()";
-        };
+            return std::format("deadline <= NOW() + INTERVAL '{} days' AND deadline >= NOW()", remainingDays);        };
     }
 
 

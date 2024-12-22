@@ -10,6 +10,8 @@ UserWindow::UserWindow(UserManager *userManager, QWidget *parent, User *user)
     ui->setupUi(this);
     displayUserInfo();
     showMaximized();
+    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
 }
 
 UserWindow::~UserWindow() = default;
@@ -32,7 +34,6 @@ void UserWindow::clearInviteForUser(int inviterId) {
 }
 
 void UserWindow::acceptInvite(int inviterId) {
-    std::cout << inviterId;
     auto inviter = userManager->findUserById(inviterId);
     int companyId = inviter->companyId;
     user->role = "employee";
