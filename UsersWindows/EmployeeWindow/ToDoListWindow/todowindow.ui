@@ -75,6 +75,26 @@ QPushButton:pressed {
        <number>10</number>
       </property>
       <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Tasks</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>In Process</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_4">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -93,26 +113,6 @@ QPushButton:pressed {
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>In Process</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Tasks</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
@@ -122,22 +122,39 @@ QPushButton:pressed {
       </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>20</number>
-        </property>
         <property name="leftMargin">
-         <number>20</number>
+         <number>0</number>
         </property>
+        <item>
+         <widget class="QPushButton" name="rightButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::GoNext"/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="leftButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::GoPrevious"/>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
-       <widget class="QListWidget" name="doneList"/>
+       <widget class="QListWidget" name="loadList"/>
       </item>
       <item>
        <widget class="QListWidget" name="inProcessList"/>
       </item>
       <item>
-       <widget class="QListWidget" name="loadList"/>
+       <widget class="QListWidget" name="doneList"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -162,26 +179,6 @@ QPushButton:pressed {
            </size>
           </property>
          </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="rightButton">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset theme="QIcon::ThemeIcon::GoNext"/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="leftButton">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset theme="QIcon::ThemeIcon::GoPrevious"/>
-          </property>
-         </widget>
         </item>
         <item>
          <spacer name="verticalSpacer_4">
